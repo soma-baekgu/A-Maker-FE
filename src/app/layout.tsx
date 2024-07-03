@@ -1,41 +1,20 @@
 import styles from './layout.module.css';
 import Link from "next/link";
+import TopBar from "@/app/_component/topBar";
+import NavBar from "@/app/_component/navBar";
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <body className={styles.body}>
+export default function RootLayout({children}: Readonly<{ children: React.ReactNode }>) {
+    const workspaceName = "캡스톤 디자인 A조";
+
+    return (
+        <html lang="en">
+        <body className={styles.body}>
         <div className={styles.main}>
-          <div className={styles.topBar}>
-            <div className={styles.topBarButton}></div>
-            <div className={styles.workspaceTitle}>
-              캡스톤디자인 A조
-            </div>
-            <div className={styles.topBarButton}></div>
-          </div>
-          <div className={styles.content}>
-            {children}
-          </div>
+            <TopBar workspaceName={workspaceName}/>
+            <div className={styles.content}>{children}</div>
         </div>
-        <div className={styles.navBar}>
-          <Link href="/main" className={styles.navButton}>
-            <div className={styles.buttonIcon}></div>
-          </Link>
-          <Link href="/chatting" className={styles.navButton}>
-            <div className={styles.buttonIcon}></div>
-          </Link>
-          <Link href="/dm" className={styles.navButton}>
-            <div className={styles.buttonIcon}></div>
-          </Link>
-          <Link href="/task" className={styles.navButton}>
-            <div className={styles.buttonIcon}></div>
-          </Link>
-        </div>
-      </body>
-    </html>
-  );
+        <NavBar/>
+        </body>
+        </html>
+    );
 }
