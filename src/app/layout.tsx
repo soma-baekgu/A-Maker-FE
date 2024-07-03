@@ -10,7 +10,16 @@ export default function RootLayout({
     <html lang="en">
       <body className={styles.body}>
         <div className={styles.main}>
-          {children}
+          <div className={styles.topBar}>
+            <div className={styles.topBarButton}></div>
+            <div className={styles.workspaceTitle}>
+              캡스톤디자인 A조
+            </div>
+            <div className={styles.topBarButton}></div>
+          </div>
+          <div className={styles.content}>
+            {children}
+          </div>
         </div>
         <div className={styles.navBar}>
           <Link href="/main" className={styles.navButton}>

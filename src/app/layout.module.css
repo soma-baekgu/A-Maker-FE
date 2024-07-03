@@ -34,3 +34,27 @@
     margin: 10px auto;
     background: #829DAD;
 }
+
+.topBar{
+    height: 50px;
+    background: #E9E9E9;
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+}
+
+.content{
+}
+
+.topBarButton{
+    width: 30px;
+    height: 30px;
+    background: #829DAD;
+}
+
+.workspaceTitle{
+    flex: 1;
+    font-size: 20px;
+    padding: 10px 0;
+    text-align: center;
+}
