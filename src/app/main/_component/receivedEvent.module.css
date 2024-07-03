@@ -1,0 +1,16 @@
+.eventElement{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #d4d4d4;
+    margin-bottom: 15px;
+}
+
+.left{
+    width: 100%;
+    text-align: left;
+}
+
+.right{
+    text-align: right;
+}
