@@ -1,0 +1,13 @@
+.component {
+    display: flex;
+    height: 76px;
+    flex-direction: row;
+    box-sizing: border-box;
+    border: 1px solid black;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.button:hover {
+    opacity: 0.8;
+}
