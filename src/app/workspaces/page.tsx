@@ -1,6 +1,5 @@
 import styles from './page.module.css';
 import Workspace from "@/app/workspaces/_component/Workspace";
-import ModalTopBar from "@/app/_component/ModalTopBar";
 
 export default function Workspaces() {
     const workspaceData = [

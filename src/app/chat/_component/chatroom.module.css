@@ -1,0 +1,55 @@
+.component {
+    display: flex;
+    flex-direction: row;
+    padding: 17px 32px;
+    align-items: center;
+    box-sizing: border-box;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.description {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 23px;
+    height: 120px;
+}
+
+.title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.chatroomName {
+    flex: 1;
+}
+
+.time {
+    text-align: right;
+}
+
+.message {
+    flex: 1;
+    text-align: left;
+    display: flex;
+    align-items: center;
+}
+
+.circle {
+    text-align: center;
+    border-radius: 50%;
+    border: 1px solid black;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.messageCount {
+    display: flex;
+    justify-content: end;
+}

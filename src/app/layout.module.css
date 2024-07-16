@@ -1,17 +1,14 @@
-.main{
+.body{
     max-width: 600px;
     min-height: 100vh;
     margin: 0 auto;
     background: white;
-}
-
-.body{
-    margin: 0;
-    background: #f5f6f8;
+    display: flex;
+    flex-direction: column;
 }
 
 .content{
-    height: 100vh;
     display: flex;
     flex-direction: column;
+    flex: 1;
 }

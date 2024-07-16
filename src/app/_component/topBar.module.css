@@ -1,23 +1,33 @@
-.topBar{
-    height: 50px;
-    background: #E9E9E9;
+.component {
     display: flex;
+    height: 76px;
+    flex-direction: row;
+    box-sizing: border-box;
+    border: 1px solid black;
+    justify-content: space-around;
     align-items: center;
-    padding: 5px 10px;
+    padding-left: 19px;
+    padding-right: 19px;
 }
 
-.content{
+.button{
+    margin-left: 4px;
 }
 
-.topBarButton{
-    width: 30px;
-    height: 30px;
-    background: #829DAD;
+.button:hover {
+    opacity: 0.8;
 }
 
-.workspaceTitle{
+.description{
+    margin-left: 15px;
+    font-size: 27px;
+    color: #000000;
     flex: 1;
-    font-size: 20px;
-    padding: 10px 0;
-    text-align: center;
+}
+
+.workspace{
+    box-sizing: border-box;
+    border: 1px solid black;
+    width: 60px;
+    height: 60px;
 }
