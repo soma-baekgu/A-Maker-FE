@@ -1,12 +1,14 @@
-
 .body{
     max-width: 600px;
     min-height: 100vh;
     margin: 0 auto;
     background: white;
+    display: flex;
+    flex-direction: column;
 }
 
 .content{
     display: flex;
     flex-direction: column;
+    flex: 1;
 }
