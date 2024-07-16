@@ -1,18 +1,30 @@
 import styles from './chatroom.module.css';
 import ProfileImageGroup from "@/app/_component/ProfileImageGroup";
 
-export default function ChatRoom() {
+type Props = {
+    imageUrls: string[]
+    chatroomName: string,
+    time: Date,
+    speaker: string
+    message: string,
+    messageCount: number,
+}
+
+export default function ChatRoom({imageUrls, chatroomName, time, speaker, message, messageCount}: Props) {
+    const options: Intl.DateTimeFormatOptions = {hour: 'numeric', minute: 'numeric', hour12: true};
+    const timeString = time.toLocaleTimeString('ko-KR', options);
+
     return (
         <div className={styles.component}>
-            <ProfileImageGroup imageUrls={["a", "b", "c"]}/>
+            <ProfileImageGroup imageUrls={imageUrls}/>
             <div className={styles.description}>
                 <div className={styles.title}>
-                    <div className={styles.chatroomName}>전체 채팅방</div>
-                    <div className={styles.time}>오후 5:26</div>
+                    <div className={styles.chatroomName}>{chatroomName}</div>
+                    <div className={styles.time}>{timeString}</div>
                 </div>
-                <div className={styles.message}>이승환: 안녕하세요!</div>
-                <div>
-                    <div className={styles.messageCount}>3</div>
+                <div className={styles.message}>{speaker} : {message}</div>
+                <div className={styles.messageCount}>
+                    <div className={styles.circle}>{messageCount}</div>
                 </div>
             </div>
         </div>
