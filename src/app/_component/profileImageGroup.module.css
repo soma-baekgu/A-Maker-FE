@@ -1,0 +1,20 @@
+.component {
+display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.profileImages {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 120px;
+}
+
+.profileImage {
+    width: 60px;
+    height: 60px;
+    box-sizing: border-box;
+    border: 1px solid black;
+    border-radius: 50%;
+}
