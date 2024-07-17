@@ -1,6 +1,10 @@
+'use client';
+
 import styles from './page.module.css';
 import TopBar from "@/app/_component/TopBar";
 import ChatRoom from "@/app/chat/_component/ChatRoom";
+import {useState} from "react";
+import CreateChatModal from "@/app/chat/_component/CreateChatModal";
 
 type ChatRoomData = {
     imageUrls: string[],
@@ -12,6 +16,8 @@ type ChatRoomData = {
 }
 
 export default function Chat() {
+    const [createModalVisible, setCreateModalVisible] = useState(false);
+
     const chatRoomDatas: ChatRoomData[] = [
         {
             imageUrls: ["url1", "url2"],
@@ -47,12 +53,21 @@ export default function Chat() {
         },
     ];
 
+    const onCreateChat = () => {
+        setCreateModalVisible(true);
+    };
+
+    const onSearchChat = () => {
+        console.log('search');
+    };
+
     return (
         <div className={styles.page}>
-            <TopBar pageType='채팅'/>
+            <TopBar pageType='채팅' onCreateChat={onCreateChat} onSearchChat={onSearchChat}/>
             {chatRoomDatas.map((data, index) => (
                 <ChatRoom key={index} {...data} />
             ))}
+            {createModalVisible && <CreateChatModal setVisible={setCreateModalVisible}/>}
         </div>
     );
 }

@@ -1,4 +1,4 @@
-import styles from './chatroom.module.css';
+import styles from './chatRoom.module.css';
 import ProfileImageGroup from "@/app/_component/ProfileImageGroup";
 
 type Props = {
