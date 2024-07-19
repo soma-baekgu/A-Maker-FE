@@ -1,0 +1,16 @@
+.component {
+    display: flex;
+    height: 82px;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.backButton:hover {
+    opacity: 0.8;
+}
+
+.title {
+    font-size: 27px;
+}
