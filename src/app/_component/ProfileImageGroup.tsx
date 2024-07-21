@@ -13,26 +13,22 @@ export default function ProfileImageGroup({imageUrls}: Props) {
                 {
                     cnt >= 1
                     &&
-                    <div className={styles.profileImage}>
-                    </div>
+                    <img className={styles.profileImage} src={imageUrls[0]}/>
                 }
                 {
                     cnt >= 3
                     &&
-                    <div className={styles.profileImage}>
-                    </div>
+                    <img className={styles.profileImage} src={imageUrls[2]}/>
                 }
             </div>
             {cnt >= 2
                 &&
                 <div className={styles.profileImages}>
-                    <div className={styles.profileImage}>
-                    </div>
+                    <img className={styles.profileImage} src={imageUrls[1]}/>
                     {
                         cnt >= 4
                         &&
-                        <div className={styles.profileImage}>
-                        </div>
+                        <img className={styles.profileImage} src={imageUrls[3]}/>
                     }
                 </div>
             }
