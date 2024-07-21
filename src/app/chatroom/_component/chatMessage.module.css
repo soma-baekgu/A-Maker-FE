@@ -1,0 +1,50 @@
+.component {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 5px;
+    gap: 10px;
+}
+
+.speakerImage {
+    aspect-ratio: 1;
+    box-sizing: border-box;
+    border: 1px solid black;
+    border-radius: 50%;
+    width: 60px;
+}
+
+.description {
+    display: flex;
+    flex-direction: column;
+}
+
+.message {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    gap: 10px;
+}
+
+.speakerName {
+    font-size: 17px;
+}
+
+.content {
+    font-size: 17px;
+    border: 1px solid black;
+    box-sizing: border-box;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.time {
+    font-size: 17px;
+}
+
+.left {
+    justify-content: flex-start;
+}
+
+.right {
+    justify-content: flex-end;
+}
