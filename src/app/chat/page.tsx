@@ -5,6 +5,7 @@ import TopBar from "@/app/_component/TopBar";
 import ChatRoom from "@/app/chat/_component/ChatRoom";
 import {useState} from "react";
 import CreateChatModal from "@/app/chat/_component/CreateChatModal";
+import BottomBar from "@/app/_component/BottomBar";
 
 type ChatRoomData = {
     imageUrls: string[],
@@ -64,9 +65,12 @@ export default function Chat() {
     return (
         <div className={styles.page}>
             <TopBar pageType='채팅' onCreateChat={onCreateChat} onSearchChat={onSearchChat}/>
-            {chatRoomDatas.map((data, index) => (
-                <ChatRoom key={index} {...data} />
-            ))}
+            <div className={styles.content}>
+                {chatRoomDatas.map((data, index) => (
+                    <ChatRoom key={index} {...data} />
+                ))}
+            </div>
+            <BottomBar/>
             {createModalVisible && <CreateChatModal setVisible={setCreateModalVisible}/>}
         </div>
     );
