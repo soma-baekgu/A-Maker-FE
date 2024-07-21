@@ -57,6 +57,28 @@ export default function Chat() {
         console.log('search');
     };
 
+    const createChatRoom = async (chatroomName: string) => {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/workspaces/1/chat-rooms`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
+            },
+            body: JSON.stringify({
+                name: chatroomName
+            }),
+        });
+
+        if (!response.ok) {
+            // Handle error
+            console.error('Failed to create chat room');
+            return;
+        }
+
+        const data = await response.json();
+        // Do something with the response data
+    }
+
     return (
         <div className={styles.page}>
             <TopBar pageType='채팅' onCreateChat={onCreateChat} onSearchChat={onSearchChat}/>
@@ -85,7 +107,8 @@ export default function Chat() {
                 })}
             </div>
             <BottomBar/>
-            {createModalVisible && <CreateChatModal setVisible={setCreateModalVisible}/>}
+            {createModalVisible &&
+                <CreateChatModal setVisible={setCreateModalVisible} createChatRoom={createChatRoom}/>}
         </div>
     );
 }
