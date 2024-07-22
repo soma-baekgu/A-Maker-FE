@@ -23,29 +23,34 @@ type Message = {
     updatedAt: string,
 }
 
-export default function Page() {
+export default function Page(props) {
     const title: string = '캡스톤 디자인 2조';//todo 채팅방이름을 어떻게 가져올까? 프론트에서 상태관리? 아니면 백에 단일 채팅방정보 api요청?
     const router = useRouter();
-    const [cursor, setCursor] = useState(null);
-    const [afterCursor, setAfterCursor] = useState(null);
+    const [cursor, setCursor] = useState(-1);
+    const [afterCursor, setAfterCursor] = useState(-1);
     const [messages, setMessages] = useState<Message[]>([]);
     const topMessageRef = useRef(null);
     const bottomMessageRef = useRef(null);
+    const chatroomId = props.params.id;
 
     const fetchRecentChat = async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/chat-rooms/1/chats/recent`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/chat-rooms/${chatroomId}/chats/recent`, {
             headers: {
                 'Authorization': `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
             },
         });
         const data = await response.json();
+
+        if (data.status !== "2000")
+            return; // 함수 실행 중단
+
         setCursor(data.data.id);
         setAfterCursor(data.data.id)
         setMessages([data.data]);
     };
 
     const fetchPreviousChats = useCallback(async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/chat-rooms/1/chats/previous?cursor=${cursor}&size=10`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/chat-rooms/${chatroomId}/chats/previous?cursor=${cursor}&size=10`, {
             headers: {
                 'Authorization': `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
             },
@@ -53,7 +58,7 @@ export default function Page() {
         const data = await response.json();
 
         // 서버에서 오류 응답을 받은 경우 처리
-        if (data.status === "5000")
+        if (data.status !== "2000")
             return; // 함수 실행 중단
 
         setCursor(data.data.nextCursor);
@@ -62,7 +67,7 @@ export default function Page() {
     }, [cursor]);
 
     const fetchAfterChats = useCallback(async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/chat-rooms/1/chats/after?cursor=${afterCursor}&size=10`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/chat-rooms/${chatroomId}/chats/after?cursor=${afterCursor}&size=10`, {
             headers: {
                 'Authorization': `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
             },
@@ -70,7 +75,7 @@ export default function Page() {
         const data = await response.json();
 
         // 서버에서 오류 응답을 받은 경우 처리
-        if (data.status === "5000")
+        if (data.status !== "2000")
             return; // 함수 실행 중단
 
         const lastMessage = data.data.chatList[data.data.chatList.length - 1];
@@ -94,12 +99,16 @@ export default function Page() {
 
     useEffect(() => {
         const intervalId = setInterval(async () => {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/chat-rooms/1/chats/recent`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/chat-rooms/${chatroomId}/chats/recent`, {
                 headers: {
                     'Authorization': `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
                 },
             });
+
             const data = await response.json();
+
+            if (data.status !== "2000")
+                return; // 함수 실행 중단
 
             if (data.data.id > afterCursor) {
                 fetchAfterChats();
@@ -142,7 +151,7 @@ export default function Page() {
     }
 
     const onSend = async (msg: string) => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/chat-rooms/1/chats`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/chat-rooms/${chatroomId}/chats`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
