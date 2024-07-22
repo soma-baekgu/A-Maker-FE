@@ -1,4 +1,5 @@
 import styles from './chatMessage.module.css';
+import React from "react";
 
 type Props = {
     speakerImageUrl: string,
@@ -7,20 +8,27 @@ type Props = {
     time: Date,
     isMine: boolean,
 }
-export default function ChatMessage({speakerImageUrl, speakerName, content, time, isMine}: Props) {
+
+const ChatMessage = React.forwardRef<HTMLDivElement, Props>(({
+                                                                 speakerImageUrl,
+                                                                 speakerName,
+                                                                 content,
+                                                                 time,
+                                                                 isMine
+                                                             }, ref) => {
     const options: Intl.DateTimeFormatOptions = {hour: 'numeric', minute: 'numeric', hour12: true};
     const timeString = time.toLocaleTimeString('ko-KR', options);
 
     return (
         isMine ? (
-            <div className={`${styles.component} ${styles.right}`}>
+            <div ref={ref} className={`${styles.component} ${styles.right}`}>
                 <div className={styles.message}>
                     <div className={styles.time}>{timeString}</div>
                     <div className={styles.content}>{content}</div>
                 </div>
             </div>
         ) : (
-            <div className={`${styles.component} ${styles.left}`}>
+            <div ref={ref} className={`${styles.component} ${styles.left}`}>
                 <div className={styles.speakerImage}></div>
                 <div className={styles.description}>
                     <div className={styles.speakerName}>{speakerName}</div>
@@ -32,4 +40,8 @@ export default function ChatMessage({speakerImageUrl, speakerName, content, time
             </div>
         )
     );
-}
+});
+
+ChatMessage.displayName = 'ChatMessage';
+
+export default ChatMessage;
