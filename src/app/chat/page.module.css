@@ -10,3 +10,8 @@
     flex-direction: column;
     flex: 1;
 }
+
+.content a{
+    text-decoration: none;
+    color: inherit;
+}
