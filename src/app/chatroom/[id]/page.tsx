@@ -4,12 +4,14 @@ import styles from './page.module.css';
 import TopBar2 from "@/app/_component/TopBar2";
 import ChatInput from "@/app/chatroom/_component/ChatInput";
 import ChatMessage from "@/app/chatroom/_component/ChatMessage";
+import {useRouter} from "next/navigation";
 
 export default function Page() {
     const title: string = '캡스톤 디자인 2조';
+    const router = useRouter();
 
     const onBack = () => {
-        console.log('뒤로가기');
+        router.push('/chat');
     }
 
     const onSend = () => {
