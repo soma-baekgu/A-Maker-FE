@@ -27,8 +27,10 @@ export default function Page() {
     const title: string = '캡스톤 디자인 2조';//todo 채팅방이름을 어떻게 가져올까? 프론트에서 상태관리? 아니면 백에 단일 채팅방정보 api요청?
     const router = useRouter();
     const [cursor, setCursor] = useState(null);
+    const [afterCursor, setAfterCursor] = useState(null);
     const [messages, setMessages] = useState<Message[]>([]);
     const topMessageRef = useRef(null);
+    const bottomMessageRef = useRef(null);
 
     const fetchRecentChat = async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/chat-rooms/1/chats/recent`, {
@@ -38,6 +40,7 @@ export default function Page() {
         });
         const data = await response.json();
         setCursor(data.data.id);
+        setAfterCursor(data.data.id)
         setMessages([data.data]);
     };
 
@@ -58,9 +61,55 @@ export default function Page() {
         setMessages(prevMessages => [...data.data.chatList, ...prevMessages]);
     }, [cursor]);
 
+    const fetchAfterChats = useCallback(async () => {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/chat-rooms/1/chats/after?cursor=${afterCursor}&size=10`, {
+            headers: {
+                'Authorization': `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
+            },
+        });
+        const data = await response.json();
+
+        // 서버에서 오류 응답을 받은 경우 처리
+        if (data.status === "5000")
+            return; // 함수 실행 중단
+
+        const lastMessage = data.data.chatList[data.data.chatList.length - 1];
+        if (lastMessage) {
+            setAfterCursor(lastMessage.id);
+        }
+        console.log(data.data);
+        setMessages(prevMessages => [...prevMessages, ...data.data.chatList]);
+
+    }, [afterCursor]);
+
+    useEffect(() => {
+        // 메시지 상태가 변경될 때마다 스크롤을 맨 아래로 내립니다.
+        if (bottomMessageRef.current)
+            bottomMessageRef.current.scrollIntoView({behavior: 'smooth'});
+    }, [afterCursor]);
+
     useEffect(() => {
         fetchRecentChat();
     }, []);
+
+    useEffect(() => {
+        const intervalId = setInterval(async () => {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/chat-rooms/1/chats/recent`, {
+                headers: {
+                    'Authorization': `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
+                },
+            });
+            const data = await response.json();
+
+            if (data.data.id > afterCursor) {
+                fetchAfterChats();
+            }
+        }, 1000); // 1초마다 실행
+
+        return () => {
+            clearInterval(intervalId); // 컴포넌트 unmount 시에 interval clear
+        };
+    }, [afterCursor, fetchAfterChats]);
 
     useLayoutEffect(() => {
         console.log(1);
@@ -70,14 +119,12 @@ export default function Page() {
             }
         });
 
-        console.log(topMessageRef);
         if (topMessageRef.current) {
             observer.observe(topMessageRef.current);
         }
 
         return () => {
             if (topMessageRef.current) {
-
                 observer.unobserve(topMessageRef.current);
             }
         };
@@ -94,40 +141,26 @@ export default function Page() {
         router.push('/chat');
     }
 
-    const onSend = () => {
-        console.log('전송');
-    }
+    const onSend = async (msg: string) => {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/chat-rooms/1/chats`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
+            },
+            body: JSON.stringify({
+                content: msg
+            }),
+        });
 
-    const dummyMessages = [
-        {
-            speakerImageUrl: "https://example.com/image1.jpg",
-            speakerName: "User1",
-            content: "Hello, this is a message from User1.",
-            time: new Date(2022, 0, 1, 10, 33), // 2022년 1월 1일 10시 33분
-            isMine: false,
-        },
-        {
-            speakerImageUrl: "https://example.com/image2.jpg",
-            speakerName: "User2",
-            content: "Hello, this is a message from User2.",
-            time: new Date(2022, 0, 1, 11, 45), // 2022년 1월 1일 11시 45분
-            isMine: true,
-        },
-        {
-            speakerImageUrl: "https://example.com/image3.jpg",
-            speakerName: "User3",
-            content: "Hello, this is a message from User3.",
-            time: new Date(2022, 0, 1, 12, 15), // 2022년 1월 1일 12시 15분
-            isMine: false,
-        },
-        {
-            speakerImageUrl: "https://example.com/image4.jpg",
-            speakerName: "User4",
-            content: "Hello, this is a message from User4.",
-            time: new Date(2022, 0, 1, 13, 30), // 2022년 1월 1일 13시 30분
-            isMine: false,
-        },
-    ];
+        if (!response.ok) {
+            // 오류 처리
+            console.error('메시지 전송 실패');
+            return;
+        }
+
+        fetchAfterChats();
+    };
 
     return (
         <div className={styles.page}>
@@ -135,10 +168,10 @@ export default function Page() {
             <div className={styles.content}>
                 {messages.map((message, index) => (
                     <ChatMessage
-                        ref={topMessageRef}
+                        ref={index === 0 ? topMessageRef : (index === messages.length - 1) ? bottomMessageRef : undefined}
                         key={index}
                         content={message.content}
-                        isMine={message.user.email==='soma.backgu@gmail.com'}//todo context api사용하여 로그인시 사용자 이메일 저장하여 비교하도로 수정
+                        isMine={message.user.email === 'soma.backgu@gmail.com'}//todo context api사용하여 로그인시 사용자 이메일 저장하여 비교하도로 수정
                         speakerImageUrl={message.user.picture}
                         speakerName={message.user.name}
                         time={new Date(message.createdAt)}/>

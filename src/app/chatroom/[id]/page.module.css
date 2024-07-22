@@ -1,12 +1,17 @@
 .page {
     display: flex;
     flex-direction: column;
-    flex: 1;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
+    overflow: auto;
 }
-
 
 .content {
     display: flex;
     flex-direction: column;
-    flex: 1;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
+    overflow: auto;
 }
