@@ -6,6 +6,7 @@ import ChatRoom from "@/app/chat/_component/ChatRoom";
 import {useEffect, useState} from "react";
 import CreateChatModal from "@/app/chat/_component/CreateChatModal";
 import BottomBar from "@/app/_component/BottomBar";
+import Link from "next/link";
 
 type Participant = {
     name: string,
@@ -86,22 +87,25 @@ export default function Chat() {
                 {chatRoomDatas.map((data, index) => {
                     if (data.lastChat) {
                         return (
-                            <ChatRoom
-                                key={index}
-                                chatroomName={data.chatRoomName}
-                                imageUrls={data.participants.map(participant => participant.picture)}
-                                message={data.lastChat.content}
-                                messageCount={data.unreadChatCount}
-                                speaker={data.lastChat.user.name}
-                                time={new Date(data.lastChat.createdAt)}/>
+                            <Link href={`/chatroom/${data.chatRoomId}`} key={index}>
+                                <ChatRoom
+                                    key={index}
+                                    chatroomName={data.chatRoomName}
+                                    imageUrls={data.participants.map(participant => participant.picture)}
+                                    message={data.lastChat.content}
+                                    messageCount={data.unreadChatCount}
+                                    speaker={data.lastChat.user.name}
+                                    time={new Date(data.lastChat.createdAt)}/>
+                            </Link>
                         );
                     } else {
                         return (
-                            <ChatRoom
-                                key={index}
-                                chatroomName={data.chatRoomName}
-                                imageUrls={data.participants.map(participant => participant.picture)}
-                                messageCount={data.unreadChatCount}/>
+                            <Link href={`/chatroom/${data.chatRoomId}`} key={index}>
+                                <ChatRoom
+                                    chatroomName={data.chatRoomName}
+                                    imageUrls={data.participants.map(participant => participant.picture)}
+                                    messageCount={data.unreadChatCount}/>
+                            </Link>
                         );
                     }
                 })}
