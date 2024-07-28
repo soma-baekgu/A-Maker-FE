@@ -1,0 +1,22 @@
+.component {
+    display: flex;
+    flex-direction: column;
+    gap: 62px;
+}
+
+.description {
+    font-size: 27px;
+}
+
+.titleInput {
+    font-size: 22px;
+    height: 53px;
+    width: 100%;
+}
+
+.detailInput {
+    font-size: 22px;
+    height: 302px;
+    width: 100%;
+    resize: none;
+}
