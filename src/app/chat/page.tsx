@@ -7,6 +7,7 @@ import {useEffect, useState} from "react";
 import CreateChatModal from "@/app/chat/_component/CreateChatModal";
 import BottomBar from "@/app/_component/BottomBar";
 import Link from "next/link";
+import chatRoomApi from "@/app/(api)/chatRoom";
 
 type Participant = {
     name: string,
@@ -37,17 +38,12 @@ export default function Chat() {
     const [chatRoomDatas, setChatRoomDatas] = useState<ChatRoomData[]>([]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/workspaces/1/chat-rooms/joined`, {
-                headers: {
-                    'Authorization': `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
-                },
-            });
-            const data = await response.json();
-            setChatRoomDatas(data.data.chatRooms);
+        const getChatRooms = async () => {
+            const res = await chatRoomApi.getListJoined(1);
+            setChatRoomDatas(res.data.data.chatRooms);
         };
 
-        fetchData();
+        getChatRooms();
     }, []);
 
     const onCreateChat = () => {
@@ -59,25 +55,7 @@ export default function Chat() {
     };
 
     const createChatRoom = async (chatroomName: string) => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/workspaces/1/chat-rooms`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
-            },
-            body: JSON.stringify({
-                name: chatroomName
-            }),
-        });
-
-        if (!response.ok) {
-            // Handle error
-            console.error('Failed to create chat room');
-            return;
-        }
-
-        const data = await response.json();
-        // Do something with the response data
+        const response = await chatRoomApi.create(1, chatroomName);
     }
 
     return (
