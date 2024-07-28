@@ -5,10 +5,13 @@ import Image from "next/image";
 import axios from "axios";
 import {useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
+import authApi from "@/app/(api)/auth";
+import {useStore} from "@/app/store";
 
 export default function Page() {
     const router = useRouter();
     const [authCode, setAuthCode] = useState<string | null>(null);
+    const {setAccessToken} = useStore();
 
     useEffect(() => {
         const queryParam = new URLSearchParams(window.location.search).get('code');
@@ -17,17 +20,14 @@ export default function Page() {
     }, []);
 
     useEffect(() => {
-        if (authCode) {
-            axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/auth/oauth/google`, {
-                code: authCode,
-            }).then(response => {
-                console.log(response.data);
-                router.push('/home');
-            }).catch(error => {
-                console.error(error);
-            });
+        const login = async () => {
+            const res = await authApi.login(authCode);
+            setAccessToken(res.data.data.token);
+            return res;
         }
-    },[authCode]);
+        if (authCode)
+            login().then(() => router.push('/home'));
+    }, [authCode]);
 
     const onClickLogin = async () => {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/auth/oauth/google`);
