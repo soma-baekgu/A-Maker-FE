@@ -3,7 +3,7 @@ import {persist} from "zustand/middleware";
 
 export const useStore = create(persist(
     (set) => ({
-        accessToken: '',
+        accessToken: null,
         setAccessToken: (accessToken: string) => set({accessToken})
     }),
     {

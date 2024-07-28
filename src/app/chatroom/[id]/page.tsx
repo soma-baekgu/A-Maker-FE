@@ -6,6 +6,7 @@ import ChatInput from "@/app/chatroom/_component/ChatInput";
 import ChatMessage from "@/app/chatroom/_component/ChatMessage";
 import {useRouter} from "next/navigation";
 import {useCallback, useEffect, useLayoutEffect, useRef, useState} from "react";
+import chatApi from "@/app/(api)/chat";
 
 type User = {
     name: string,
@@ -33,13 +34,9 @@ export default function Page(props) {
     const bottomMessageRef = useRef(null);
     const chatroomId = props.params.id;
 
-    const fetchRecentChat = async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/chat-rooms/${chatroomId}/chats/recent`, {
-            headers: {
-                'Authorization': `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
-            },
-        });
-        const data = await response.json();
+    const getRecentChat = async () => {
+        const response = await chatApi.recentChat(chatroomId);
+        const data = response.data;
 
         if (data.status !== "2000")
             return; // 함수 실행 중단
@@ -49,13 +46,9 @@ export default function Page(props) {
         setMessages([data.data]);
     };
 
-    const fetchPreviousChats = useCallback(async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/chat-rooms/${chatroomId}/chats/previous?cursor=${cursor}&size=10`, {
-            headers: {
-                'Authorization': `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
-            },
-        });
-        const data = await response.json();
+    const getPreviousChat = useCallback(async () => {
+        const response = await chatApi.previousChat(chatroomId, cursor, 10);
+        const data = response.data;
 
         // 서버에서 오류 응답을 받은 경우 처리
         if (data.status !== "2000")
@@ -66,13 +59,9 @@ export default function Page(props) {
         setMessages(prevMessages => [...data.data.chatList, ...prevMessages]);
     }, [cursor]);
 
-    const fetchAfterChats = useCallback(async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/chat-rooms/${chatroomId}/chats/after?cursor=${afterCursor}&size=10`, {
-            headers: {
-                'Authorization': `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
-            },
-        });
-        const data = await response.json();
+    const getAfterChat = useCallback(async () => {
+        const response = await chatApi.afterChat(chatroomId, afterCursor, 10);
+        const data = response.data;
 
         // 서버에서 오류 응답을 받은 경우 처리
         if (data.status !== "2000")
@@ -94,37 +83,32 @@ export default function Page(props) {
     }, [afterCursor]);
 
     useEffect(() => {
-        fetchRecentChat();
+        getRecentChat();
     }, []);
 
     useEffect(() => {
         const intervalId = setInterval(async () => {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/chat-rooms/${chatroomId}/chats/recent`, {
-                headers: {
-                    'Authorization': `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
-                },
-            });
-
-            const data = await response.json();
+            const response = await chatApi.recentChat(chatroomId);
+            const data = response.data;
 
             if (data.status !== "2000")
                 return; // 함수 실행 중단
 
             if (data.data.id > afterCursor) {
-                fetchAfterChats();
+                getAfterChat();
             }
         }, 1000); // 1초마다 실행
 
         return () => {
             clearInterval(intervalId); // 컴포넌트 unmount 시에 interval clear
         };
-    }, [afterCursor, fetchAfterChats]);
+    }, [afterCursor, getAfterChat]);
 
     useLayoutEffect(() => {
         console.log(1);
         const observer = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting) {
-                fetchPreviousChats();
+                getPreviousChat();
             }
         });
 
@@ -137,7 +121,7 @@ export default function Page(props) {
                 observer.unobserve(topMessageRef.current);
             }
         };
-    }, [fetchPreviousChats]);
+    }, [getPreviousChat]);
 
     function myFunction() {
         //console.log(topMessageRef.current);
@@ -151,24 +135,8 @@ export default function Page(props) {
     }
 
     const onSend = async (msg: string) => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/chat-rooms/${chatroomId}/chats`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
-            },
-            body: JSON.stringify({
-                content: msg
-            }),
-        });
-
-        if (!response.ok) {
-            // 오류 처리
-            console.error('메시지 전송 실패');
-            return;
-        }
-
-        fetchAfterChats();
+        await chatApi.send(chatroomId, msg);
+        getAfterChat();
     };
 
     return (
