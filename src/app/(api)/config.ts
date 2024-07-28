@@ -5,7 +5,9 @@ const setAuth = (isAuthenticated: boolean) =>
     (config) => {
         if (isAuthenticated) {
             const store = JSON.parse(localStorage.getItem(process.env.NEXT_PUBLIC_LOCAL_STORAGE));
-            const accessToken = store ? store.state.accessToken : '';
+            const accessToken = store ? store.state.accessToken : null;
+            if(!accessToken)
+                window.location.href = '/login';
             config.headers['Authorization'] = `Bearer ${accessToken}`;
         }
         return config;
