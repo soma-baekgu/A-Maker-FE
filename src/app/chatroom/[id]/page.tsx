@@ -130,10 +130,6 @@ export default function Page(props) {
 // setInterval 함수는 첫 번째 인자로 주어진 함수를 두 번째 인자로 주어진 시간 간격(밀리초 단위)마다 실행합니다.
     const intervalId = setInterval(myFunction, 1000);
 
-    const onBack = () => {
-        router.push('/chat');
-    }
-
     const onSend = async (msg: string) => {
         await chatApi.send(chatroomId, msg);
         getAfterChat();
@@ -141,7 +137,7 @@ export default function Page(props) {
 
     return (
         <div className={styles.page}>
-            <TopBar2 title={title} onBack={onBack}/>
+            <TopBar2 title={title}/>
             <div className={styles.content}>
                 {messages.map((message, index) => (
                     <ChatMessage
