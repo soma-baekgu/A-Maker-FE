@@ -1,0 +1,17 @@
+.component{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+.profileImg{
+    width: 45px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1px solid black;
+}
+
+.profileName{
+    font-size: 23px;
+}
