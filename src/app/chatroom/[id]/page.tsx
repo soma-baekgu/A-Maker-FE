@@ -7,6 +7,7 @@ import ChatMessage from "@/app/chatroom/_component/ChatMessage";
 import {useRouter} from "next/navigation";
 import {useCallback, useEffect, useLayoutEffect, useRef, useState} from "react";
 import chatApi from "@/app/(api)/chat";
+import {useStore} from "@/app/store";
 
 type User = {
     name: string,
@@ -33,6 +34,7 @@ export default function Page(props) {
     const topMessageRef = useRef(null);
     const bottomMessageRef = useRef(null);
     const chatroomId = props.params.id;
+    const {email} = useStore();
 
     const getRecentChat = async () => {
         const response = await chatApi.recentChat(chatroomId);
@@ -144,7 +146,7 @@ export default function Page(props) {
                         ref={index === 0 ? topMessageRef : (index === messages.length - 1) ? bottomMessageRef : undefined}
                         key={index}
                         content={message.content}
-                        isMine={message.user.email === 'soma.backgu@gmail.com'}//todo context api사용하여 로그인시 사용자 이메일 저장하여 비교하도로 수정
+                        isMine={message.user.email === email}//todo context api사용하여 로그인시 사용자 이메일 저장하여 비교하도로 수정
                         speakerImageUrl={message.user.picture}
                         speakerName={message.user.name}
                         time={new Date(message.createdAt)}/>
