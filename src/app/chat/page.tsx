@@ -8,6 +8,7 @@ import CreateChatModal from "@/app/chat/_component/CreateChatModal";
 import BottomBar from "@/app/_component/BottomBar";
 import Link from "next/link";
 import chatRoomApi from "@/app/(api)/chatRoom";
+import SearchChatModal from "@/app/chat/_component/SearchChatModal";
 
 type Participant = {
     name: string,
@@ -35,6 +36,7 @@ type ChatRoomData = {
 
 export default function Chat() {
     const [createModalVisible, setCreateModalVisible] = useState(false);
+    const [searchModalVisible, setSearchModalVisible] = useState(false);
     const [chatRoomDatas, setChatRoomDatas] = useState<ChatRoomData[]>([]);
 
     useEffect(() => {
@@ -51,11 +53,15 @@ export default function Chat() {
     };
 
     const onSearchChat = () => {
-        console.log('search');
+        setSearchModalVisible(true);
     };
 
     const createChatRoom = async (chatroomName: string) => {
         const response = await chatRoomApi.create(1, chatroomName);
+    }
+
+    const joinChatRoom = () => {
+        console.log("join chat room");
     }
 
     return (
@@ -91,6 +97,8 @@ export default function Chat() {
             <BottomBar/>
             {createModalVisible &&
                 <CreateChatModal setVisible={setCreateModalVisible} createChatRoom={createChatRoom}/>}
+            {searchModalVisible &&
+                <SearchChatModal setVisible={setSearchModalVisible} joinChatRoom={joinChatRoom}/>}
         </div>
     );
 }
