@@ -15,7 +15,6 @@ export default function SearchChatModal({setVisible, joinChatRoom}: Props) {
     const handleJoin = () => {
         joinChatRoom([]);//todo 값 채워 넣기
         setVisible(false);
-        location.reload();
     }
 
     type chatRoomInfo = {
