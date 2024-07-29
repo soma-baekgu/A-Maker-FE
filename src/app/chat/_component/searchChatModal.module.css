@@ -1,0 +1,93 @@
+.background {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.component {
+    display: flex;
+    flex-direction: column;
+    padding: 23px 47px;
+    box-sizing: border-box;
+    border: 1px solid black;
+    width: 479px;
+    background: white;
+    justify-content: space-between;
+    gap: 33px;
+}
+
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.title {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.button {
+    box-sizing: border-box;
+    border: 1px solid black;
+    font-size: 27px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chatRoomList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 260px;
+    overflow: auto;
+}
+
+.chatRoom {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    gap: 24px;
+    padding: 13px 32px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    box-sizing: border-box;
+}
+
+.chatRoomName {
+    flex: 1;
+}
+
+.checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border: 1px solid black;
+    border-radius: 50%;
+    cursor: pointer;
+    outline: none;
+}
+
+.checkbox:checked::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 10px;
+    height: 10px;
+    background: black;
+    border-radius: 50%;
+}

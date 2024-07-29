@@ -8,6 +8,7 @@ import CreateChatModal from "@/app/chat/_component/CreateChatModal";
 import BottomBar from "@/app/_component/BottomBar";
 import Link from "next/link";
 import chatRoomApi from "@/app/(api)/chatRoom";
+import SearchChatModal from "@/app/chat/_component/SearchChatModal";
 
 type Participant = {
     name: string,
@@ -25,7 +26,7 @@ type LastChat = {
     updatedAt: string,
 }
 
-type ChatRoomData = {
+type JoinChatRoom = {
     chatRoomId: number,
     chatRoomName: string,
     participants: Participant[],
@@ -35,34 +36,39 @@ type ChatRoomData = {
 
 export default function Chat() {
     const [createModalVisible, setCreateModalVisible] = useState(false);
-    const [chatRoomDatas, setChatRoomDatas] = useState<ChatRoomData[]>([]);
+    const [searchModalVisible, setSearchModalVisible] = useState(false);
+    const [joinChatRooms, setJoinChatRooms] = useState<JoinChatRoom[]>([]);
 
     useEffect(() => {
         const getChatRooms = async () => {
             const res = await chatRoomApi.getListJoined(1);
-            setChatRoomDatas(res.data.data.chatRooms);
+            setJoinChatRooms(res.data.data.chatRooms);
         };
 
         getChatRooms();
-    }, []);
+    }, [createModalVisible, searchModalVisible]);
 
     const onCreateChat = () => {
         setCreateModalVisible(true);
     };
 
     const onSearchChat = () => {
-        console.log('search');
+        setSearchModalVisible(true);
     };
 
     const createChatRoom = async (chatroomName: string) => {
         const response = await chatRoomApi.create(1, chatroomName);
     }
 
+    const joinChatRoom = async (ids: number[]) => {
+        await Promise.all(ids.map(id => chatRoomApi.join(1, id)));
+    }
+
     return (
         <div className={styles.page}>
             <TopBar pageType='채팅' onCreateChat={onCreateChat} onSearchChat={onSearchChat}/>
             <div className={styles.content}>
-                {chatRoomDatas.map((data, index) => {
+                {joinChatRooms.map((data, index) => {
                     if (data.lastChat) {
                         return (
                             <Link href={`/chatroom/${data.chatRoomId}`} key={index}>
@@ -91,6 +97,9 @@ export default function Chat() {
             <BottomBar/>
             {createModalVisible &&
                 <CreateChatModal setVisible={setCreateModalVisible} createChatRoom={createChatRoom}/>}
+            {searchModalVisible &&
+                <SearchChatModal setVisible={setSearchModalVisible} onJoin={joinChatRoom}
+                                 visible={searchModalVisible}/>}
         </div>
     );
 }
