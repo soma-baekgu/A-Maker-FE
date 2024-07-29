@@ -26,7 +26,7 @@ type LastChat = {
     updatedAt: string,
 }
 
-type ChatRoomData = {
+type JoinChatRoom = {
     chatRoomId: number,
     chatRoomName: string,
     participants: Participant[],
@@ -34,19 +34,27 @@ type ChatRoomData = {
     unreadChatCount: number,
 }
 
+type NotJoinChatRoom={
+    chatRoomId: number,
+    chatRoomName: string,
+    participantImg: string[],
+}
+
 export default function Chat() {
     const [createModalVisible, setCreateModalVisible] = useState(false);
     const [searchModalVisible, setSearchModalVisible] = useState(false);
-    const [chatRoomDatas, setChatRoomDatas] = useState<ChatRoomData[]>([]);
+    const [joinChatROoms, setJoinChatROoms] = useState<JoinChatRoom[]>([]);
+    const [notJoinChatRooms, setNotJoinChatRooms] = useState<NotJoinChatRoom[]>([]);
 
     useEffect(() => {
         const getChatRooms = async () => {
             const res = await chatRoomApi.getListJoined(1);
-            setChatRoomDatas(res.data.data.chatRooms);
+            setJoinChatROoms(res.data.data.chatRooms);
         };
 
         getChatRooms();
-    }, []);
+        console.log("createModalVisible이 변경됨");
+    }, [createModalVisible]);
 
     const onCreateChat = () => {
         setCreateModalVisible(true);
@@ -68,7 +76,7 @@ export default function Chat() {
         <div className={styles.page}>
             <TopBar pageType='채팅' onCreateChat={onCreateChat} onSearchChat={onSearchChat}/>
             <div className={styles.content}>
-                {chatRoomDatas.map((data, index) => {
+                {joinChatROoms.map((data, index) => {
                     if (data.lastChat) {
                         return (
                             <Link href={`/chatroom/${data.chatRoomId}`} key={index}>

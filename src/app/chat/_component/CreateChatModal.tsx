@@ -18,11 +18,10 @@ export default function CreateChatModal({setVisible, createChatRoom}: Props) {
         setInputValue(e.target.value);
     }
 
-    const handleCreateChat = () => {
-        createChatRoom(inputValue);
+    const handleCreateChat = async () => {
+        await createChatRoom(inputValue);
         setInputValue("");
         setVisible(false);
-        location.reload()
     }
 
     return (
