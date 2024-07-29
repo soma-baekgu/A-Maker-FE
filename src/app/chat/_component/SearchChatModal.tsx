@@ -1,40 +1,49 @@
+"use client";
+
 import styles from './searchChatModal.module.css';
 import Image from "next/image";
 import MiniProfileImageGroup from "@/app/chat/_component/MiniProfileImageGroup";
+import {useEffect, useState} from "react";
+import chatRoomApi from "@/app/(api)/chatRoom";
 
 type Props = {
     setVisible: (visible: boolean) => void,
-    joinChatRoom: (chatRoomIds: number[]) => void,
+    onJoin: (chatRoomIds: number[]) => void,
+    visible: boolean,
 }
 
-export default function SearchChatModal({setVisible, joinChatRoom}: Props) {
+type NotJoinChatRoom = {
+    chatRoomId: number,
+    chatRoomName: string,
+    participants: string[],
+}
+
+export default function SearchChatModal({setVisible, onJoin, visible}: Props) {
+    const [notJoinChatRooms, setNotJoinChatRooms] = useState<NotJoinChatRoom[]>([]);
+    const [checkedChatRooms, setCheckedChatRooms] = useState<{ [key: number]: boolean }>({});
+
+    useEffect(() => {
+        const getNotJoinChatRooms = async () => {
+            const res = await chatRoomApi.getListNotJoined(1);
+            setNotJoinChatRooms(res.data.data.chatRooms);
+            setCheckedChatRooms({});
+        }
+        getNotJoinChatRooms();
+    }, [visible]);
+
     const handleClose = () => {
         setVisible(false);
     }
 
-    const handleJoin = () => {
-        joinChatRoom([]);//todo 값 채워 넣기
+    const handleCheckboxChange = (chatRoomId: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+        setCheckedChatRooms(prevState => ({...prevState, [chatRoomId]: event.target.checked}));
+    }
+
+    const handleJoin = async () => {
+        const selectedChatRoomIds = Object.keys(checkedChatRooms).filter(chatRoomId => checkedChatRooms[Number(chatRoomId)]).map(Number);
+        await onJoin(selectedChatRoomIds);
         setVisible(false);
     }
-
-    type chatRoomInfo = {
-        chatRoomId: number,
-        chatRoomName: string,
-        participants: string[]
-    }
-
-    const dummy: chatRoomInfo[] = [
-        {
-            chatRoomId: 1,
-            chatRoomName: "채팅방1",
-            participants: ["https://lh3.googleusercontent.com/a/ACg8ocK1QHxfX4g2BG_DQk1ZgNTFELzkJ-Br9vsUDg14SFwC5vHkxw=s192-c-br100-rg-mo", "https://lh3.googleusercontent.com/a/ACg8ocK1QHxfX4g2BG_DQk1ZgNTFELzkJ-Br9vsUDg14SFwC5vHkxw=s192-c-br100-rg-mo"]
-        },
-        {
-            chatRoomId: 2,
-            chatRoomName: "채팅방2",
-            participants: ["https://lh3.googleusercontent.com/a/ACg8ocK1QHxfX4g2BG_DQk1ZgNTFELzkJ-Br9vsUDg14SFwC5vHkxw=s192-c-br100-rg-mo"]
-        }
-    ]
 
     return (
         <div className={styles.background} onClick={handleClose}>
@@ -44,12 +53,16 @@ export default function SearchChatModal({setVisible, joinChatRoom}: Props) {
                     <div className={styles.title}>채팅방 참여하기</div>
                 </div>
                 <div className={styles.chatRoomList}>
-                    {dummy.map((chatRoom, index) => {
+                    {notJoinChatRooms.map((chatRoom, index) => {
                         return (
                             <div key={index} className={styles.chatRoom}>
                                 <MiniProfileImageGroup imageUrls={chatRoom.participants}/>
                                 <div className={styles.chatRoomName}>{chatRoom.chatRoomName}</div>
-                                <input className={styles.checkbox} type="checkbox"/>
+                                <input
+                                    className={styles.checkbox}
+                                    type="checkbox"
+                                    checked={checkedChatRooms[chatRoom.chatRoomId] || false}
+                                    onChange={handleCheckboxChange(chatRoom.chatRoomId)}/>
                             </div>
                         )
                     })}

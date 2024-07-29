@@ -34,27 +34,19 @@ type JoinChatRoom = {
     unreadChatCount: number,
 }
 
-type NotJoinChatRoom={
-    chatRoomId: number,
-    chatRoomName: string,
-    participantImg: string[],
-}
-
 export default function Chat() {
     const [createModalVisible, setCreateModalVisible] = useState(false);
     const [searchModalVisible, setSearchModalVisible] = useState(false);
-    const [joinChatROoms, setJoinChatROoms] = useState<JoinChatRoom[]>([]);
-    const [notJoinChatRooms, setNotJoinChatRooms] = useState<NotJoinChatRoom[]>([]);
+    const [joinChatRooms, setJoinChatRooms] = useState<JoinChatRoom[]>([]);
 
     useEffect(() => {
         const getChatRooms = async () => {
             const res = await chatRoomApi.getListJoined(1);
-            setJoinChatROoms(res.data.data.chatRooms);
+            setJoinChatRooms(res.data.data.chatRooms);
         };
 
         getChatRooms();
-        console.log("createModalVisible이 변경됨");
-    }, [createModalVisible]);
+    }, [createModalVisible, searchModalVisible]);
 
     const onCreateChat = () => {
         setCreateModalVisible(true);
@@ -68,15 +60,15 @@ export default function Chat() {
         const response = await chatRoomApi.create(1, chatroomName);
     }
 
-    const joinChatRoom = () => {
-        console.log("join chat room");
+    const joinChatRoom = async (ids: number[]) => {
+        await Promise.all(ids.map(id => chatRoomApi.join(1, id)));
     }
 
     return (
         <div className={styles.page}>
             <TopBar pageType='채팅' onCreateChat={onCreateChat} onSearchChat={onSearchChat}/>
             <div className={styles.content}>
-                {joinChatROoms.map((data, index) => {
+                {joinChatRooms.map((data, index) => {
                     if (data.lastChat) {
                         return (
                             <Link href={`/chatroom/${data.chatRoomId}`} key={index}>
@@ -106,7 +98,8 @@ export default function Chat() {
             {createModalVisible &&
                 <CreateChatModal setVisible={setCreateModalVisible} createChatRoom={createChatRoom}/>}
             {searchModalVisible &&
-                <SearchChatModal setVisible={setSearchModalVisible} joinChatRoom={joinChatRoom}/>}
+                <SearchChatModal setVisible={setSearchModalVisible} onJoin={joinChatRoom}
+                                 visible={searchModalVisible}/>}
         </div>
     );
 }
