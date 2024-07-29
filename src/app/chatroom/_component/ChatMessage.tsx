@@ -29,7 +29,7 @@ const ChatMessage = React.forwardRef<HTMLDivElement, Props>(({
             </div>
         ) : (
             <div ref={ref} className={`${styles.component} ${styles.left}`}>
-                <div className={styles.speakerImage}></div>
+                    <img src={speakerImageUrl} className={styles.speakerImage}/>
                 <div className={styles.description}>
                     <div className={styles.speakerName}>{speakerName}</div>
                     <div className={styles.message}>

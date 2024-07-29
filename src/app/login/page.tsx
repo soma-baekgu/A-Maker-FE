@@ -12,6 +12,7 @@ export default function Page() {
     const router = useRouter();
     const [authCode, setAuthCode] = useState<string | null>(null);
     const {setAccessToken} = useStore();
+    const {setEmail} = useStore();
 
     useEffect(() => {
         const queryParam = new URLSearchParams(window.location.search).get('code');
@@ -23,6 +24,7 @@ export default function Page() {
         const login = async () => {
             const res = await authApi.login(authCode);
             setAccessToken(res.data.data.token);
+            setEmail(res.data.data.email);
             return res;
         }
         if (authCode)
