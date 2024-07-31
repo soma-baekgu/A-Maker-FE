@@ -3,6 +3,7 @@
 import styles from './workspaceModal.module.css';
 import {useState} from "react";
 import Image from "next/image";
+import CreateWorkspaceModal from "@/app/_component/CreateWorkspaceModal";
 
 type Workspace = {
     workspaceId: number,
@@ -15,6 +16,7 @@ type Props = {
 }
 
 export default function WorkspaceModal({onClose}: Props) {
+    const [createWorkspaceVisible, setCreateWorkspaceVisible] = useState(false);
     const [workspaces, setWorkspaces] = useState<Workspace[]>([
         {
             workspaceId: 1,
@@ -27,6 +29,10 @@ export default function WorkspaceModal({onClose}: Props) {
             thumbnail: "/path/to/thumbnail2.png"
         }
     ]);
+
+    const handleClick = () => {
+        setCreateWorkspaceVisible(true);
+    }
 
     const handleClose = () => {
         onClose();
@@ -43,8 +49,9 @@ export default function WorkspaceModal({onClose}: Props) {
                         </div>
                     ))}
                 </div>
-                <div className={styles.button}>새로운 워크스페이스</div>
+                <div className={styles.button} onClick={handleClick}>새로운 워크스페이스</div>
             </div>
+            {createWorkspaceVisible && <CreateWorkspaceModal setVisible={setCreateWorkspaceVisible}/>}
         </div>
     )
 }
