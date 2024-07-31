@@ -37,7 +37,7 @@ export default function TopBar({pageType, onCreateChat, onSearchChat}: Props) {
             <Link href="/setting">
                 <Image className={styles.button} src="/button/setting.png" alt="setting" width={60} height={60}/>
             </Link>
-            {modalVisible && <WorkspaceModal onClose={onClose}/>}
+            {modalVisible && <WorkspaceModal onClose={onClose} visible={modalVisible}/>}
         </div>
     )
 };
