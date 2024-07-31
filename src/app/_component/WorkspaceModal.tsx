@@ -1,9 +1,10 @@
 "use client";
 
 import styles from './workspaceModal.module.css';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Image from "next/image";
 import CreateWorkspaceModal from "@/app/_component/CreateWorkspaceModal";
+import workspaceApi from "@/app/(api)/workspace";
 
 type Workspace = {
     workspaceId: number,
@@ -12,23 +13,22 @@ type Workspace = {
 }
 
 type Props = {
-    onClose: () => void
+    onClose: () => void,
+    visible
 }
 
-export default function WorkspaceModal({onClose}: Props) {
+export default function WorkspaceModal({onClose, visible}: Props) {
     const [createWorkspaceVisible, setCreateWorkspaceVisible] = useState(false);
-    const [workspaces, setWorkspaces] = useState<Workspace[]>([
-        {
-            workspaceId: 1,
-            name: "Workspace 1",
-            thumbnail: "/path/to/thumbnail1.png"
-        },
-        {
-            workspaceId: 2,
-            name: "Workspace 2",
-            thumbnail: "/path/to/thumbnail2.png"
-        }
-    ]);
+    const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
+
+    useEffect(() => {
+        const getWorkspaces = async () => {
+            const res = await workspaceApi.getList();
+            setWorkspaces(res.data.data.workspaces);
+        };
+
+        getWorkspaces();
+    }, [visible]);
 
     const handleClick = () => {
         setCreateWorkspaceVisible(true);
