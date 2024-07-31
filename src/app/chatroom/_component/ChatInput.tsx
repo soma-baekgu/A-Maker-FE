@@ -7,10 +7,11 @@ import SpecialChatBar from "@/app/chatroom/_component/SpecialChatBar";
 import {bottom} from "@popperjs/core";
 
 type Props = {
-    onSend: (msg: string) => void
+    onSend: (msg: string) => void,
+    chatRoomId: number
 }
 
-export default function ChatInput({onSend}: Props) {
+export default function ChatInput({onSend, chatRoomId}: Props) {
     const [message, setMessage] = useState('');
     const [bottomBarVisible, setBottomBarVisible] = useState(false);
 
@@ -47,7 +48,7 @@ export default function ChatInput({onSend}: Props) {
                        value={message} onKeyPress={handleKeyPress}/>
                 <div className={styles.sendButton} onClick={handleSend}>전송</div>
             </div>
-            {bottomBarVisible && <SpecialChatBar/>}
+            {bottomBarVisible && <SpecialChatBar chatroomId={chatRoomId}/>}
         </div>
     );
 }
