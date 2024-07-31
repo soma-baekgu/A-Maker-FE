@@ -1,0 +1,22 @@
+.component {
+    display: flex;
+    flex-wrap: wrap;
+    background: white;
+    flex-direction: row;
+    padding: 10px 60px;
+    box-sizing: border-box;
+    border: 1px solid black;
+    justify-content: space-around;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 99px;
+    height: 99px;
+    background: white;
+    box-sizing: border-box;
+    border: 1px solid black;
+    margin: 10px 0;
+}
