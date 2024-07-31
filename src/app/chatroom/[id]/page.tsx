@@ -152,7 +152,7 @@ export default function Page(props) {
                         time={new Date(message.createdAt)}/>
                 ))}
             </div>
-            <ChatInput onSend={onSend}/>
+            <ChatInput onSend={onSend} chatRoomId={chatroomId}/>
         </div>
     );
 }
