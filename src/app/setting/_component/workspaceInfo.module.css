@@ -1,0 +1,92 @@
+.component {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: 23px 17px;
+    gap: 51px;
+}
+
+.title {
+    font-size: 27px;
+    font-weight: bold;
+}
+
+.subtitle {
+    font-size: 27px;
+}
+
+.input{
+    font-size: 27px;
+}
+
+.uploadButton {
+    box-sizing: border-box;
+    border: 1px solid black;
+    padding: 6px 12px;
+    font-size: 23px;
+    width: 88px;
+}
+
+.user {
+    box-sizing: border-box;
+    border: 1px solid black;
+    padding: 18px 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+
+.profileImage {
+    width: 75px;
+    aspect-ratio: 1;
+    box-sizing: border-box;
+    border: 1px solid black;
+    border-radius: 50%;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.userList {
+    display: flex;
+    flex-direction: column;
+}
+
+.userInfo {
+    font-size: 23px;
+    gap: 14px;
+    flex: 1;
+    align-items: center;
+}
+
+.role {
+    padding: 5px;
+    box-sizing: border-box;
+    border: 1px solid black;
+    font-size: 23px;
+    display: flex;
+    flex-direction: row;
+}
+
+.roleText{
+    width: 64px;
+    text-align: center;
+}
+
+.deleteButton:hover {
+    opacity: 0.8;
+}
+
+.editButton {
+    box-sizing: border-box;
+    border: 1px solid black;
+    padding: 5px 10px;
+    font-size: 27px;
+    text-align: center;
+}

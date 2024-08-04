@@ -68,7 +68,7 @@ export default function Chat(props) {
 
     return (
         <div className={styles.page}>
-            <TopBar pageType='채팅' onCreateChat={onCreateChat} onSearchChat={onSearchChat}/>
+            <TopBar pageType='채팅' onCreateChat={onCreateChat} onSearchChat={onSearchChat} workspaceId={workspaceId}/>
             <div className={styles.content}>
                 {joinChatRooms.map((data, index) => {
                     if (data.lastChat) {
