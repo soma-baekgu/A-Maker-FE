@@ -6,15 +6,20 @@ import RecipientSelector from "@/app/chatroom/_component/RecipientSelector";
 import DueDateInput from "@/app/chatroom/_component/DueDateInput";
 import AlarmTimeInput from "@/app/chatroom/_component/AlarmTimeInput";
 import TopBar2 from "@/app/_component/TopBar2";
+import {useState} from "react";
 
 export default function Page() {
     const title = "응답요청 이벤트 생성";
+    const [eventTitle, setEventTitle] = useState('');
+    const [eventDetail, setEventDetail] = useState('');
+
 
     return (
         <div className={styles.page}>
             <TopBar2 title={title}/>
             <div className={styles.section}>
-                <ReplyEventInput/>
+                <ReplyEventInput detail={eventDetail} setDetail={setEventDetail} setTitle={setEventTitle}
+                                 title={eventTitle}/>
                 <RecipientSelector/>
                 <DueDateInput/>
             </div>
