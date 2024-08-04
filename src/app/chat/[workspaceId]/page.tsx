@@ -9,6 +9,7 @@ import BottomBar from "@/app/_component/BottomBar";
 import Link from "next/link";
 import chatRoomApi from "@/app/(api)/chatRoom";
 import SearchChatModal from "@/app/chat/_component/SearchChatModal";
+import workspace from "@/app/(api)/workspace";
 
 type Participant = {
     name: string,
@@ -34,10 +35,11 @@ type JoinChatRoom = {
     unreadChatCount: number,
 }
 
-export default function Chat() {
+export default function Chat(props) {
     const [createModalVisible, setCreateModalVisible] = useState(false);
     const [searchModalVisible, setSearchModalVisible] = useState(false);
     const [joinChatRooms, setJoinChatRooms] = useState<JoinChatRoom[]>([]);
+    const workspaceId = props.params.workspaceId;
 
     useEffect(() => {
         const getChatRooms = async () => {
@@ -94,7 +96,7 @@ export default function Chat() {
                     }
                 })}
             </div>
-            <BottomBar/>
+            <BottomBar workspaceId={workspaceId}/>
             {createModalVisible &&
                 <CreateChatModal setVisible={setCreateModalVisible} createChatRoom={createChatRoom}/>}
             {searchModalVisible &&
