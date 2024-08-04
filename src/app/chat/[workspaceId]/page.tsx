@@ -9,6 +9,7 @@ import BottomBar from "@/app/_component/BottomBar";
 import Link from "next/link";
 import chatRoomApi from "@/app/(api)/chatRoom";
 import SearchChatModal from "@/app/chat/_component/SearchChatModal";
+import workspace from "@/app/(api)/workspace";
 
 type Participant = {
     name: string,
@@ -34,14 +35,15 @@ type JoinChatRoom = {
     unreadChatCount: number,
 }
 
-export default function Chat() {
+export default function Chat(props) {
     const [createModalVisible, setCreateModalVisible] = useState(false);
     const [searchModalVisible, setSearchModalVisible] = useState(false);
     const [joinChatRooms, setJoinChatRooms] = useState<JoinChatRoom[]>([]);
+    const workspaceId = props.params.workspaceId;
 
     useEffect(() => {
         const getChatRooms = async () => {
-            const res = await chatRoomApi.getListJoined(1);
+            const res = await chatRoomApi.getListJoined(workspaceId);
             setJoinChatRooms(res.data.data.chatRooms);
         };
 
@@ -57,11 +59,11 @@ export default function Chat() {
     };
 
     const createChatRoom = async (chatroomName: string) => {
-        const response = await chatRoomApi.create(1, chatroomName);
+        const response = await chatRoomApi.create(workspaceId, chatroomName);
     }
 
     const joinChatRoom = async (ids: number[]) => {
-        await Promise.all(ids.map(id => chatRoomApi.join(1, id)));
+        await Promise.all(ids.map(id => chatRoomApi.join(workspaceId, id)));
     }
 
     return (
@@ -94,12 +96,12 @@ export default function Chat() {
                     }
                 })}
             </div>
-            <BottomBar/>
+            <BottomBar workspaceId={workspaceId}/>
             {createModalVisible &&
                 <CreateChatModal setVisible={setCreateModalVisible} createChatRoom={createChatRoom}/>}
             {searchModalVisible &&
                 <SearchChatModal setVisible={setSearchModalVisible} onJoin={joinChatRoom}
-                                 visible={searchModalVisible}/>}
+                                 visible={searchModalVisible} workspaceId={workspaceId}/>}
         </div>
     );
 }

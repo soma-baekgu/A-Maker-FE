@@ -1,9 +1,11 @@
 "use client";
 
 import styles from './workspaceModal.module.css';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Image from "next/image";
 import CreateWorkspaceModal from "@/app/_component/CreateWorkspaceModal";
+import workspaceApi from "@/app/(api)/workspace";
+import Link from "next/link";
 
 type Workspace = {
     workspaceId: number,
@@ -12,23 +14,22 @@ type Workspace = {
 }
 
 type Props = {
-    onClose: () => void
+    onClose: () => void,
+    visible
 }
 
-export default function WorkspaceModal({onClose}: Props) {
+export default function WorkspaceModal({onClose, visible}: Props) {
     const [createWorkspaceVisible, setCreateWorkspaceVisible] = useState(false);
-    const [workspaces, setWorkspaces] = useState<Workspace[]>([
-        {
-            workspaceId: 1,
-            name: "Workspace 1",
-            thumbnail: "/path/to/thumbnail1.png"
-        },
-        {
-            workspaceId: 2,
-            name: "Workspace 2",
-            thumbnail: "/path/to/thumbnail2.png"
-        }
-    ]);
+    const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
+
+    useEffect(() => {
+        const getWorkspaces = async () => {
+            const res = await workspaceApi.getList();
+            setWorkspaces(res.data.data.workspaces);
+        };
+
+        getWorkspaces();
+    }, [visible, createWorkspaceVisible]);
 
     const handleClick = () => {
         setCreateWorkspaceVisible(true);
@@ -38,20 +39,25 @@ export default function WorkspaceModal({onClose}: Props) {
         onClose();
     }
 
+    const createWorkspace = async (workspaceName: string) => {
+        await workspaceApi.create(workspaceName);
+    }
+
     return (
         <div className={styles.background} onClick={handleClose}>
             <div className={styles.component} onClick={e => e.stopPropagation()}>
                 <div className={styles.list}>
                     {workspaces.map((workspace, index) => (
-                        <div key={index} className={styles.workspace}>
+                        <Link key={index} className={styles.workspace} href={`/home/${workspace.workspaceId}`}>
                             <Image src={workspace.thumbnail} alt="workspace" width={60} height={60}/>
-                            <div>{workspace.name}</div>
-                        </div>
+                            <div className={styles.text}>{workspace.name}</div>
+                        </Link>
                     ))}
                 </div>
                 <div className={styles.button} onClick={handleClick}>새로운 워크스페이스</div>
             </div>
-            {createWorkspaceVisible && <CreateWorkspaceModal setVisible={setCreateWorkspaceVisible}/>}
+            {createWorkspaceVisible &&
+                <CreateWorkspaceModal setVisible={setCreateWorkspaceVisible} createWorkspace={createWorkspace}/>}
         </div>
     )
 }
