@@ -10,6 +10,7 @@ type Props = {
     setVisible: (visible: boolean) => void,
     onJoin: (chatRoomIds: number[]) => void,
     visible: boolean,
+    workspaceId: number,
 }
 
 type NotJoinChatRoom = {
@@ -18,13 +19,13 @@ type NotJoinChatRoom = {
     participants: string[],
 }
 
-export default function SearchChatModal({setVisible, onJoin, visible}: Props) {
+export default function SearchChatModal({setVisible, onJoin, visible, workspaceId}: Props) {
     const [notJoinChatRooms, setNotJoinChatRooms] = useState<NotJoinChatRoom[]>([]);
     const [checkedChatRooms, setCheckedChatRooms] = useState<{ [key: number]: boolean }>({});
 
     useEffect(() => {
         const getNotJoinChatRooms = async () => {
-            const res = await chatRoomApi.getListNotJoined(1);
+            const res = await chatRoomApi.getListNotJoined(workspaceId);
             setNotJoinChatRooms(res.data.data.chatRooms);
             setCheckedChatRooms({});
         }

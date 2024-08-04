@@ -40,10 +40,17 @@
     border-bottom: 1px solid black;
 }
 
-.button {
+.button{
     padding: 13px 9px;
     margin: 25px;
     font-size: 27px;
     box-sizing: border-box;
     border: 1px solid black;
+    text-decoration: none;
+
+}
+
+.component a{
+    text-decoration: none;
+    color: inherit;
 }
