@@ -7,6 +7,7 @@ import {useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
 import authApi from "@/app/(api)/auth";
 import {useStore} from "@/app/store";
+import workspaceApi from "@/app/(api)/workspace";
 
 export default function Page() {
     const router = useRouter();
@@ -27,8 +28,14 @@ export default function Page() {
             setEmail(res.data.data.email);
             return res;
         }
-        if (authCode)
-            login().then(() => router.push('/home'));
+        if (authCode) {
+            login()
+                .then(() => workspaceApi.recent())
+                .then((res) => {
+                    const workspaceId = res.data.data.workspaceId;
+                    router.push(`/home/${workspaceId}`);
+                });
+        }
     }, [authCode]);
 
     const onClickLogin = async () => {
