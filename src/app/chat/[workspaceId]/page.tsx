@@ -43,7 +43,7 @@ export default function Chat(props) {
 
     useEffect(() => {
         const getChatRooms = async () => {
-            const res = await chatRoomApi.getListJoined(1);
+            const res = await chatRoomApi.getListJoined(workspaceId);
             setJoinChatRooms(res.data.data.chatRooms);
         };
 
@@ -59,11 +59,11 @@ export default function Chat(props) {
     };
 
     const createChatRoom = async (chatroomName: string) => {
-        const response = await chatRoomApi.create(1, chatroomName);
+        const response = await chatRoomApi.create(workspaceId, chatroomName);
     }
 
     const joinChatRoom = async (ids: number[]) => {
-        await Promise.all(ids.map(id => chatRoomApi.join(1, id)));
+        await Promise.all(ids.map(id => chatRoomApi.join(workspaceId, id)));
     }
 
     return (
@@ -101,7 +101,7 @@ export default function Chat(props) {
                 <CreateChatModal setVisible={setCreateModalVisible} createChatRoom={createChatRoom}/>}
             {searchModalVisible &&
                 <SearchChatModal setVisible={setSearchModalVisible} onJoin={joinChatRoom}
-                                 visible={searchModalVisible}/>}
+                                 visible={searchModalVisible} workspaceId={workspaceId}/>}
         </div>
     );
 }
