@@ -14,10 +14,10 @@ export default function Page() {
             workspaceApi.recent()
                 .then((res) => {
                     const workspaceId = res.data.data.workspaceId;
-                    router.push(`/home/${workspaceId}`);
+                    router.replace(`/home/${workspaceId}`);
                 });
         } else {
-            router.push('/login');
+            router.replace('/login');
         }
     })
 
