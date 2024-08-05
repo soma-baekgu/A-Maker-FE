@@ -1,0 +1,57 @@
+.background {
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.component {
+    display: flex;
+    flex-direction: column;
+    padding: 23px 47px;
+    box-sizing: border-box;
+    border: 1px solid black;
+    width: 479px;
+    height: 364px;
+    background: white;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 27px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.fileName {
+    font-size: 27px;
+    flex: 1;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.button{
+    box-sizing: border-box;
+    border: 1px solid black;
+    font-size: 27px;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+}
