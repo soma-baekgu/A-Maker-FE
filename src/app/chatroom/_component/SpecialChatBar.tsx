@@ -6,6 +6,7 @@ import Link from "next/link";
 import {useEffect, useRef, useState} from "react";
 import SendApproveModal from "@/app/chatroom/_component/SendApproveModal";
 import fileApi from "@/app/(api)/file";
+import axios from "axios";
 
 type Props = {
     chatroomId: number
@@ -56,11 +57,20 @@ export default function SpecialChatBar({chatroomId}: Props) {
         const res = await fileApi.getUrl(new Date().toString(), extension, name);
         const url = new URL(res.data.data);
         const urlWithoutQueryParams = url.origin + url.pathname;
-        console.log(urlWithoutQueryParams);
+        const formData = new FormData();
+        formData.append('file', fileInputRef.current.files[0]);
+        const uploadResponse = await axios.put(urlWithoutQueryParams, formData);
+        console.log('URL입니다 : '+urlWithoutQueryParams);
     }
 
-    const sendImage =()=>{
-
+    const sendImage =async ()=>{
+        const fileNameArray = fileName.split('.');
+        const extension = fileNameArray.pop();
+        const name = fileNameArray.join('.');
+        const res = await fileApi.getUrl(new Date().toString(), extension, name);
+        const url = new URL(res.data.data);
+        const urlWithoutQueryParams = url.origin + url.pathname;
+        console.log('URL입니다 : '+urlWithoutQueryParams);
     }
 
     return (
