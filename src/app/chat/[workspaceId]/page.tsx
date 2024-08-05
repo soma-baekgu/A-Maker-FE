@@ -10,6 +10,7 @@ import Link from "next/link";
 import chatRoomApi from "@/app/(api)/chatRoom";
 import SearchChatModal from "@/app/chat/_component/SearchChatModal";
 import workspace from "@/app/(api)/workspace";
+import {FileContent} from "@/app/chatroom/types";
 
 type Participant = {
     name: string,
@@ -21,7 +22,7 @@ type LastChat = {
     id: number,
     user: Participant,
     chatRoomId: number,
-    content: string,
+    content: string | FileContent,
     chatType: string,
     createdAt: string,
     updatedAt: string,
@@ -81,7 +82,8 @@ export default function Chat(props) {
                                     message={data.lastChat.content}
                                     messageCount={data.unreadChatCount}
                                     speaker={data.lastChat.user.name}
-                                    time={new Date(data.lastChat.createdAt)}/>
+                                    time={new Date(data.lastChat.createdAt)}
+                                chatType={data.lastChat.chatType}/>
                             </Link>
                         );
                     } else {

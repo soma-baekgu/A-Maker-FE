@@ -8,6 +8,7 @@ import {useRouter} from "next/navigation";
 import {useCallback, useEffect, useLayoutEffect, useRef, useState} from "react";
 import chatApi from "@/app/(api)/chat";
 import {useStore} from "@/app/store";
+import {FileContent} from "@/app/chatroom/types";
 
 type User = {
     name: string,
@@ -19,7 +20,7 @@ type Message = {
     id: number,
     user: User,
     chatRoomId: number,
-    content: string,
+    content: string | FileContent,
     chatType: string,
     createdAt: string,
     updatedAt: string,
@@ -107,7 +108,6 @@ export default function Page(props) {
     }, [afterCursor, getAfterChat]);
 
     useLayoutEffect(() => {
-        console.log(1);
         const observer = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting) {
                 getPreviousChat();
@@ -149,7 +149,8 @@ export default function Page(props) {
                         isMine={message.user.email === email}//todo context api사용하여 로그인시 사용자 이메일 저장하여 비교하도로 수정
                         speakerImageUrl={message.user.picture}
                         speakerName={message.user.name}
-                        time={new Date(message.createdAt)}/>
+                        time={new Date(message.createdAt)}
+                        chatType={message.chatType}/>
                 ))}
             </div>
             <ChatInput onSend={onSend} chatRoomId={chatroomId}/>
