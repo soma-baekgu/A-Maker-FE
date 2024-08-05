@@ -19,21 +19,6 @@ export default function WorkspaceInfo() {
         }
     ];
 
-    const invitedUsers = [
-        {
-            id: 56,
-            name: '홍길동',
-            email: 'aaa@gmail.com',
-            imgUrl: '/defaultImg'
-        },
-        {
-            id: 51,
-            name: '가나다',
-            email: 'aaa@gmail.com',
-            imgUrl: '/defaultImg'
-        },
-    ];
-
     return (
         <div className={styles.component}>
             <div className={styles.title}>워크스페이스 정보 수정</div>

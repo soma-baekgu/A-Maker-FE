@@ -1,2 +1,82 @@
-.component{
+.component {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: 23px 17px;
+    gap: 26px;
+}
+
+.title {
+    font-size: 27px;
+    font-weight: bold;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.help {
+    font-size: 20px;
+}
+
+.error {
+    font-size: 20px;
+    color: red;
+}
+
+.inputContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.input {
+    font-size: 27px;
+    flex: 1;
+}
+
+.inviteButton {
+    box-sizing: border-box;
+    border: 1px solid black;
+    padding: 8px 8px;
+    font-size: 27px;
+    cursor: pointer;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+}
+
+.user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    box-sizing: border-box;
+    border: 1px solid black;
+    padding: 18px 10px;
+}
+
+.profileImage {
+    width: 75px;
+    aspect-ratio: 1;
+    box-sizing: border-box;
+    border: 1px solid black;
+    border-radius: 50%;
+}
+
+.userInfo {
+    font-size: 23px;
+    gap: 14px;
+    flex: 1;
+    align-items: center;
+}
+
+.state {
+    font-size: 23px;
 }

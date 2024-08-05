@@ -17,7 +17,7 @@
     font-size: 27px;
 }
 
-.input{
+.input {
     font-size: 27px;
 }
 
@@ -27,6 +27,7 @@
     padding: 6px 12px;
     font-size: 23px;
     width: 88px;
+    cursor: pointer;
 }
 
 .user {
@@ -74,7 +75,7 @@
     flex-direction: row;
 }
 
-.roleText{
+.roleText {
     width: 64px;
     text-align: center;
 }
@@ -83,10 +84,15 @@
     opacity: 0.8;
 }
 
+.deleteButton {
+    cursor: pointer;
+}
+
 .editButton {
     box-sizing: border-box;
     border: 1px solid black;
     padding: 5px 10px;
     font-size: 27px;
     text-align: center;
+    cursor: pointer;
 }

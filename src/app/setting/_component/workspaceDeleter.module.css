@@ -1,2 +1,27 @@
-.component{
+.component {
+    display: flex;
+    flex-direction: column;
+    gap: 33px;
+    box-sizing: border-box;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: 23px 17px;
+}
+
+.title {
+    font-size: 27px;
+    font-weight: bold;
+}
+
+.help {
+    font-size: 20px;
+}
+
+.deleteButton {
+    box-sizing: border-box;
+    border: 1px solid black;
+    padding: 5px 10px;
+    font-size: 27px;
+    text-align: center;
+    cursor: pointer;
 }
