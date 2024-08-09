@@ -108,10 +108,6 @@ export default function Page(props) {
     }, [afterCursor, getAfterChat]);
 
     useLayoutEffect(() => {
-<<<<<<< HEAD
-=======
-        console.log(1);
->>>>>>> origin/main
         const observer = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting) {
                 getPreviousChat();
