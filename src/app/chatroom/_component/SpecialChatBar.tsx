@@ -65,7 +65,6 @@ export default function SpecialChatBar({chatroomId}: Props) {
                     const binaryData = evt.target.result;
                     await axios.put(res.data.data, binaryData,{
                         headers: {
-                            'Content-Disposition': 'inline',
                             'Content-Type': ref.current.files[0].type
                         } as AxiosRequestHeaders
                     });

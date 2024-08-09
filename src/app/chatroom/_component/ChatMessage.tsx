@@ -32,18 +32,22 @@ const ChatMessage = React.forwardRef<HTMLDivElement, Props>(({
                         <div className={styles.content}>{typeof content === 'string' ? content : ''}</div>
                         :
                         chatType === 'IMAGE' ?
-                            <Image className={styles.content} src={typeof content === 'object' ? content.path : ''} alt="img" width={300}
-                                   height={300}/>
+                            <a href={typeof content === 'object' ? content.path : ''}>
+                                <Image className={styles.content} src={typeof content === 'object' ? content.path : ''}
+                                       alt="img" width={300} height={300}/>
+                            </a>
                             :
                             chatType === 'FILE' ?
-                                <div className={`${styles.file} ${styles.content}`}>
-                                    <div className={styles.fileIcon}>
-                                        <Image src="/button/file.png" alt="file" width={20} height={20}/>
+                                <a href={typeof content === 'object' ? content.path : ''}>
+                                    <div className={`${styles.file} ${styles.content}`}>
+                                        <div className={styles.fileIcon}>
+                                            <Image src="/button/file.png" alt="file" width={20} height={20}/>
+                                        </div>
+                                        <div>
+                                            {typeof content === 'object' ? content.fileName : ''}
+                                        </div>
                                     </div>
-                                    <div>
-                                        {typeof content === 'object' ? content.fileName : ''}
-                                    </div>
-                                </div>
+                                </a>
                                 :
                                 <div></div>
 
@@ -60,18 +64,23 @@ const ChatMessage = React.forwardRef<HTMLDivElement, Props>(({
                             <div className={styles.content}>{typeof content === 'string' ? content : ''}</div>
                             :
                             chatType === 'IMAGE' ?
-                                <Image className={styles.content} src={typeof content === 'object' ? content.path : ''} alt="img" width={300}
-                                       height={300}/>
+                                <a href={typeof content === 'object' ? content.path : ''}>
+                                    <Image className={styles.content}
+                                           src={typeof content === 'object' ? content.path : ''} alt="img" width={300}
+                                           height={300}/>
+                                </a>
                                 :
                                 chatType === 'FILE' ?
-                                    <div className={`${styles.file} ${styles.content}`}>
-                                        <div className={styles.fileIcon}>
-                                            <Image src="/button/file.png" alt="file" width={20} height={20}/>
+                                    <a href={typeof content === 'object' ? content.path : ''}>
+                                        <div className={`${styles.file} ${styles.content}`}>
+                                            <div className={styles.fileIcon}>
+                                                <Image src="/button/file.png" alt="file" width={20} height={20}/>
+                                            </div>
+                                            <div className={styles.content}>
+                                                {typeof content === 'object' ? content.fileName : ''}
+                                            </div>
                                         </div>
-                                        <div className={styles.content}>
-                                            {typeof content === 'object' ? content.fileName : ''}
-                                        </div>
-                                    </div>
+                                    </a>
                                     :
                                     <div></div>
 

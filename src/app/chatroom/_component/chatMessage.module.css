@@ -58,3 +58,8 @@
 
 .fileIcon {
 }
+
+.component a{
+    text-decoration: none;
+    color: inherit;
+}
