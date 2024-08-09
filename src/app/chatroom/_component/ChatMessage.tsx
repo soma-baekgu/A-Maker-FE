@@ -76,7 +76,7 @@ const ChatMessage = React.forwardRef<HTMLDivElement, Props>(({
                                             <div className={styles.fileIcon}>
                                                 <Image src="/button/file.png" alt="file" width={20} height={20}/>
                                             </div>
-                                            <div className={styles.content}>
+                                            <div>
                                                 {typeof content === 'object' ? content.fileName : ''}
                                             </div>
                                         </div>
