@@ -29,5 +29,22 @@ const setApi = (isAuthenticated: boolean) => {
     return instance;
 };
 
+const setApiCustom=(baseURL)=>{
+    const instance = axios.create({
+        baseURL,
+        timeout: 5000,
+    });
+    instance.interceptors.request.use(
+        setAuth(true),
+        error => Promise.reject(error.response)
+    );
+    instance.interceptors.response.use(
+        response => response,
+        error => Promise.reject(error.response)
+    );
+    return instance;
+}
+
 export const request = setApi(false);
 export const authRequest = setApi(true);
+
