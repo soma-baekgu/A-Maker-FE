@@ -8,7 +8,7 @@ export default function Home(props) {
 
     return (
         <div className={styles.page}>
-            <TopBar pageType='홈'/>
+            <TopBar pageType='홈' workspaceId={workspaceId}/>
             <div className={styles.content}></div>
             <BottomBar workspaceId={workspaceId}/>
         </div>
