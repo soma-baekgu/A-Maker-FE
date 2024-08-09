@@ -6,7 +6,8 @@ import Link from "next/link";
 import {useEffect, useRef, useState} from "react";
 import SendApproveModal from "@/app/chatroom/_component/SendApproveModal";
 import fileApi from "@/app/(api)/file";
-import axios from "axios";
+import axios, {AxiosRequestHeaders} from "axios";
+import chatApi from "@/app/(api)/chat";
 
 type Props = {
     chatroomId: number
@@ -21,15 +22,14 @@ export default function SpecialChatBar({chatroomId}: Props) {
     const [imageName, setImageName] = useState('');
 
     useEffect(() => {
-        if(!fileInputVisible)
+        if (!fileInputVisible)
             fileInputRef.current.value = '';
     }, [fileInputVisible]);
 
     useEffect(() => {
-        if(!imageInputVisible)
+        if (!imageInputVisible)
             imageInputRef.current.value = '';
     }, [imageInputVisible]);
-
 
 
     const handleFileInput = () => {
@@ -50,27 +50,45 @@ export default function SpecialChatBar({chatroomId}: Props) {
         setImageInputVisible(true);
     }
 
-    const sendFile=async ()=>{
-        const fileNameArray = fileName.split('.');
+
+    const getUrl = async (targetName, ref) =>{
+        const fileNameArray = targetName.split('.');
         const extension = fileNameArray.pop();
         const name = fileNameArray.join('.');
-        const res = await fileApi.getUrl(new Date().toString(), extension, name);
-        const url = new URL(res.data.data);
-        const urlWithoutQueryParams = url.origin + url.pathname;
-        const formData = new FormData();
-        formData.append('file', fileInputRef.current.files[0]);
-        const uploadResponse = await axios.put(urlWithoutQueryParams, formData);
-        console.log('URL입니다 : '+urlWithoutQueryParams);
+
+        const res = await fileApi.getUrl(new Date().getTime().toString(), extension, name);
+
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload= async (evt)=>{
+                try{
+                    const binaryData = evt.target.result;
+                    await axios.put(res.data.data, binaryData,{
+                        headers: {
+                            'Content-Disposition': 'inline',
+                            'Content-Type': ref.current.files[0].type
+                        } as AxiosRequestHeaders
+                    });
+                    const url = new URL(res.data.data);
+                    resolve(url.origin + url.pathname);
+                }catch(error){
+                    reject(error);
+                }
+            }
+            reader.onerror = (evt)=>reject(new Error("File reading failed"));
+            reader.readAsArrayBuffer(ref.current.files[0]);
+        });
     }
 
-    const sendImage =async ()=>{
-        const fileNameArray = fileName.split('.');
-        const extension = fileNameArray.pop();
-        const name = fileNameArray.join('.');
-        const res = await fileApi.getUrl(new Date().toString(), extension, name);
-        const url = new URL(res.data.data);
-        const urlWithoutQueryParams = url.origin + url.pathname;
-        console.log('URL입니다 : '+urlWithoutQueryParams);
+    const sendFile = async () => {
+        const fileUrl = await getUrl(fileName, fileInputRef);
+        await chatApi.sendFile(chatroomId, fileUrl);
+    }
+
+    const sendImage = async () => {
+        const imageUrl = await getUrl(imageName, imageInputRef);
+        console.log(imageUrl);
+        await chatApi.sendImg(chatroomId, imageUrl);
     }
 
     return (
@@ -86,14 +104,18 @@ export default function SpecialChatBar({chatroomId}: Props) {
             </div>
             <div className={styles.button}>
                 <Image src="/button/special/image.png" alt="image" width={55} height={54} onClick={handleImageInput}/>
-                <input type="file" ref={imageInputRef} accept="image/*" className={styles.none} onChange={handleChangeImage}/>
+                <input type="file" ref={imageInputRef} accept="image/*" className={styles.none}
+                       onChange={handleChangeImage}/>
             </div>
             <div className={styles.button}>
                 <Image src="/button/special/file.png" alt="file" width={45} height={52} onClick={handleFileInput}/>
                 <input type="file" ref={fileInputRef} className={styles.none} onChange={handleChangeFile}/>
             </div>
-            {fileInputVisible && <SendApproveModal title="파일 전송" fileName={fileName} setVisible={setFileInputVisible} send={sendFile}/>}
-            {imageInputVisible && <SendApproveModal title="이미지 전송" fileName={imageName} setVisible={setImageInputVisible} send={sendImage}/>}
+            {fileInputVisible &&
+                <SendApproveModal title="파일 전송" fileName={fileName} setVisible={setFileInputVisible} send={sendFile}/>}
+            {imageInputVisible &&
+                <SendApproveModal title="이미지 전송" fileName={imageName} setVisible={setImageInputVisible}
+                                  send={sendImage}/>}
         </div>
     )
 }
