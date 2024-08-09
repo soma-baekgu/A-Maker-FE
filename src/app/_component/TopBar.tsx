@@ -2,7 +2,7 @@
 
 import styles from './topBar.module.css';
 import Link from "next/link";
-import {usePathname} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import Image from "next/image";
 import {useState} from "react";
 import WorkspaceModal from "@/app/_component/WorkspaceModal";
@@ -11,10 +11,12 @@ type Props = {
     pageType: string
     onCreateChat?: () => void
     onSearchChat?: () => void
+    workspaceId: number
 }
 
-export default function TopBar({pageType, onCreateChat, onSearchChat}: Props) {
+export default function TopBar({pageType, onCreateChat, onSearchChat, workspaceId}: Props) {
     const [modalVisible, setModalVisible] = useState(false);
+    const router = useRouter();
 
     const handleClick = () => {
         setModalVisible(true);
@@ -22,6 +24,10 @@ export default function TopBar({pageType, onCreateChat, onSearchChat}: Props) {
 
     const onClose = () => {
         setModalVisible(false);
+    }
+
+    const handleBack = () => {
+        router.back();
     }
 
     return (
@@ -34,9 +40,13 @@ export default function TopBar({pageType, onCreateChat, onSearchChat}: Props) {
             {onSearchChat &&
                 <Image className={styles.button} src="/button/searchChat.png" alt="searchChat" width={60} height={60}
                        onClick={onSearchChat}/>}
-            <Link href="/setting">
-                <Image className={styles.button} src="/button/setting.png" alt="setting" width={60} height={60}/>
-            </Link>
+            {pageType == '워크스페이스 설정' ?
+                <Image className={styles.button} src="/button/workspaceClose.png" alt="close" width={50} height={50} onClick={handleBack}/>
+                :
+                <Link href={`/setting/${workspaceId}`}>
+                    <Image className={styles.button} src="/button/setting.png" alt="setting" width={60} height={60}/>
+                </Link>
+            }
             {modalVisible && <WorkspaceModal onClose={onClose} visible={modalVisible}/>}
         </div>
     )

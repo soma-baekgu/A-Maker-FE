@@ -17,8 +17,12 @@ const ChatMessage = React.forwardRef<HTMLDivElement, Props>(({
                                                                  speakerName,
                                                                  content,
                                                                  time,
+<<<<<<< HEAD
                                                                  isMine,
                                                                  chatType
+=======
+                                                                 isMine
+>>>>>>> origin/main
                                                              }, ref) => {
     const options: Intl.DateTimeFormatOptions = {hour: 'numeric', minute: 'numeric', hour12: true};
     const timeString = time.toLocaleTimeString('ko-KR', options);
