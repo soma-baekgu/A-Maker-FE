@@ -11,17 +11,21 @@ import {useState} from "react";
 export default function Page() {
     const title = "응답요청 이벤트 생성";
     const [eventTitle, setEventTitle] = useState('');
-    const [eventDetail, setEventDetail] = useState('');
-
+    const [eventDetails, setEventDetails] = useState('');
+    const [assignees, setAssignees] = useState<string[]>([]);
+    const [deadline, setDeadline] = useState(new Date());
+    const [notificationStartHour, setNotificationStartHour] = useState(1);
+    const [notificationStartMinute, setNotificationStartMinute] = useState(30);
+    const [interval, setInterval] = useState(15);
 
     return (
         <div className={styles.page}>
             <TopBar2 title={title}/>
             <div className={styles.section}>
-                <ReplyEventInput detail={eventDetail} setDetail={setEventDetail} setTitle={setEventTitle}
+                <ReplyEventInput detail={eventDetails} setDetail={setEventDetails} setTitle={setEventTitle}
                                  title={eventTitle}/>
-                <RecipientSelector/>
-                <DueDateInput/>
+                <RecipientSelector assignees={assignees} setAssignees={setAssignees}/>
+                <DueDateInput deadline={deadline} setDeadline={setDeadline}/>
             </div>
             <div className={styles.section}>
                 <AlarmTimeInput/>

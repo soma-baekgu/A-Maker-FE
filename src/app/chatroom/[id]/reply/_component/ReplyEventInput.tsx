@@ -11,9 +11,9 @@ type Props = {
 
 export default function ReplyEventInput({title, setTitle, detail, setDetail}: Props) {
 
-    const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => setTitle(event.target.value);
+    const handleTitleChange = (event) => setTitle(event.target.value);
 
-    const handleDetailChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => setDetail(event.target.value);
+    const handleDetailChange = (event) => setDetail(event.target.value);
 
     return (
         <div className={styles.component}>
