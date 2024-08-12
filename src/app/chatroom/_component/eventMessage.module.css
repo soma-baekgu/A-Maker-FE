@@ -1,0 +1,39 @@
+.component{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notice{
+    font-size: 17px;
+}
+
+.content{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap:23px;
+    border: 1px solid black;
+    padding: 13px 17px;
+    width:350px;
+}
+
+.description{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.right{
+    font-size: 17px;
+    width: 100%;
+    text-align: right;
+}
+
+.left{
+    font-size: 17px;
+    font-weight: bold;
+    width: 100%;
+    text-align: left;
+}

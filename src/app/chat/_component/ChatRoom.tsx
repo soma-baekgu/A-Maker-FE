@@ -1,6 +1,6 @@
 import styles from './chatRoom.module.css';
 import ProfileImageGroup from "@/app/_component/ProfileImageGroup";
-import {FileContent} from "@/app/chatroom/types";
+import {ChatContent, FileContent} from "@/app/chatroom/types";
 import Image from "next/image";
 import React from "react";
 
@@ -9,9 +9,9 @@ type Props = {
     chatroomName: string,
     time?: Date,
     speaker?: string
-    message?: string | FileContent,
+    message?: ChatContent,
     messageCount: number,
-    chatType: string
+    chatType?: string
 }
 
 export default function ChatRoom({imageUrls, chatroomName, time, speaker, message, messageCount, chatType}: Props) {
@@ -20,7 +20,7 @@ export default function ChatRoom({imageUrls, chatroomName, time, speaker, messag
 
     return (
         <div className={styles.component}>
-            <ProfileImageGroup imageUrls={imageUrls}/>
+            <ProfileImageGroup imageUrls={imageUrls} size={'large'}/>
             <div className={styles.description}>
                 <div className={styles.title}>
                     <div className={styles.chatroomName}>{chatroomName}</div>

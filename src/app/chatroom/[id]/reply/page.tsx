@@ -43,9 +43,9 @@ export default function Page(props) {
             interval
         ).then(() => {
             console.log('리플라이 이벤트 생성완료')
+            router.back();//todo: 이전페이지로 해야될지 replace로 해야될지 모르겠네..
         });
 
-        //router.back();//todo: 이전페이지로 해야될지 replace로 해야될지 모르겠네..
     }
 
     return (

@@ -8,7 +8,7 @@ import {useRouter} from "next/navigation";
 import {useCallback, useEffect, useLayoutEffect, useRef, useState} from "react";
 import chatApi from "@/app/(api)/chat";
 import {useStore} from "@/app/store";
-import {FileContent} from "@/app/chatroom/types";
+import {ChatContent, FileContent} from "@/app/chatroom/types";
 
 type User = {
     name: string,
@@ -20,7 +20,7 @@ type Message = {
     id: number,
     user: User,
     chatRoomId: number,
-    content: string | FileContent,
+    content: ChatContent,
     chatType: string,
     createdAt: string,
     updatedAt: string,

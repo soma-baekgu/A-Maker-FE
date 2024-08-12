@@ -1,13 +1,13 @@
 import styles from './chatMessage.module.css';
 import React from "react";
-import {FileContent} from "@/app/chatroom/types";
+import {ChatContent, FileContent} from "@/app/chatroom/types";
 import Image from "next/image";
 import ContentByChatType from "@/app/chatroom/_component/ContentByChatType";
 
 type Props = {
     speakerImageUrl: string,
     speakerName: string,
-    content: string | FileContent,
+    content: ChatContent,
     time: Date,
     isMine: boolean,
     chatType: string,
