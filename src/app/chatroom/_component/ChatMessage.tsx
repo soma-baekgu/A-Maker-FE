@@ -2,6 +2,7 @@ import styles from './chatMessage.module.css';
 import React from "react";
 import {FileContent} from "@/app/chatroom/types";
 import Image from "next/image";
+import ContentByChatType from "@/app/chatroom/_component/ContentByChatType";
 
 type Props = {
     speakerImageUrl: string,
@@ -27,31 +28,8 @@ const ChatMessage = React.forwardRef<HTMLDivElement, Props>(({
         isMine ? (
             <div ref={ref} className={`${styles.component} ${styles.right}`}>
                 <div className={styles.message}>
+                    <ContentByChatType chatType={chatType} content={content}/>
                     <div className={styles.time}>{timeString}</div>
-                    {chatType === 'GENERAL' ?
-                        <div className={styles.content}>{typeof content === 'string' ? content : ''}</div>
-                        :
-                        chatType === 'IMAGE' ?
-                            <a href={typeof content === 'object' ? content.path : ''}>
-                                <Image className={styles.content} src={typeof content === 'object' ? content.path : ''}
-                                       alt="img" width={300} height={300}/>
-                            </a>
-                            :
-                            chatType === 'FILE' ?
-                                <a href={typeof content === 'object' ? content.path : ''}>
-                                    <div className={`${styles.file} ${styles.content}`}>
-                                        <div className={styles.fileIcon}>
-                                            <Image src="/button/file.png" alt="file" width={20} height={20}/>
-                                        </div>
-                                        <div>
-                                            {typeof content === 'object' ? content.fileName : ''}
-                                        </div>
-                                    </div>
-                                </a>
-                                :
-                                <div></div>
-
-                    }
                 </div>
             </div>
         ) : (
@@ -60,31 +38,7 @@ const ChatMessage = React.forwardRef<HTMLDivElement, Props>(({
                 <div className={styles.description}>
                     <div className={styles.speakerName}>{speakerName}</div>
                     <div className={styles.message}>
-                        {chatType === 'GENERAL' ?
-                            <div className={styles.content}>{typeof content === 'string' ? content : ''}</div>
-                            :
-                            chatType === 'IMAGE' ?
-                                <a href={typeof content === 'object' ? content.path : ''}>
-                                    <Image className={styles.content}
-                                           src={typeof content === 'object' ? content.path : ''} alt="img" width={300}
-                                           height={300}/>
-                                </a>
-                                :
-                                chatType === 'FILE' ?
-                                    <a href={typeof content === 'object' ? content.path : ''}>
-                                        <div className={`${styles.file} ${styles.content}`}>
-                                            <div className={styles.fileIcon}>
-                                                <Image src="/button/file.png" alt="file" width={20} height={20}/>
-                                            </div>
-                                            <div>
-                                                {typeof content === 'object' ? content.fileName : ''}
-                                            </div>
-                                        </div>
-                                    </a>
-                                    :
-                                    <div></div>
-
-                        }
+                        <ContentByChatType chatType={chatType} content={content}/>
                         <div className={styles.time}>{timeString}</div>
                     </div>
                 </div>
