@@ -17,9 +17,17 @@ export default function DueDateInput({deadline, setDeadline}: Props) {
     const minuteNumbers = Array.from({length: 12}, (_, i) => String(i * 5).padStart(2, '0'));
     const hourNumbers = Array.from({length: 12}, (_, i) => String(i + 1).padStart(1, '0'));
     const dayPeriods = ['오전', '오후'];
-    const [dayPeriod, setDayPeriod] = useState('오전');
-    const [hour, setHour] = useState('00');
-    const [minute, setMinute] = useState('00');
+    // deadline의 시간 값을 가져옵니다.
+    const deadlineHour = dayjs(deadline).hour();
+    const deadlineMinute = dayjs(deadline).minute();
+    const roundedMinute = Math.round(deadlineMinute / 5) * 5;
+    const adjustedMinute = Math.min(roundedMinute, 55);
+
+    // dayPeriod, hour, minute의 초기 값을 설정합니다.
+    const [dayPeriod, setDayPeriod] = useState(deadlineHour >= 12 ? '오후' : '오전');
+    const [hour, setHour] = useState(String(deadlineHour > 12 ? deadlineHour - 12 : deadlineHour));
+    const [minute, setMinute] = useState(String(adjustedMinute).padStart(2, '0'));
+
 
     const setNewDeadline = () => {
         // 현재 deadline의 년, 월, 일을 가져옵니다.
@@ -60,9 +68,9 @@ export default function DueDateInput({deadline, setDeadline}: Props) {
                 </LocalizationProvider>
             </div>
             <div className={styles.timeInput}>
-                <NumberPicker values={dayPeriods} setValue={setDayPeriod}/>
-                <NumberPicker values={hourNumbers} setValue={setHour}/>
-                <NumberPicker values={minuteNumbers} setValue={setMinute}/>
+                <NumberPicker values={dayPeriods} setValue={setDayPeriod} initialValue={dayPeriod}/>
+                <NumberPicker values={hourNumbers} setValue={setHour} initialValue={hour}/>
+                <NumberPicker values={minuteNumbers} setValue={setMinute} initialValue={minute}/>
             </div>
         </div>)
 };

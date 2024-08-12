@@ -7,8 +7,11 @@ import DueDateInput from "@/app/chatroom/_component/DueDateInput";
 import AlarmTimeInput from "@/app/chatroom/_component/AlarmTimeInput";
 import TopBar2 from "@/app/_component/TopBar2";
 import {useState} from "react";
+import eventApi from "@/app/(api)/event";
+import {useRouter} from "next/navigation";
 
-export default function Page() {
+export default function Page(props) {
+    const chatRoomId = props.params.id
     const title = "응답요청 이벤트 생성";
     const [eventTitle, setEventTitle] = useState('');
     const [eventDetails, setEventDetails] = useState('');
@@ -17,6 +20,33 @@ export default function Page() {
     const [notificationStartHour, setNotificationStartHour] = useState(1);
     const [notificationStartMinute, setNotificationStartMinute] = useState(30);
     const [interval, setInterval] = useState(15);
+    const router = useRouter();
+    const createEvent = () => {
+        console.log(
+            chatRoomId,
+            eventTitle,
+            eventDetails,
+            assignees,
+            deadline,
+            notificationStartHour,
+            notificationStartMinute,
+            interval
+        )
+        eventApi.createReplyEvent(
+            chatRoomId,
+            eventTitle,
+            eventDetails,
+            assignees,
+            deadline,
+            notificationStartHour,
+            notificationStartMinute,
+            interval
+        ).then(() => {
+            console.log('리플라이 이벤트 생성완료')
+        });
+
+        //router.back();//todo: 이전페이지로 해야될지 replace로 해야될지 모르겠네..
+    }
 
     return (
         <div className={styles.page}>
@@ -28,9 +58,10 @@ export default function Page() {
                 <DueDateInput deadline={deadline} setDeadline={setDeadline}/>
             </div>
             <div className={styles.section}>
-                <AlarmTimeInput/>
+                <AlarmTimeInput setIntervalValue={setInterval} setNotificationHourValue={setNotificationStartHour}
+                                setNotificationMinuteValue={setNotificationStartMinute}/>
             </div>
-            <div className={styles.button}>
+            <div className={styles.button} onClick={createEvent}>
                 생성
             </div>
         </div>

@@ -9,8 +9,8 @@ type Props = {
 export default function RecipientSelector({assignees, setAssignees}: Props) {
 
     const recipients = [
-        {name: '노영진', image: 'image1.png', email: 'aaa@naver.com'},
-        {name: '홍길동', image: 'image2.png', email: 'bbb@naver.com'},
+        {name: '노영진', image: 'image1.png', email: 'shane9747@gmail.com'},
+        {name: '이승환', image: 'image2.png', email: 'dltmd202@gmail.com'},
     ];
 
     const [checkedState, setCheckedState] = useState(

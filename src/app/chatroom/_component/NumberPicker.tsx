@@ -6,14 +6,17 @@ import styles from './numberPicker.module.css';
 type Props = {
     values: string[],
     setValue: (value: string) => void
+    initialValue: string
 }
 
-export default function NumberPicker({values, setValue}: Props) {
+export default function NumberPicker({values, setValue,initialValue}: Props) {
     const numberWrapperRef = useRef<HTMLDivElement | null>(null);
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const initialIndex = values.indexOf(initialValue);
+    const [currentIndex, setCurrentIndex] = useState(initialIndex !== -1 ? initialIndex : 0);
     const [isDragging, setIsDragging] = useState(false);
     const [startY, setStartY] = useState(0);
     const [currentY, setCurrentY] = useState(0);
+
 
 
     useEffect(() => {
