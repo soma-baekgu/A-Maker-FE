@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import styles from './page.module.css';
-import TopBar2 from "@/app/_component/TopBar2";
 import Image from "next/image";
-import Profile from "@/app/event/_component/Profile";
-import ReplyInput from "@/app/event/_component/ReplyInput";
+import styles from './page.module.css'
+import TopBar2 from "@/app/_component/TopBar2";
+import Profile from "@/app/chatroom/[id]/event/_component/Profile";
+import ReplyInput from "@/app/chatroom/[id]/event/_component/ReplyInput";
 
 export default function Page() {
     const options: Intl.DateTimeFormatOptions = {
