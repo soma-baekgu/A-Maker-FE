@@ -9,11 +9,19 @@ import authApi from "@/app/(api)/auth";
 import {useStore} from "@/app/store";
 import workspaceApi from "@/app/(api)/workspace";
 
+interface AccessTokenStore {
+    setAccessToken: (token: string) => void;
+}
+
+interface EmailStore {
+    setEmail: (email: string) => void;
+}
+
 export default function Page() {
     const router = useRouter();
     const [authCode, setAuthCode] = useState<string | null>(null);
-    const {setAccessToken} = useStore();
-    const {setEmail} = useStore();
+    const {setAccessToken} = useStore() as AccessTokenStore;
+    const {setEmail} = useStore() as EmailStore;
 
     useEffect(() => {
         const queryParam = new URLSearchParams(window.location.search).get('code');
@@ -23,10 +31,12 @@ export default function Page() {
 
     useEffect(() => {
         const login = async () => {
-            const res = await authApi.login(authCode);
-            setAccessToken(res.data.data.token);
-            setEmail(res.data.data.email);
-            return res;
+            if (authCode !== null) {
+                const res = await authApi.login(authCode);
+                setAccessToken(res.data.data.token);
+                setEmail(res.data.data.email);
+                return res;
+            }
         }
         if (authCode) {
             login()

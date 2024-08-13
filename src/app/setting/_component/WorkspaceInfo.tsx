@@ -24,11 +24,11 @@ export default function WorkspaceInfo() {
 
     const [openDropdown, setOpenDropdown] = useState<number | null>(null);
 
-    const handleDropdownClick = (id) => {
+    const handleDropdownClick = (id:number) => {
         setOpenDropdown(openDropdown === id ? null : id);
     }
 
-    const handleRoleChange = (id, role) => {
+    const handleRoleChange = (id:number, role:string) => {
         setJoinedUsers(joinedUsers.map(user => user.id === id ? {...user, role} : user));
         setOpenDropdown(null);
     }

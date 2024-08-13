@@ -45,9 +45,16 @@ const options: Intl.DateTimeFormatOptions = {
     minute: '2-digit'
 };
 
-export default function Page(props) {
-    const chatRoomId = props.params.id;
-    const eventId = props.params.eventId;
+type Props = {
+    params: {
+        id: string,
+        eventId: string
+    }
+}
+
+export default function Page(props: Props) {
+    const chatRoomId: number = Number(props.params.id);
+    const eventId: number = Number(props.params.eventId);
     const [event, setEvent] = useState<EventData>();
     const [isLoaded, setIsLoaded] = useState(false);
     const [comments, setComments] = useState<Comment[]>([]);

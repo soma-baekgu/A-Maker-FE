@@ -5,8 +5,12 @@ import {useRouter} from "next/navigation";
 import {useEffect} from "react";
 import workspaceApi from "@/app/(api)/workspace";
 
+type StoreState={
+    accessToken: string;
+}
+
 export default function Page() {
-    const {accessToken} = useStore();
+    const {accessToken} = useStore() as StoreState;
     const router = useRouter();
 
     useEffect(() => {

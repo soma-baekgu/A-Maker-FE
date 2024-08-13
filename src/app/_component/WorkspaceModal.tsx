@@ -15,7 +15,7 @@ type Workspace = {
 
 type Props = {
     onClose: () => void,
-    visible
+    visible: boolean
 }
 
 export default function WorkspaceModal({onClose, visible}: Props) {

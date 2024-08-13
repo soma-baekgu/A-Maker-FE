@@ -4,8 +4,14 @@ import MemberInvitor from "@/app/setting/_component/MemberInviter";
 import WorkspaceDeleter from "@/app/setting/_component/WorkspaceDeleter";
 import TopBar from "@/app/_component/TopBar";
 
-export default function Page(props) {
-    const workspaceId = props.params.workspaceId;
+type Props = {
+    params: {
+        workspaceId: string
+    }
+}
+
+export default function Page(props: Props) {
+    const workspaceId: number = Number(props.params.workspaceId);
 
     return (
         <div className={styles.page}>

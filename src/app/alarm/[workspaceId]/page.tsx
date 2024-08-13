@@ -2,7 +2,13 @@ import styles from './page.module.css';
 import TopBar from "@/app/_component/TopBar";
 import BottomBar from "@/app/_component/BottomBar";
 
-export default function Alarm(props) {
+type Props = {
+    params: {
+        workspaceId: number
+    }
+}
+
+export default function Alarm(props: Props) {
     const workspaceId = props.params.workspaceId;
 
     return (

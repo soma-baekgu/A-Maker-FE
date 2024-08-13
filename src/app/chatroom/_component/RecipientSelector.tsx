@@ -1,5 +1,5 @@
 import styles from './recipientSelector.module.css';
-import {useState} from "react";
+import {ChangeEvent, useState} from "react";
 
 type Props = {
     assignees: string[],
@@ -13,14 +13,14 @@ export default function RecipientSelector({assignees, setAssignees}: Props) {
         {name: '백구', image: 'image2.png', email: 'soma.backgu@gmail.com'},
     ];
 
-    const [checkedState, setCheckedState] = useState(
+    const [checkedState, setCheckedState] = useState<Record<string, boolean>>(
         recipients.reduce((state, recipient) => ({
             ...state,
             [recipient.email]: false
         }), {})
     );
 
-    const handleCheckboxChange = (email: string) => (event) => {
+    const handleCheckboxChange = (email: string) => (event: ChangeEvent<HTMLInputElement>) => {
         const newCheckedState = {...checkedState, [email]: event.target.checked};
         setCheckedState(newCheckedState);
         const newAssignees = recipients.filter(recipient => newCheckedState[recipient.email]).map(recipient => recipient.email);

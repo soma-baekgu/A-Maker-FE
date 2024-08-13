@@ -1,6 +1,6 @@
 import styles from './createWorkspaceModal.module.css';
 import Image from "next/image";
-import {useState} from "react";
+import React, {useState} from "react";
 
 type Props = {
     setVisible: (visible: boolean) => void,
@@ -10,7 +10,7 @@ type Props = {
 export default function CreateWorkspaceModal({setVisible, createWorkspace}: Props) {
     const [inputValue, setInputValue] = useState("");
 
-    const handleClose = (e) => {
+    const handleClose = (e:React.MouseEvent) => {
         e.stopPropagation();
         setVisible(false);
     }

@@ -1,6 +1,7 @@
 "use client";
 
 import styles from './replyEventInput.module.css';
+import {ChangeEvent} from "react";
 
 type Props = {
     title: string,
@@ -11,9 +12,9 @@ type Props = {
 
 export default function ReplyEventInput({title, setTitle, detail, setDetail}: Props) {
 
-    const handleTitleChange = (event) => setTitle(event.target.value);
+    const handleTitleChange = (event:ChangeEvent<HTMLInputElement>) => setTitle(event.target.value);
 
-    const handleDetailChange = (event) => setDetail(event.target.value);
+    const handleDetailChange = (event:ChangeEvent<HTMLTextAreaElement>) => setDetail(event.target.value);
 
     return (
         <div className={styles.component}>
