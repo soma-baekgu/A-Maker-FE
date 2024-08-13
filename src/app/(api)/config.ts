@@ -4,13 +4,21 @@ import axios, {InternalAxiosRequestConfig} from "axios";
 const setAuth = (isAuthenticated: boolean) =>
     (config:InternalAxiosRequestConfig) => {
         if (isAuthenticated) {
-            const storage = localStorage.getItem(process.env.NEXT_PUBLIC_LOCAL_STORAGE);
-            if (!storage)
+            if(!process.env.NEXT_PUBLIC_LOCAL_STORAGE) {
                 window.location.href = '/login';
+                return config;
+            }
+            const storage = localStorage.getItem(process.env.NEXT_PUBLIC_LOCAL_STORAGE);
+            if (!storage){
+                window.location.href = '/login';
+                return config;
+            }
             const store = JSON.parse(localStorage.getItem(process.env.NEXT_PUBLIC_LOCAL_STORAGE));
             const accessToken = store ? store.state.accessToken : null;
-            if(!accessToken)
+            if(!accessToken) {
                 window.location.href = '/login';
+                return config;
+            }
             config.headers['Authorization'] = `Bearer ${accessToken}`;
         }
         return config;
