@@ -4,6 +4,9 @@ import axios, {InternalAxiosRequestConfig} from "axios";
 const setAuth = (isAuthenticated: boolean) =>
     (config:InternalAxiosRequestConfig) => {
         if (isAuthenticated) {
+            const storage = localStorage.getItem(process.env.NEXT_PUBLIC_LOCAL_STORAGE);
+            if (!storage)
+                window.location.href = '/login';
             const store = JSON.parse(localStorage.getItem(process.env.NEXT_PUBLIC_LOCAL_STORAGE));
             const accessToken = store ? store.state.accessToken : null;
             if(!accessToken)
