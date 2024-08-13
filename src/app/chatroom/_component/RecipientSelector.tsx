@@ -10,7 +10,7 @@ export default function RecipientSelector({assignees, setAssignees}: Props) {
 
     const recipients = [
         {name: '노영진', image: 'image1.png', email: 'shane9747@gmail.com'},
-        {name: '이승환', image: 'image2.png', email: 'dltmd202@gmail.com'},
+        {name: '백구', image: 'image2.png', email: 'soma.backgu@gmail.com'},
     ];
 
     const [checkedState, setCheckedState] = useState(

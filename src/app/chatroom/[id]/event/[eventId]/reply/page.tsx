@@ -7,18 +7,22 @@ import Profile from "@/app/chatroom/[id]/event/_component/Profile";
 import ReplyInput from "@/app/chatroom/[id]/event/_component/ReplyInput";
 import {useEffect, useState} from "react";
 import eventApi from "@/app/(api)/event";
-
-type Comment = {
-    img: string,
-    name: string,
-    time: Date,//todo: string으로 수정
-    content: string
-}
+import eventCommentApi from "@/app/(api)/eventComment";
 
 type User = {
     name: string,
     email: string,
     picture: string
+}
+
+type Comment = {
+    id: number,
+    userId: string,
+    eventId: number,
+    content: string,
+    createdAt: string,
+    updatedAt: string,
+    userResponse: User
 }
 
 type EventData = {
@@ -46,31 +50,26 @@ export default function Page(props) {
     const eventId = props.params.eventId;
     const [event, setEvent] = useState<EventData>();
     const [isLoaded, setIsLoaded] = useState(false);
+    const [comments, setComments] = useState<Comment[]>([]);
+
+    const fetchComments = async () => {
+        //todo 페이징 적용
+        const res = await eventCommentApi.readReplyComment(eventId, 0, 100);
+        setComments(res.data.data.content);
+    }
+
+    const fetchEventData = async () => {
+        const res = await eventApi.readReplyEvent(chatRoomId, eventId);
+        setEvent(res.data.data);
+    }
 
     useEffect(() => {
-        const fetchData = async () => {
-            const res = await eventApi.readReplyEvent(chatRoomId, eventId);
-            setEvent(res.data.data);
-        }
-        fetchData().then(() => {
+        fetchEventData().then(() => {
             setIsLoaded(true);
         });
-    }, []);
 
-    const comments: Comment[] = [
-        {
-            img: "http://example.com/image1.png",
-            name: "User1",
-            time: new Date("2022-01-01T10:20:30Z"),
-            content: "This is a comment from User1."
-        },
-        {
-            img: "http://example.com/image2.png",
-            name: "User2",
-            time: new Date("2022-01-02T11:30:45Z"),
-            content: "This is a comment from User2."
-        }
-    ];
+        fetchComments();
+    }, []);
 
     const timeAgo = (date: Date) => {
         const now = new Date();
@@ -80,11 +79,18 @@ export default function Page(props) {
         return `${diffInMinutes}분 전`;
     }
 
+    const onSend = async (msg: string) => {
+        if (msg.length === 0)
+            return;
+        await eventCommentApi.createReplyComment(eventId, msg);
+        fetchComments();
+    }
+
     return (
         <div className={styles.page}>
             <TopBar2 title="이벤트 상세"/>
             {isLoaded && event ? (
-                <>
+                <div className={styles.main}>
                     <div className={styles.title}>
                         <Image src="/icon/reply.png" alt="reply" width={32} height={32}/>
                         <div className={styles.titleText}>{event.eventTitle}</div>
@@ -129,21 +135,19 @@ export default function Page(props) {
                             comments.map((comment, index) => (
                                 <div key={index} className={`${styles.section} ${styles.comment}`}>
                                     <div className={styles.commentTitle}>
-                                        <Profile name={comment.name} img={comment.img}/>
-                                        <div className={styles.time}>{timeAgo(comment.time)}</div>
+                                        <Profile name={comment.userResponse.name} img={comment.userResponse.picture}/>
+                                        <div className={styles.time}>{timeAgo(new Date(comment.createdAt))}</div>
                                     </div>
                                     <div className={styles.content}>{comment.content}</div>
                                 </div>
                             ))
                         }
                     </div>
-                </>
+                </div>
             ) : (
-                <div>Loading...</div>
+                <div className={styles.main}>Loading...</div>
             )}
-            <ReplyInput onSend={(msg: string) => {
-                console.log(msg);
-            }}/>
+            <ReplyInput onSend={onSend}/>
         </div>
     )
         ;

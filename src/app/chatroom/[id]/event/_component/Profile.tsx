@@ -1,4 +1,5 @@
 import styles from './profile.module.css';
+import Image from "next/image";
 
 type Props = {
     name: string,
@@ -8,7 +9,8 @@ type Props = {
 export default function Profile({name, img}: Props) {
     return (
         <div className={styles.component}>
-            <div className={styles.profileImg}></div>
+
+            <Image className={styles.profileImg} width={45} height={45} src={img}></Image>
             <div className={styles.profileName}>{name}</div>
         </div>
     );
