@@ -1,6 +1,6 @@
 import styles from './chatRoom.module.css';
 import ProfileImageGroup from "@/app/_component/ProfileImageGroup";
-import {ChatContent, FileContent} from "@/app/chatroom/types";
+import {ChatContent, FileContent, isFileContent, isReplyEventContent, isString} from "@/app/chatroom/types";
 import Image from "next/image";
 import React from "react";
 
@@ -27,17 +27,20 @@ export default function ChatRoom({imageUrls, chatroomName, time, speaker, messag
                     {time && <div className={styles.time}>{timeString}</div>}
                 </div>
                 {message && (
-                    chatType === 'GENERAL' ?
-                        <div className={styles.message}>{typeof message === 'string' ? message : ''}</div>
+                    chatType === 'GENERAL' && isString(message) ?
+                        <div className={styles.message}>{message}</div>
                         :
-                        chatType === 'IMAGE' ?
-                            <div className={styles.message}>{typeof message === 'object' ? message.fileName : ''}</div>
+                        chatType === 'IMAGE' && isFileContent(message) ?
+                            <div className={styles.message}>{`사진 : ${message.fileName}`}</div>
                             :
-                            chatType === 'FILE' ?
+                            chatType === 'FILE' && isFileContent(message) ?
                                 <div
-                                    className={styles.message}>{typeof message === 'object' ? message.fileName : ''}</div>
+                                    className={styles.message}>{`파일 : ${message.fileName}`}</div>
                                 :
-                                <div></div>
+                                chatType === 'REPLY' && isString(message) ?
+                                    <div className={styles.message}>{`이벤트 : ${message}`}</div>
+                                    :
+                                    <div>잘못된 메세지</div>
                 )}
                 {messageCount > 0 &&
                     <div className={styles.messageCount}>

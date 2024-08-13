@@ -36,7 +36,13 @@ type JoinChatRoom = {
     unreadChatCount: number,
 }
 
-export default function Chat(props) {
+type Props = {
+    params: {
+        workspaceId: number
+    }
+}
+
+export default function Chat(props:Props) {
     const [createModalVisible, setCreateModalVisible] = useState(false);
     const [searchModalVisible, setSearchModalVisible] = useState(false);
     const [joinChatRooms, setJoinChatRooms] = useState<JoinChatRoom[]>([]);

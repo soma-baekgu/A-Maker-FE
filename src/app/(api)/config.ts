@@ -2,20 +2,20 @@ import axios, {InternalAxiosRequestConfig} from "axios";
 
 
 const setAuth = (isAuthenticated: boolean) =>
-    (config:InternalAxiosRequestConfig) => {
+    (config: InternalAxiosRequestConfig) => {
         if (isAuthenticated) {
-            if(!process.env.NEXT_PUBLIC_LOCAL_STORAGE) {
+            if (!process.env.NEXT_PUBLIC_LOCAL_STORAGE) {
                 window.location.href = '/login';
                 return config;
             }
             const storage = localStorage.getItem(process.env.NEXT_PUBLIC_LOCAL_STORAGE);
-            if (!storage){
+            if (!storage) {
                 window.location.href = '/login';
                 return config;
             }
-            const store = JSON.parse(localStorage.getItem(process.env.NEXT_PUBLIC_LOCAL_STORAGE));
+            const store = JSON.parse(storage);
             const accessToken = store ? store.state.accessToken : null;
-            if(!accessToken) {
+            if (!accessToken) {
                 window.location.href = '/login';
                 return config;
             }
@@ -40,7 +40,7 @@ const setApi = (isAuthenticated: boolean) => {
     return instance;
 };
 
-const setApiCustom=(baseURL:string)=>{
+const setApiCustom = (baseURL: string) => {
     const instance = axios.create({
         baseURL,
         timeout: 5000,
