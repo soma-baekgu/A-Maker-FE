@@ -3,20 +3,25 @@
 import {useEffect, useRef, useState} from "react";
 import styles from './numberPicker.module.css';
 
-type Prpos = {
-    values: string[];
+type Props = {
+    values: string[],
+    setValue: (value: string) => void
+    initialValue: string
 }
 
-export default function NumberPicker({values}: Prpos) {
-    const numberWrapperRef = useRef<HTMLDivElement>(null);
-    const [currentIndex, setCurrentIndex] = useState(0);
+export default function NumberPicker({values, setValue,initialValue}: Props) {
+    const numberWrapperRef = useRef<HTMLDivElement | null>(null);
+    const initialIndex = values.indexOf(initialValue);
+    const [currentIndex, setCurrentIndex] = useState(initialIndex !== -1 ? initialIndex : 0);
     const [isDragging, setIsDragging] = useState(false);
     const [startY, setStartY] = useState(0);
     const [currentY, setCurrentY] = useState(0);
 
 
+
     useEffect(() => {
         updateNumbers(currentIndex);
+        setValue(values[currentIndex]);
     }, [currentIndex]);
 
     useEffect(() => {

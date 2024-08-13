@@ -1,3 +1,4 @@
+'use client';
 import styles from './topBar2.module.css';
 import Image from "next/image";
 import {useRouter} from "next/navigation";

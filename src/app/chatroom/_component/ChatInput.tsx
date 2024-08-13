@@ -8,10 +8,10 @@ import {bottom} from "@popperjs/core";
 
 type Props = {
     onSend: (msg: string) => void,
-    chatRoomId: number
+    chatroomId: number
 }
 
-export default function ChatInput({onSend, chatRoomId}: Props) {
+export default function ChatInput({onSend, chatroomId}: Props) {
     const [message, setMessage] = useState('');
     const [bottomBarVisible, setBottomBarVisible] = useState(false);
 
@@ -48,7 +48,7 @@ export default function ChatInput({onSend, chatRoomId}: Props) {
                        value={message} onKeyPress={handleKeyPress}/>
                 <div className={styles.sendButton} onClick={handleSend}>전송</div>
             </div>
-            {bottomBarVisible && <SpecialChatBar chatroomId={chatRoomId}/>}
+            {bottomBarVisible && <SpecialChatBar chatroomId={chatroomId}/>}
         </div>
     );
 }

@@ -50,7 +50,7 @@ export default function WorkspaceModal({onClose, visible}: Props) {
                     {workspaces.map((workspace, index) => (
                         <Link key={index} className={styles.workspace} href={`/home/${workspace.workspaceId}`}>
                             <Image src={workspace.thumbnail} alt="workspace" width={60} height={60}/>
-                            <div className={styles.text}>{workspace.name}</div>
+                            <div>{workspace.name}</div>
                         </Link>
                     ))}
                 </div>

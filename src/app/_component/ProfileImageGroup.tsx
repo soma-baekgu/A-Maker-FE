@@ -1,14 +1,16 @@
 import styles from './profileImageGroup.module.css';
 
 type Props = {
-    imageUrls: string[]
+    imageUrls: string[],
+    size: 'large' | 'small'
 }
 
-export default function ProfileImageGroup({imageUrls}: Props) {
+export default function ProfileImageGroup({imageUrls, size}: Props) {
     const cnt = imageUrls.length;
+    const componentSize = size === 'large' ? styles.large : styles.small;
 
     return (
-        <div className={styles.component}>
+        <div className={`${styles.component} ${componentSize}`}>
             <div className={styles.profileImages}>
                 {
                     cnt >= 1
