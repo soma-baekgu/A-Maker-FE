@@ -12,14 +12,20 @@ type workspaceInfo = {
     imgUrl: string,
 }
 
-export default function Page(props) {
+type Props = {
+    params: {
+        workspaceId: string
+    }
+}
+
+export default function Page(props: Props) {
     const [workspaceInfo, setWorkspaceInfo] = useState<workspaceInfo>({
         id: 1,
         name: '캡스톤 디자인 2조',
         imgUrl: '/images/default_thumbnail.png'
     });
 
-    const workspaceId = props.params.workspaceId;
+    const workspaceId = Number(props.params.workspaceId);
 
     const router = useRouter();
 

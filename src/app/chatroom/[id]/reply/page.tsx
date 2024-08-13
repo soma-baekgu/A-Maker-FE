@@ -10,8 +10,14 @@ import {useState} from "react";
 import eventApi from "@/app/(api)/event";
 import {useRouter} from "next/navigation";
 
-export default function Page(props) {
-    const chatRoomId = props.params.id
+type Props = {
+    params: {
+        id: string
+    }
+}
+
+export default function Page(props: Props) {
+    const chatRoomId:number = Number(props.params.id);
     const title = "응답요청 이벤트 생성";
     const [eventTitle, setEventTitle] = useState('');
     const [eventDetails, setEventDetails] = useState('');

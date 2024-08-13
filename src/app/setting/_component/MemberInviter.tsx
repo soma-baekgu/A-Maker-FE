@@ -42,7 +42,7 @@ export default function MemberInviter({workspaceId}: Props) {
 
     }
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInvitedUserEmail(e.target.value);
     }
 

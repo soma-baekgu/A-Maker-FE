@@ -14,78 +14,91 @@ type Props = {
 }
 
 export default function SpecialChatBar({chatroomId}: Props) {
-    const fileInputRef = useRef(null);
-    const imageInputRef = useRef(null);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const imageInputRef = useRef<HTMLInputElement | null>(null);
     const [fileInputVisible, setFileInputVisible] = useState(false);
     const [imageInputVisible, setImageInputVisible] = useState(false);
     const [fileName, setFileName] = useState('');
     const [imageName, setImageName] = useState('');
 
     useEffect(() => {
-        if (!fileInputVisible)
-            fileInputRef.current.value = '';
+        if (!fileInputVisible && fileInputRef.current) {
+            fileInputRef.current!.value = '';
+        }
     }, [fileInputVisible]);
 
     useEffect(() => {
-        if (!imageInputVisible)
-            imageInputRef.current.value = '';
+        if (!imageInputVisible && imageInputRef.current)
+            imageInputRef.current!.value = '';
     }, [imageInputVisible]);
 
 
     const handleFileInput = () => {
-        fileInputRef.current.click();
+        fileInputRef.current!.click();
     }
 
     const handleImageInput = () => {
-        imageInputRef.current.click();
+        imageInputRef.current!.click();
     }
 
-    const handleChangeFile = (e) => {
-        setFileName(e.target.files[0].name);
-        setFileInputVisible(true);
+    const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            setFileName(e.target.files![0].name);
+            setFileInputVisible(true);
+        }
     }
 
-    const handleChangeImage = (e) => {
-        setImageName(e.target.files[0].name);
-        setImageInputVisible(true);
+    const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            setImageName(e.target.files![0].name);
+            setImageInputVisible(true);
+        }
     }
 
 
-    const getUrl = async (targetName, ref) =>{
-        const fileNameArray = targetName.split('.');
-        const extension = fileNameArray.pop();
-        const name = fileNameArray.join('.');
+    const getUrl = async (targetName: string, ref: React.RefObject<HTMLInputElement>): Promise<string> => {
+        const fileNameArray: string[] = targetName.split('.');
+        const extension: string = fileNameArray.pop() || '';
+        const name: string = fileNameArray.join('.');
 
         const res = await fileApi.getUrl(new Date().getTime().toString(), extension, name);
 
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
-            reader.onload= async (evt)=>{
-                try{
-                    const binaryData = evt.target.result;
-                    await axios.put(res.data.data, binaryData,{
-                        headers: {
-                            'Content-Type': ref.current.files[0].type
-                        } as AxiosRequestHeaders
-                    });
-                    const url = new URL(res.data.data);
-                    resolve(url.origin + url.pathname);
-                }catch(error){
-                    reject(error);
+            reader.onload = async (evt) => {
+                if (evt.target && ref && ref.current && ref.current.files && ref.current.files.length > 0) {
+                    try {
+                        const binaryData = evt.target.result;
+                        await axios.put(res.data.data, binaryData, {
+                            headers: {
+                                'Content-Type': ref.current.files![0].type
+                            } as AxiosRequestHeaders
+                        });
+                        const url = new URL(res.data.data);
+                        resolve(url.origin + url.pathname);
+                    } catch (error) {
+                        reject(error);
+                    }
+                } else {
+                    reject(new Error("File reading failed"));
                 }
             }
-            reader.onerror = (evt)=>reject(new Error("File reading failed"));
-            reader.readAsArrayBuffer(ref.current.files[0]);
+            reader.onerror = (evt) => reject(new Error("File reading failed"));
+            if (ref.current && ref.current.files && ref.current.files.length > 0) {
+                reader.readAsArrayBuffer(ref.current.files![0]);
+            } else {
+                reject(new Error("No file selected"));
+            }
         });
     }
 
     const sendFile = async () => {
-        const fileUrl = await getUrl(fileName, fileInputRef);
+        const fileUrl: string = await getUrl(fileName, fileInputRef);
         await chatApi.sendFile(chatroomId, fileUrl);
     }
 
     const sendImage = async () => {
-        const imageUrl = await getUrl(imageName, imageInputRef);
+        const imageUrl: string = await getUrl(imageName, imageInputRef);
         console.log(imageUrl);
         await chatApi.sendImg(chatroomId, imageUrl);
     }

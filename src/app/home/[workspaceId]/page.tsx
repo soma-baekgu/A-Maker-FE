@@ -3,8 +3,14 @@ import TopBar from "@/app/_component/TopBar";
 import BottomBar from "@/app/_component/BottomBar";
 import ChatMessage from "@/app/chatroom/_component/ChatMessage";
 
-export default function Home(props) {
-    const workspaceId = props.params.workspaceId;
+type Props = {
+    params: {
+        workspaceId: string
+    }
+}
+
+export default function Home(props: Props) {
+    const workspaceId:number = Number(props.params.workspaceId);
 
     return (
         <div className={styles.page}>

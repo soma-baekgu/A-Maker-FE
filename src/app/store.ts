@@ -9,7 +9,7 @@ export const useStore = create(persist(
         setEmail: (email: string) => set({email}),
     }),
     {
-        name: process.env.NEXT_PUBLIC_LOCAL_STORAGE,
+        name: process.env.NEXT_PUBLIC_LOCAL_STORAGE || 'default',
         getStorage: () => localStorage
     }
 ));

@@ -53,8 +53,8 @@ type Props = {
 }
 
 export default function Page(props: Props) {
-    const chatRoomId = props.params.id;
-    const eventId = props.params.eventId;
+    const chatRoomId: number = Number(props.params.id);
+    const eventId: number = Number(props.params.eventId);
     const [event, setEvent] = useState<EventData>();
     const [isLoaded, setIsLoaded] = useState(false);
     const [comments, setComments] = useState<Comment[]>([]);

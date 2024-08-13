@@ -9,6 +9,7 @@ import {useCallback, useEffect, useLayoutEffect, useRef, useState} from "react";
 import chatApi from "@/app/(api)/chat";
 import {useStore} from "@/app/store";
 import {ChatContent, FileContent} from "@/app/chatroom/types";
+import {Params} from "next/dist/shared/lib/router/utils/route-matcher";
 
 type User = {
     name: string,
@@ -26,16 +27,26 @@ type Message = {
     updatedAt: string,
 }
 
-export default function Page(props) {
+type Props = {
+    params: {
+        id: string
+    }
+}
+
+interface StoreState {
+    email: string;
+}
+
+export default function Page(props: Props) {
     const title: string = '캡스톤 디자인 2조';//todo 채팅방이름을 어떻게 가져올까? 프론트에서 상태관리? 아니면 백에 단일 채팅방정보 api요청?
     const router = useRouter();
     const [cursor, setCursor] = useState(-1);
     const [afterCursor, setAfterCursor] = useState(-1);
     const [messages, setMessages] = useState<Message[]>([]);
     const topMessageRef = useRef(null);
-    const bottomMessageRef = useRef(null);
-    const chatroomId = props.params.id;
-    const {email} = useStore();
+    const bottomMessageRef = useRef<HTMLDivElement|null>(null);
+    const chatroomId: number = Number(props.params.id);
+    const {email} = useStore() as StoreState;
 
     const getRecentChat = async () => {
         const response = await chatApi.recentChat(chatroomId);
@@ -82,7 +93,7 @@ export default function Page(props) {
     useEffect(() => {
         // 메시지 상태가 변경될 때마다 스크롤을 맨 아래로 내립니다.
         if (bottomMessageRef.current)
-            bottomMessageRef.current.scrollIntoView({behavior: 'smooth'});
+            bottomMessageRef.current!.scrollIntoView({behavior: 'smooth'});
     }, [afterCursor]);
 
     useEffect(() => {
