@@ -11,6 +11,8 @@ type Props = {
     time: Date,
     isMine: boolean,
     chatType: string,
+    messageId: number,
+    chatroomId: number
 }
 
 const ChatMessage = React.forwardRef<HTMLDivElement, Props>(({
@@ -19,7 +21,9 @@ const ChatMessage = React.forwardRef<HTMLDivElement, Props>(({
                                                                  content,
                                                                  time,
                                                                  isMine,
-                                                                 chatType
+                                                                 chatType,
+                                                                 messageId,
+                                                                 chatroomId
                                                              }, ref) => {
     const options: Intl.DateTimeFormatOptions = {hour: 'numeric', minute: 'numeric', hour12: true};
     const timeString = time.toLocaleTimeString('ko-KR', options);
@@ -28,7 +32,8 @@ const ChatMessage = React.forwardRef<HTMLDivElement, Props>(({
         isMine ? (
             <div ref={ref} className={`${styles.component} ${styles.right}`}>
                 <div className={styles.message}>
-                    <ContentByChatType chatType={chatType} content={content}/>
+                    <ContentByChatType chatType={chatType} content={content} messageId={messageId}
+                                       chatroomId={chatroomId}/>
                     <div className={styles.time}>{timeString}</div>
                 </div>
             </div>
@@ -38,7 +43,8 @@ const ChatMessage = React.forwardRef<HTMLDivElement, Props>(({
                 <div className={styles.description}>
                     <div className={styles.speakerName}>{speakerName}</div>
                     <div className={styles.message}>
-                        <ContentByChatType chatType={chatType} content={content}/>
+                        <ContentByChatType chatType={chatType} content={content} messageId={messageId}
+                                           chatroomId={chatroomId}/>
                         <div className={styles.time}>{timeString}</div>
                     </div>
                 </div>

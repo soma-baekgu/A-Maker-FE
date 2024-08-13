@@ -150,10 +150,12 @@ export default function Page(props) {
                         speakerImageUrl={message.user.picture}
                         speakerName={message.user.name}
                         time={new Date(message.createdAt)}
-                        chatType={message.chatType}/>
+                        chatType={message.chatType}
+                        messageId={message.id}
+                        chatroomId={chatroomId}/>
                 ))}
             </div>
-            <ChatInput onSend={onSend} chatRoomId={chatroomId}/>
+            <ChatInput onSend={onSend} chatroomId={chatroomId}/>
         </div>
     );
 }

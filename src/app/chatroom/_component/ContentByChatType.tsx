@@ -7,9 +7,11 @@ import EventMessage from "@/app/chatroom/_component/EventMessage";
 type Props = {
     chatType: string,
     content: ChatContent,
+    messageId: number,
+    chatroomId: number
 }
 
-export default function ContentByChatType({chatType, content}: Props) {
+export default function ContentByChatType({chatType, content, messageId, chatroomId}: Props) {
     return (
         <>
             {chatType === 'GENERAL' && isString(content) ?
@@ -35,13 +37,15 @@ export default function ContentByChatType({chatType, content}: Props) {
                         :
                         chatType === 'REPLY' && isReplyEventContent(content) ?
                             <div className={styles.content}>
-                            <EventMessage
-                                eventTitle={content.eventTitle}
-                                users={content.users}
-                                deadLine={content.deadLine}
-                                finishedCount={content.finishedCount}
-                                totalAssigneesCount={content.totalAssignedCount}
-                                eventType={'reply'}/>
+                                <EventMessage
+                                    eventTitle={content.eventTitle}
+                                    users={content.users}
+                                    deadLine={content.deadLine}
+                                    finishedCount={content.finishedCount}
+                                    totalAssignedCount={content.totalAssignedCount}
+                                    eventType={'reply'}
+                                    messageId={messageId}
+                                    chatroomId={chatroomId}/>
                             </div>
                             :
                             <div>잘못된 메세지</div>

@@ -1,5 +1,6 @@
 import styles from './eventMessage.module.css';
 import ProfileImageGroup from "@/app/_component/ProfileImageGroup";
+import {useRouter} from "next/navigation";
 
 type Props = {
     eventTitle: string,
@@ -7,7 +8,9 @@ type Props = {
     deadLine: Date,
     finishedCount: number,
     totalAssignedCount: number,
-    eventType: 'reply' | 'reaction' | 'task'
+    eventType: 'reply' | 'reaction' | 'task',
+    messageId: number,
+    chatroomId: number,
 }
 
 function getTimeRemaining(deadLine: Date): string {
@@ -40,13 +43,21 @@ export default function EventMessage({
                                          users,
                                          deadLine,
                                          finishedCount,
-                                         totalAssigneesCount,
-                                         eventType
+                                         totalAssignedCount,
+                                         eventType,
+                                         messageId,
+                                         chatroomId
                                      }: Props) {
     const timeRemaining = getTimeRemaining(deadLine);
+    const router = useRouter();
+
+    const moveDetail = () => {
+        if (eventType === 'reply')
+            router.push(`/chatroom/${chatroomId}/event/${messageId}/reply`);
+    }
 
     return (
-        <div className={styles.component}>
+        <div className={styles.component} onClick={moveDetail}>
             <div className={styles.notice}>
                 {eventType === 'reply' ?
                     '답변을 요청합니다'
@@ -64,10 +75,10 @@ export default function EventMessage({
                     <div className={styles.left}>{eventTitle}</div>
                     <div className={styles.right}>
                         {eventType === 'reply' ?
-                            `답변 대기중 ${finishedCount}/${totalAssigneesCount}`
+                            `답변 대기중 ${finishedCount}/${totalAssignedCount}`
                             :
                             eventType === 'reaction' ?
-                                `응답 대기중 ${finishedCount}/${totalAssigneesCount}`
+                                `응답 대기중 ${finishedCount}/${totalAssignedCount}`
                                 :
                                 ''
                         }
