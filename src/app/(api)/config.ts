@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios, {InternalAxiosRequestConfig} from "axios";
 
 
 const setAuth = (isAuthenticated: boolean) =>
-    (config) => {
+    (config:InternalAxiosRequestConfig) => {
         if (isAuthenticated) {
             const store = JSON.parse(localStorage.getItem(process.env.NEXT_PUBLIC_LOCAL_STORAGE));
             const accessToken = store ? store.state.accessToken : null;
@@ -29,7 +29,7 @@ const setApi = (isAuthenticated: boolean) => {
     return instance;
 };
 
-const setApiCustom=(baseURL)=>{
+const setApiCustom=(baseURL:string)=>{
     const instance = axios.create({
         baseURL,
         timeout: 5000,
