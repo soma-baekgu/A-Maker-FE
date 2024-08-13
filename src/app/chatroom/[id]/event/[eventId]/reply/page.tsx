@@ -7,6 +7,7 @@ import Profile from "@/app/chatroom/[id]/event/_component/Profile";
 import ReplyInput from "@/app/chatroom/[id]/event/_component/ReplyInput";
 import {useEffect, useState} from "react";
 import eventApi from "@/app/(api)/event";
+import eventCommentApi from "@/app/(api)/eventComment";
 
 type Comment = {
     img: string,
@@ -69,7 +70,24 @@ export default function Page(props) {
             name: "User2",
             time: new Date("2022-01-02T11:30:45Z"),
             content: "This is a comment from User2."
+        }, {
+            img: "http://example.com/image2.png",
+            name: "User2",
+            time: new Date("2022-01-02T11:30:45Z"),
+            content: "This is a comment from User2."
+        },
+        {
+            img: "http://example.com/image2.png",
+            name: "User2",
+            time: new Date("2022-01-02T11:30:45Z"),
+            content: "This is a comment from User2."
+        }, {
+            img: "http://example.com/image2.png",
+            name: "User2",
+            time: new Date("2022-01-02T11:30:45Z"),
+            content: "This is a comment from User2."
         }
+
     ];
 
     const timeAgo = (date: Date) => {
@@ -80,11 +98,17 @@ export default function Page(props) {
         return `${diffInMinutes}분 전`;
     }
 
+    const onSend = async (msg: string) => {
+        if (msg.length === 0)
+            return;
+        await eventCommentApi.createReplyComment(eventId, msg);
+    }
+
     return (
         <div className={styles.page}>
             <TopBar2 title="이벤트 상세"/>
             {isLoaded && event ? (
-                <>
+                <div className={styles.main}>
                     <div className={styles.title}>
                         <Image src="/icon/reply.png" alt="reply" width={32} height={32}/>
                         <div className={styles.titleText}>{event.eventTitle}</div>
@@ -137,13 +161,11 @@ export default function Page(props) {
                             ))
                         }
                     </div>
-                </>
+                </div>
             ) : (
-                <div>Loading...</div>
+                <div className={styles.main}>Loading...</div>
             )}
-            <ReplyInput onSend={(msg: string) => {
-                console.log(msg);
-            }}/>
+            <ReplyInput onSend={onSend}/>
         </div>
     )
         ;
