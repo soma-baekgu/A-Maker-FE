@@ -68,7 +68,7 @@ export default function TopBar({pageType, onCreateChat, onSearchChat, workspaceI
             {onSearchChat &&
                 <Image className={styles.button} src="/button/searchChat.png" alt="searchChat" width={60} height={60}
                        onClick={onSearchChat}/>}
-            {pageType == '워크스페이스 설정' ?
+            {pageType == '설정' ?
                 <Image className={styles.button} src="/button/workspaceClose.png" alt="close" width={50} height={50}
                        onClick={handleBack}/>
                 :

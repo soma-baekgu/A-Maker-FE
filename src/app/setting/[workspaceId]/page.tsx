@@ -15,8 +15,8 @@ export default function Page(props: Props) {
 
     return (
         <div className={styles.page}>
-            <TopBar pageType={'워크스페이스 설정'} workspaceId={workspaceId}/>
-            <WorkspaceInfo/>
+            <TopBar pageType={'설정'} workspaceId={workspaceId}/>
+            <WorkspaceInfo workspaceId={workspaceId}/>
             <MemberInvitor workspaceId={workspaceId}/>
             <WorkspaceDeleter/>
         </div>

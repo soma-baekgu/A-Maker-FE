@@ -10,22 +10,23 @@ type Props = {
 
 export default function MemberInviter({workspaceId}: Props) {
     const invitedUsers = [
-        {
-            id: 56,
-            name: '홍길동',
-            email: 'aaa@gmail.com',
-            imgUrl: '/defaultImg'
-        },
-        {
-            id: 51,
-            name: '가나다',
-            email: 'aaa@gmail.com',
-            imgUrl: '/defaultImg'
-        },
+        // {
+        //     id: 56,
+        //     name: '홍길동',
+        //     email: 'aaa@gmail.com',
+        //     imgUrl: '/defaultImg'
+        // },
+        // {
+        //     id: 51,
+        //     name: '가나다',
+        //     email: 'aaa@gmail.com',
+        //     imgUrl: '/defaultImg'
+        // },
     ];
 
     const [invitedUserEmail, setInvitedUserEmail] = useState('');
     const [errorMsg, setErrorMsg] = useState<string|null>(null);
+
 
     const handleInvite = async () => {
         if (invitedUserEmail === '') return;
