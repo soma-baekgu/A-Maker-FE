@@ -2,35 +2,55 @@
 
 import styles from './workspaceInfo.module.css';
 import Image from "next/image";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import workspaceApi from "@/app/(api)/workspace";
 
-export default function WorkspaceInfo() {
-    const [joinedUsers, setJoinedUsers] = useState([
-        {
-            id: 55,
-            name: '김태훈',
-            email: 'abc@gmail.com',
-            role: 'admin',
-            imgUrl: '/defaultImg'
-        },
-        {
-            id: 99,
-            name: '노영진',
-            email: 'abc@gmail.com',
-            role: 'member',
-            imgUrl: '/defaultImg'
-        }
-    ]);
+type User = {
+    name: string,
+    email: string,
+    picture: string,
+    workspaceId: number,
+    workspaceRole: string,
+    status: string,
+}
 
-    const [openDropdown, setOpenDropdown] = useState<number | null>(null);
+type Props = {
+    workspaceId: number
+}
 
-    const handleDropdownClick = (id:number) => {
-        setOpenDropdown(openDropdown === id ? null : id);
+export default function WorkspaceInfo({workspaceId}: Props) {
+    const [joinedUsers, setJoinedUsers] = useState<User[]>([]);
+
+    const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+
+    const [workspaceName, setWorkspaceName] = useState('');
+    const [workspaceImage, setWorkspaceImage] = useState('');
+
+    useEffect(() => {
+        fetchWorkspaceInfo();
+    }, []);
+
+    const fetchWorkspaceInfo = async () => {
+        const res = await workspaceApi.getUsers(workspaceId);
+        if (res.data.status !== "2000")
+            return;
+        setWorkspaceName(res.data.data.name);
+        setWorkspaceImage(res.data.data.thumbnail);
+        setJoinedUsers(res.data.data.users);
     }
 
-    const handleRoleChange = (id:number, role:string) => {
-        setJoinedUsers(joinedUsers.map(user => user.id === id ? {...user, role} : user));
+
+    const handleDropdownClick = (email: string) => {
+        setOpenDropdown(openDropdown === email ? null : email);
+    }
+
+    const handleRoleChange = (email: string, workspaceRole: string) => {
+        setJoinedUsers(joinedUsers.map(user => user.email === email ? {...user, workspaceRole} : user));
         setOpenDropdown(null);
+    }
+
+    const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setWorkspaceName(e.target.value);
     }
 
     return (
@@ -38,7 +58,7 @@ export default function WorkspaceInfo() {
             <div className={styles.title}>워크스페이스 정보 수정</div>
             <div className={styles.section}>
                 <div className={styles.subtitle}>워크스페이스 이름</div>
-                <input type="text" className={styles.input}/>
+                <input type="text" className={styles.input} value={workspaceName} onChange={handleNameChange}/>
             </div>
             <div className={styles.section}>
                 <div className={styles.subtitle}>대표 이미지</div>
@@ -50,22 +70,23 @@ export default function WorkspaceInfo() {
                 <div className={styles.userList}>
                     {joinedUsers.map((user, index) => (
                         <div key={index} className={styles.user}>
-                            <img src={user.imgUrl} className={styles.profileImage} alt="profileImage"/>
+                            <img src={user.picture} className={styles.profileImage} alt="profileImage"/>
                             <div className={styles.userInfo}>
                                 <div>{user.name}</div>
                                 <div>{user.email}</div>
                             </div>
                             <div className={styles.dropdown}>
                                 <div className={styles.role}>
-                                    <div className={styles.roleText}>{user.role == 'admin' ? '관리자' : '일반'}</div>
+                                    <div
+                                        className={styles.roleText}>{user.workspaceRole == 'LEADER' ? '관리자' : '일반'}</div>
                                     <Image src="/button/dropdown.png" alt="dropdown" width={30} height={31}
-                                           onClick={() => handleDropdownClick(user.id)}
+                                           onClick={() => handleDropdownClick(user.email)}
                                            className={styles.dropDownButton}/>
                                 </div>
-                                {openDropdown === user.id && (
+                                {openDropdown === user.email && (
                                     <ul className={styles.dropBar}>
-                                        <li onClick={() => handleRoleChange(user.id, 'admin')}>관리자</li>
-                                        <li onClick={() => handleRoleChange(user.id, 'member')}>일반</li>
+                                        <li onClick={() => handleRoleChange(user.email, 'LEADER')}>관리자</li>
+                                        <li onClick={() => handleRoleChange(user.email, 'MEMBER')}>일반</li>
                                     </ul>
                                 )}
                             </div>

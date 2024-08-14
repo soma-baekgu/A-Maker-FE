@@ -10,6 +10,7 @@ const workspaceApi = {
     invite: (workspaceId: number, email: string) => authRequest.post(`/api/v1/workspaces/${workspaceId}/invite`, {}, {params: {email}}),
     approve: (workspaceId: number) => authRequest.put(`/api/v1/workspaces/${workspaceId}/invite/activate`),
     get: (workspaceId: number) => authRequest.get(`/api/v1/workspaces/${workspaceId}`),
+    getUsers: (workspaceId: number) => authRequest.get(`/api/v1/workspaces/${workspaceId}/users`),
 }
 
 export default workspaceApi;

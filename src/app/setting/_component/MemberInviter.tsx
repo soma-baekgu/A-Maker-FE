@@ -8,24 +8,35 @@ type Props = {
     workspaceId: number;
 }
 
+type User = {
+    name: string,
+    email: string,
+    picture: string,
+    workspaceId: number,
+    workspaceRole: string,
+    status: string,
+}
+
+
 export default function MemberInviter({workspaceId}: Props) {
-    const invitedUsers = [
-        {
-            id: 56,
-            name: '홍길동',
-            email: 'aaa@gmail.com',
-            imgUrl: '/defaultImg'
-        },
-        {
-            id: 51,
-            name: '가나다',
-            email: 'aaa@gmail.com',
-            imgUrl: '/defaultImg'
-        },
+    const invitedUsers:User[] = [
+        // {
+        //     id: 56,
+        //     name: '홍길동',
+        //     email: 'aaa@gmail.com',
+        //     imgUrl: '/defaultImg'
+        // },
+        // {
+        //     id: 51,
+        //     name: '가나다',
+        //     email: 'aaa@gmail.com',
+        //     imgUrl: '/defaultImg'
+        // },
     ];
 
     const [invitedUserEmail, setInvitedUserEmail] = useState('');
     const [errorMsg, setErrorMsg] = useState<string|null>(null);
+
 
     const handleInvite = async () => {
         if (invitedUserEmail === '') return;
@@ -60,7 +71,7 @@ export default function MemberInviter({workspaceId}: Props) {
             <div className={styles.list}>
                 {invitedUsers.map((user, index) => (
                     <div key={index} className={styles.user}>
-                        <img src={user.imgUrl} className={styles.profileImage} alt="profileImage"/>
+                        <img src={user.picture} className={styles.profileImage} alt="profileImage"/>
                         <div className={styles.userInfo}>
                             <div>{user.name}</div>
                             <div>{user.email}</div>
