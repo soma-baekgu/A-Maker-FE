@@ -8,8 +8,18 @@ type Props = {
     workspaceId: number;
 }
 
+type User = {
+    name: string,
+    email: string,
+    picture: string,
+    workspaceId: number,
+    workspaceRole: string,
+    status: string,
+}
+
+
 export default function MemberInviter({workspaceId}: Props) {
-    const invitedUsers = [
+    const invitedUsers:User[] = [
         // {
         //     id: 56,
         //     name: '홍길동',
@@ -61,7 +71,7 @@ export default function MemberInviter({workspaceId}: Props) {
             <div className={styles.list}>
                 {invitedUsers.map((user, index) => (
                     <div key={index} className={styles.user}>
-                        <img src={user.imgUrl} className={styles.profileImage} alt="profileImage"/>
+                        <img src={user.picture} className={styles.profileImage} alt="profileImage"/>
                         <div className={styles.userInfo}>
                             <div>{user.name}</div>
                             <div>{user.email}</div>
