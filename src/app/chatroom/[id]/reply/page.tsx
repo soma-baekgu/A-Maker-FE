@@ -60,7 +60,7 @@ export default function Page(props: Props) {
             <div className={styles.section}>
                 <ReplyEventInput detail={eventDetails} setDetail={setEventDetails} setTitle={setEventTitle}
                                  title={eventTitle}/>
-                <RecipientSelector assignees={assignees} setAssignees={setAssignees}/>
+                <RecipientSelector assignees={assignees} setAssignees={setAssignees} chatroomId={chatRoomId}/>
                 <DueDateInput deadline={deadline} setDeadline={setDeadline}/>
             </div>
             <div className={styles.section}>
