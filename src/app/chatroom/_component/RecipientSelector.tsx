@@ -1,17 +1,23 @@
+"use client";
 import styles from './recipientSelector.module.css';
-import {ChangeEvent, useState} from "react";
+import {ChangeEvent, useEffect, useState} from "react";
+import chatRoomApi from "@/app/(api)/chatRoom";
 
 type Props = {
     assignees: string[],
-    setAssignees: (assignees: string[]) => void
+    setAssignees: (assignees: string[]) => void,
+    chatroomId: number
 }
 
-export default function RecipientSelector({assignees, setAssignees}: Props) {
+type User = {
+    name: string,
+    email: string,
+    picture: string
+}
 
-    const recipients = [
-        {name: '노영진', image: 'image1.png', email: 'shane9747@gmail.com'},
-        {name: '백구', image: 'image2.png', email: 'soma.backgu@gmail.com'},
-    ];
+export default function RecipientSelector({assignees, setAssignees, chatroomId}: Props) {
+
+    const [recipients, setRecipients] = useState<User[]>([]);
 
     const [checkedState, setCheckedState] = useState<Record<string, boolean>>(
         recipients.reduce((state, recipient) => ({
@@ -19,6 +25,17 @@ export default function RecipientSelector({assignees, setAssignees}: Props) {
             [recipient.email]: false
         }), {})
     );
+
+    useEffect(() => {
+        fetchRecipients();
+    }, []);
+
+    const fetchRecipients = async () => {
+        const res = await chatRoomApi.getUsers(chatroomId);
+        if (res.data.status !== "2000")
+            return;
+        setRecipients(res.data.data.users);
+    }
 
     const handleCheckboxChange = (email: string) => (event: ChangeEvent<HTMLInputElement>) => {
         const newCheckedState = {...checkedState, [email]: event.target.checked};
@@ -32,7 +49,7 @@ export default function RecipientSelector({assignees, setAssignees}: Props) {
             <div className={styles.description}>답변을 요청할 인원</div>
             {recipients.map((recipient, index) => (
                 <div className={styles.element} key={index}>
-                    <div className={styles.image}></div>
+                    <img className={styles.image} src={recipient.picture} alt="picture"></img>
                     <div className={styles.name}>{recipient.name}</div>
                     <input
                         className={styles.checkbox}
