@@ -18,8 +18,9 @@ export default function Page() {
             workspaceApi.recent()
                 .then((res) => {
                     const workspaceId = res.data.data.workspaceId;
-                    router.replace(`/home/${workspaceId}`);
-                });
+                        router.replace(`/home/${workspaceId}`);
+                })
+                .catch(() => {router.replace('/default')});
         } else {
             router.replace('/login');
         }

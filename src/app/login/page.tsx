@@ -39,12 +39,13 @@ export default function Page() {
             }
         }
         if (authCode) {
-            login()
-                .then(() => workspaceApi.recent())
-                .then((res) => {
-                    const workspaceId = res.data.data.workspaceId;
-                    router.push(`/home/${workspaceId}`);
-                });
+            // login()
+            //     .then(() => workspaceApi.recent())
+            //     .then((res) => {
+            //         const workspaceId = res.data.data.workspaceId;
+            //         router.push(`/home/${workspaceId}`);
+            //     });
+            login().then(() => router.push('/'));
         }
     }, [authCode]);
 
