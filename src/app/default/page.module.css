@@ -1,0 +1,22 @@
+.page{
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    height:100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.help{
+    font-size: 30px;
+    margin: 0 50px;
+    text-align: center;
+}
+
+.button{
+    font-size: 30px;
+    padding: 9px 17px;
+    box-sizing: border-box;
+    border: 1px solid black;
+    cursor: pointer;
+}

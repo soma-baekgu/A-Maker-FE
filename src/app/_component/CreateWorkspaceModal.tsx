@@ -21,7 +21,6 @@ export default function CreateWorkspaceModal({setVisible, createWorkspace}: Prop
 
     const handleCreateWorkspace = async () => {
         await createWorkspace(inputValue);
-        setVisible(false);
     }
 
     return (

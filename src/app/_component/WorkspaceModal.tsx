@@ -41,6 +41,7 @@ export default function WorkspaceModal({onClose, visible}: Props) {
 
     const createWorkspace = async (workspaceName: string) => {
         await workspaceApi.create(workspaceName);
+        setCreateWorkspaceVisible(false);
     }
 
     return (
