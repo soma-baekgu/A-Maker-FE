@@ -49,7 +49,7 @@ export default function Page(props: Props) {
     const {email} = useStore() as StoreState;
     const [title, setTitle] = useState('');
     const [isLoadingChat, setIsLoadingChat] = useState(false);
-    const contentRef = useRef(null);
+    const contentRef = useRef<HTMLDivElement | null>(null);
     const [scrollHeight,setScrollHeight] = useState(0);
 
     const fetchChatRoom = async () => {
@@ -104,15 +104,16 @@ export default function Page(props: Props) {
     useEffect(() => {
         if (bottomMessageRef.current)
             bottomMessageRef.current!.scrollIntoView({behavior: 'smooth'});
-        console.log('height: '+contentRef.current.scrollHeight);
-        const currentScrollHeight = contentRef.current.scrollHeight;
-        if (currentScrollHeight !== undefined) {
-            const scrollDifference = currentScrollHeight - scrollHeight;
-            if (scrollDifference > 0) {
-                contentRef.current.scrollTop += scrollDifference;
+        if(contentRef.current) {
+            const currentScrollHeight = contentRef.current.scrollHeight;
+            if (currentScrollHeight !== undefined) {
+                const scrollDifference = currentScrollHeight - scrollHeight;
+                if (scrollDifference > 0) {
+                    contentRef.current.scrollTop += scrollDifference;
+                }
             }
+            setScrollHeight(contentRef.current.scrollHeight);
         }
-        setScrollHeight(contentRef.current.scrollHeight);
     }, [messages]);
 
 
