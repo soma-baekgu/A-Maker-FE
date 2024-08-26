@@ -40,7 +40,7 @@ interface StoreState {
 
 export default function Page(props: Props) {
     const router = useRouter();
-    const [cursor, setCursor] = useState(-1);
+    const [previousCursor, setPreviousCursor] = useState(-1);
     const [afterCursor, setAfterCursor] = useState(-1);
     const [messages, setMessages] = useState<Message[]>([]);
     const topMessageRef = useRef(null);
@@ -48,122 +48,139 @@ export default function Page(props: Props) {
     const chatroomId: number = Number(props.params.id);
     const {email} = useStore() as StoreState;
     const [title, setTitle] = useState('');
+    const [isLoadingChat, setIsLoadingChat] = useState(false);
+    const contentRef = useRef(null);
+    const [scrollHeight,setScrollHeight] = useState(0);
 
-    useEffect(() => {
-        const fetchChatRoom = async () => {
-            const res = await chatRoomApi.get(chatroomId);
-            if (res.data.status !== "2000")
-                return;
-            setTitle(res.data.data.chatRoomName);
-        };
+    const fetchChatRoom = async () => {
+        const res = await chatRoomApi.get(chatroomId);
 
-        fetchChatRoom();
-    }, []);
+        if (res.data.status !== "2000")
+            return;
+        setTitle(res.data.data.chatRoomName);
+    };
 
-    const getRecentChat = async () => {
+    //가장 최근 채팅 메세지를 불러 오는 함수로 처음 1회만 호출
+    const fetchRecentChat = async () => {
         const response = await chatApi.recentChat(chatroomId);
         const data = response.data;
 
         if (data.status !== "2000")
-            return; // 함수 실행 중단
-
-        setCursor(data.data.id);
+            return;
+        setPreviousCursor(data.data.id);
         setAfterCursor(data.data.id)
         setMessages([data.data]);
     };
 
-    const getPreviousChat = useCallback(async () => {
-        const response = await chatApi.previousChat(chatroomId, cursor, 10);
+    const fetchPreviousChat = useCallback(async () => {
+        const response = await chatApi.previousChat(chatroomId, previousCursor, 10);
         const data = response.data;
 
-        // 서버에서 오류 응답을 받은 경우 처리
-        if (data.status !== "2000")
-            return; // 함수 실행 중단
-
-        setCursor(data.data.nextCursor);
-        console.log(data.data);
+        if (data.status !== "2000"||data.data.size===0)
+            return;
+        setPreviousCursor(data.data.nextCursor);
+        console.log('이전 채팅을 불러왔습니다.');
         setMessages(prevMessages => [...data.data.chatList, ...prevMessages]);
-    }, [cursor]);
+    }, [previousCursor]);
 
-    const getAfterChat = useCallback(async () => {
+    const fetchAfterChat = useCallback(async () => {
         const response = await chatApi.afterChat(chatroomId, afterCursor, 10);
         const data = response.data;
 
-        // 서버에서 오류 응답을 받은 경우 처리
-        if (data.status !== "2000")
-            return; // 함수 실행 중단
-
+        if (data.status !== "2000"||data.data.size===0)
+            return;
         const lastMessage = data.data.chatList[data.data.chatList.length - 1];
-        if (lastMessage) {
-            setAfterCursor(lastMessage.id);
-        }
-        console.log(data.data);
+        setAfterCursor(lastMessage.id);
         setMessages(prevMessages => [...prevMessages, ...data.data.chatList]);
-
+        setIsLoadingChat(true);
     }, [afterCursor]);
 
-    useEffect(() => {
-        // 메시지 상태가 변경될 때마다 스크롤을 맨 아래로 내립니다.
-        if (bottomMessageRef.current)
-            bottomMessageRef.current!.scrollIntoView({behavior: 'smooth'});
-    }, [afterCursor]);
 
     useEffect(() => {
-        getRecentChat();
+        fetchChatRoom();
+        fetchRecentChat();
     }, []);
 
     useEffect(() => {
-        const intervalId = setInterval(async () => {
-            const response = await chatApi.recentChat(chatroomId);
-            const data = response.data;
-
-            if (data.status !== "2000")
-                return; // 함수 실행 중단
-
-            if (data.data.id > afterCursor) {
-                getAfterChat();
+        if (bottomMessageRef.current)
+            bottomMessageRef.current!.scrollIntoView({behavior: 'smooth'});
+        console.log('height: '+contentRef.current.scrollHeight);
+        const currentScrollHeight = contentRef.current.scrollHeight;
+        if (currentScrollHeight !== undefined) {
+            const scrollDifference = currentScrollHeight - scrollHeight;
+            if (scrollDifference > 0) {
+                contentRef.current.scrollTop += scrollDifference;
             }
-        }, 1000); // 1초마다 실행
+        }
+        setScrollHeight(contentRef.current.scrollHeight);
+    }, [messages]);
+
+
+    useEffect(() => {
+        //1초마다 새로운 채팅이 있는지 확인
+        const intervalId = setInterval(async () => {
+            console.log('새로운 채팅있는지 확인');
+            if (isLoadingChat)
+                return;
+            setIsLoadingChat(true);
+            try {
+                const response = await chatApi.recentChat(chatroomId);
+                const data = response.data;
+
+                if (data.status !== "2000")
+                    return;
+                if (data.data.id > afterCursor) {
+                    console.log('새로운 채팅을 불러옵니다.');
+                    await fetchAfterChat();
+                }
+            } finally {
+                setIsLoadingChat(false);
+            }
+        }, 1000);
 
         return () => {
-            clearInterval(intervalId); // 컴포넌트 unmount 시에 interval clear
+            clearInterval(intervalId);
+            setIsLoadingChat(false);
         };
-    }, [afterCursor, getAfterChat]);
+    }, [fetchAfterChat]);
 
-    useLayoutEffect(() => {
-        const observer = new IntersectionObserver(entries => {
-            if (entries[0].isIntersecting) {
-                getPreviousChat();
+    useEffect(() => {
+        let observer = null;
+
+        if(contentRef.current) {
+            observer = new IntersectionObserver(
+                entries => {
+                    if (entries[0].isIntersecting) {
+                        fetchPreviousChat();
+                    }
+                },
+                {
+                    root: contentRef.current,
+                    rootMargin:'0px 0px -20px 0px'
+                }
+            );
+
+            if (topMessageRef.current) {
+                observer.observe(topMessageRef.current);
             }
-        });
-
-        if (topMessageRef.current) {
-            observer.observe(topMessageRef.current);
         }
 
         return () => {
-            if (topMessageRef.current) {
+            if (observer && topMessageRef.current) {
                 observer.unobserve(topMessageRef.current);
             }
         };
-    }, [getPreviousChat]);
-
-    function myFunction() {
-        //console.log(topMessageRef.current);
-    }
-
-// setInterval 함수는 첫 번째 인자로 주어진 함수를 두 번째 인자로 주어진 시간 간격(밀리초 단위)마다 실행합니다.
-    const intervalId = setInterval(myFunction, 1000);
+    }, [fetchPreviousChat]);
 
     const onSend = async (msg: string) => {
         await chatApi.send(chatroomId, msg);
-        getAfterChat();
+        fetchAfterChat();
     };
 
     return (
         <div className={styles.page}>
             <TopBar2 title={title}/>
-            <div className={styles.content}>
+            <div className={styles.content} ref={contentRef}>
                 {messages.map((message, index) => (
                     <ChatMessage
                         ref={index === 0 ? topMessageRef : (index === messages.length - 1) ? bottomMessageRef : undefined}
