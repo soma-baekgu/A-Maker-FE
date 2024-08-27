@@ -73,7 +73,7 @@ export default function Page(props: Props) {
     };
 
     const fetchPreviousChat = useCallback(async () => {
-        const response = await chatApi.previousChat(chatroomId, previousCursor, 10);
+        const response = await chatApi.previousChat(chatroomId, previousCursor, 20);
         const data = response.data;
 
         if (data.status !== "2000"||data.data.size===0)
@@ -84,7 +84,7 @@ export default function Page(props: Props) {
     }, [previousCursor]);
 
     const fetchAfterChat = useCallback(async () => {
-        const response = await chatApi.afterChat(chatroomId, afterCursor, 10);
+        const response = await chatApi.afterChat(chatroomId, afterCursor, 20);
         const data = response.data;
 
         if (data.status !== "2000"||data.data.size===0)
@@ -92,7 +92,6 @@ export default function Page(props: Props) {
         const lastMessage = data.data.chatList[data.data.chatList.length - 1];
         setAfterCursor(lastMessage.id);
         setMessages(prevMessages => [...prevMessages, ...data.data.chatList]);
-        setIsLoadingChat(true);
     }, [afterCursor]);
 
 
@@ -117,8 +116,8 @@ export default function Page(props: Props) {
     }, [messages]);
 
 
+    //1초마다 새로운 채팅이 있는지 확인
     useEffect(() => {
-        //1초마다 새로운 채팅이 있는지 확인
         const intervalId = setInterval(async () => {
             console.log('새로운 채팅있는지 확인');
             if (isLoadingChat)
@@ -128,8 +127,9 @@ export default function Page(props: Props) {
                 const response = await chatApi.recentChat(chatroomId);
                 const data = response.data;
 
-                if (data.status !== "2000")
+                if (data.status !== "2000"||data.data.size===0)
                     return;
+                console.log(data.data.id+' vs ' +afterCursor);
                 if (data.data.id > afterCursor) {
                     console.log('새로운 채팅을 불러옵니다.');
                     await fetchAfterChat();
