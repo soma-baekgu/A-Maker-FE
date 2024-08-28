@@ -26,6 +26,7 @@ export default function TopBar({pageType, onCreateChat, onSearchChat, workspaceI
     const router = useRouter();
     const [workspace, setWorkspace] = useState<workspaceData | null>(null);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [pageIcon, setPageIcon] = useState<string>('');
 
     const fetchWorkspace = async () => {
         const res = await workspaceApi.get(workspaceId);
@@ -33,6 +34,10 @@ export default function TopBar({pageType, onCreateChat, onSearchChat, workspaceI
     }
 
     useEffect(() => {
+        if(pageType == '채팅') setPageIcon('/bar/chat.png');
+        else if(pageType == '홈') setPageIcon('/bar/home.png');
+        else if(pageType =='알림') setPageIcon('/bar/alarm.png');
+        else if(pageType == '설정') setPageIcon('/bar/setting.png');
         fetchWorkspace().then(() => setIsLoaded(true));
     }, []);
 
@@ -53,27 +58,30 @@ export default function TopBar({pageType, onCreateChat, onSearchChat, workspaceI
         <div className={styles.component}>
             {isLoaded ?
                 <>
-                    <Image src={workspace!.thumbnail} alt="workspaceImage" width={60} height={60} onClick={handleClick}/>
-                    <div className={styles.description}>{`${workspace!.name} - ${pageType}`}</div>
+                    <Image src={workspace!.thumbnail} alt="workspaceImage" width={60} height={60}
+                           className={styles.workspaceThumbnail} onClick={handleClick}/>
+                    <Image src={pageIcon} alt="pageIcon" width={24} height={24}/>
+                    {/*<div className={styles.description}>{`${workspace!.name} - ${pageType}`}</div>*/}
+                    <div className={styles.description}>{pageType}</div>
                 </>
                 :
                 <>
                     <div className={styles.workspace} onClick={handleClick}></div>
-                    <div className={styles.description}>{pageType}</div>
+                    <div className={styles.description}></div>
                 </>
             }
             {onCreateChat &&
-                <Image className={styles.button} src="/button/createChat.png" alt="createChat" width={60} height={60}
+                <Image className={styles.button} src="/bar/createChat.png" alt="createChat" width={32} height={32}
                        onClick={onCreateChat}/>}
             {onSearchChat &&
-                <Image className={styles.button} src="/button/searchChat.png" alt="searchChat" width={60} height={60}
+                <Image className={styles.button} src="/bar/searchChat.png" alt="searchChat" width={32} height={32}
                        onClick={onSearchChat}/>}
             {pageType == '설정' ?
-                <Image className={styles.button} src="/button/workspaceClose.png" alt="close" width={50} height={50}
+                <Image className={styles.button} src="/bar/close.png" alt="close" width={24} height={24}
                        onClick={handleBack}/>
                 :
                 <Link href={`/setting/${workspaceId}`}>
-                    <Image className={styles.button} src="/button/setting.png" alt="setting" width={60} height={60}/>
+                    <Image className={styles.button} src="/bar/setting_gray.png" alt="setting" width={32} height={32}/>
                 </Link>
             }
             {modalVisible && <WorkspaceModal onClose={onClose} visible={modalVisible}/>}
