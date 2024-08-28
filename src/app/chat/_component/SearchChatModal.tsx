@@ -50,7 +50,7 @@ export default function SearchChatModal({setVisible, onJoin, visible, workspaceI
         <div className={styles.background} onClick={handleClose}>
             <div className={styles.component} onClick={e => e.stopPropagation()}>
                 <div className={styles.logo}>
-                    <Image src="/button/searchChat.png" alt="searchChat" width={92} height={92}/>
+                    <Image src="/modal/searchChat.png" alt="searchChat" width={92} height={92}/>
                     <div className={styles.title}>채팅방 참여하기</div>
                 </div>
                 <div className={styles.chatRoomList}>
@@ -68,7 +68,10 @@ export default function SearchChatModal({setVisible, onJoin, visible, workspaceI
                         )
                     })}
                 </div>
-                <div className={styles.button} onClick={handleJoin}>참여</div>
+                <div className={styles.buttons}>
+                    <div className={styles.joinButton} onClick={handleJoin}>참여</div>
+                    <div className={styles.closeButton} onClick={handleClose}>닫기</div>
+                </div>
             </div>
         </div>
     )
