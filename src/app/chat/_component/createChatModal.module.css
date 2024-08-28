@@ -14,13 +14,13 @@
 .component {
     display: flex;
     flex-direction: column;
-    padding: 23px 47px;
+    padding: 30px 20px;
     box-sizing: border-box;
-    border: 1px solid black;
-    width: 479px;
-    height: 364px;
+    width: 85vw;
     background: white;
     justify-content: space-between;
+    border-radius: 12px;
+    gap: 20px;
 }
 
 .logo{
@@ -32,33 +32,69 @@
 
 .title {
     font-weight: bold;
-    font-size: 20px;
+    font-size: 16px;
+    color: #333333;
 }
 
 .inputSection{
     display: flex;
     flex-direction: column;
+    gap: 5px;
 }
 
 .inputGuide {
-    font-size: 20px;
+    font-size: 14px;
+    color: #666666;
 }
 
 .input {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    background-color: #f8f8f8;
+    border:none;
+    height: 44px;
+    padding: 0 5px;
+    font-size: 16px;
+    border-radius: 6px;
 }
 
-.button {
+.createButton {
     box-sizing: border-box;
-    border: 1px solid black;
-    font-size: 27px;
+    font-size: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex: 1;
+    height: 42px;
+    color: white;
+    background-color: #62cd98;
+    border-radius: 6px;
 }
 
-.icon {
+.closeButton {
+    box-sizing: border-box;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    height: 42px;
+    color: white;
+    background-color: #c5c5c5;
+    border-radius: 6px;
+}
+
+.createButton:hover {
+    opacity: 0.5;
+}
+
+.closeButton:hover {
+    opacity: 0.5;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
 }
