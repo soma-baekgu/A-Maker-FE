@@ -104,7 +104,7 @@ export default function Chat(props:Props) {
                     }
                 })}
             </div>
-            <BottomBar workspaceId={workspaceId}/>
+            <BottomBar workspaceId={workspaceId} pageType='채팅'/>
             {createModalVisible &&
                 <CreateChatModal setVisible={setCreateModalVisible} createChatRoom={createChatRoom}/>}
             {searchModalVisible &&

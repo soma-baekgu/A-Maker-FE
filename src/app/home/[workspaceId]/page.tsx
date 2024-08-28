@@ -10,13 +10,13 @@ type Props = {
 }
 
 export default function Home(props: Props) {
-    const workspaceId:number = Number(props.params.workspaceId);
+    const workspaceId: number = Number(props.params.workspaceId);
 
     return (
         <div className={styles.page}>
             <TopBar pageType='홈' workspaceId={workspaceId}/>
             <div className={styles.content}></div>
-            <BottomBar workspaceId={workspaceId}/>
+            <BottomBar pageType='홈' workspaceId={workspaceId}/>
         </div>
     );
 }

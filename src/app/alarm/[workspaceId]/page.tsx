@@ -15,7 +15,7 @@ export default function Alarm(props: Props) {
         <div className={styles.page}>
             <TopBar pageType='알림' workspaceId={workspaceId}/>
             <div className={styles.content}></div>
-            <BottomBar workspaceId={workspaceId}/>
+            <BottomBar workspaceId={workspaceId} pageType='알림'/>
         </div>
     );
 }
