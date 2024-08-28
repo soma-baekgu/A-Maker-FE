@@ -24,11 +24,15 @@ export default function ChatRoom({imageUrls, chatroomName, time, speaker, messag
             <div className={styles.description}>
                 <div className={styles.title}>
                     <div className={styles.chatroomName}>{chatroomName}</div>
+                    {messageCount > 0 &&
+
+                        <div className={styles.circle}>{messageCount}</div>
+                    }
                     {time && <div className={styles.time}>{timeString}</div>}
                 </div>
                 {message && (
                     chatType === 'GENERAL' && isString(message) ?
-                        <div className={styles.message}>{message}</div>
+                        <div className={styles.message}>{`${speaker} : ${message}`}</div>
                         :
                         chatType === 'IMAGE' && isFileContent(message) ?
                             <div className={styles.message}>{`사진 : ${message.fileName}`}</div>
@@ -42,11 +46,6 @@ export default function ChatRoom({imageUrls, chatroomName, time, speaker, messag
                                     :
                                     <div>잘못된 메세지</div>
                 )}
-                {messageCount > 0 &&
-                    <div className={styles.messageCount}>
-                        <div className={styles.circle}>{messageCount}</div>
-                    </div>
-                }
             </div>
         </div>
     );

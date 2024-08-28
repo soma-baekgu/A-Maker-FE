@@ -5,10 +5,13 @@
     flex-shrink: 1;
     flex-basis: 0;
     overflow: auto;
+    background: #f9f9f9;
 }
 
 .content {
+    padding: 40px 10px;
     display: flex;
+    gap: 10px;
     flex-direction: column;
     flex-grow: 1;
     flex-shrink: 1;
