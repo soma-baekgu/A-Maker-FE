@@ -34,10 +34,10 @@ export default function TopBar({pageType, onCreateChat, onSearchChat, workspaceI
     }
 
     useEffect(() => {
-        if(pageType == '채팅') setPageIcon('/bar/chat.png');
-        else if(pageType == '홈') setPageIcon('/bar/home.png');
-        else if(pageType =='알림') setPageIcon('/bar/alarm.png');
-        else if(pageType == '설정') setPageIcon('/bar/setting.png');
+        if(pageType == '채팅') setPageIcon('/topBar/chat.png');
+        else if(pageType == '홈') setPageIcon('/topBar/home.png');
+        else if(pageType =='알림') setPageIcon('/topBar/alarm.png');
+        else if(pageType == '설정') setPageIcon('/topBar/setting.png');
         fetchWorkspace().then(() => setIsLoaded(true));
     }, []);
 
