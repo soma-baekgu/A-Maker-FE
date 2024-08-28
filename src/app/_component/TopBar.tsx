@@ -71,17 +71,17 @@ export default function TopBar({pageType, onCreateChat, onSearchChat, workspaceI
                 </>
             }
             {onCreateChat &&
-                <Image className={styles.button} src="/bar/createChat.png" alt="createChat" width={32} height={32}
+                <Image className={styles.button} src="/topBar/createChat.png" alt="createChat" width={32} height={32}
                        onClick={onCreateChat}/>}
             {onSearchChat &&
-                <Image className={styles.button} src="/bar/searchChat.png" alt="searchChat" width={32} height={32}
+                <Image className={styles.button} src="/topBar/searchChat.png" alt="searchChat" width={32} height={32}
                        onClick={onSearchChat}/>}
             {pageType == '설정' ?
-                <Image className={styles.button} src="/bar/close.png" alt="close" width={24} height={24}
+                <Image className={styles.button} src="/topBar/close.png" alt="close" width={24} height={24}
                        onClick={handleBack}/>
                 :
                 <Link href={`/setting/${workspaceId}`}>
-                    <Image className={styles.button} src="/bar/setting_gray.png" alt="setting" width={32} height={32}/>
+                    <Image className={styles.button} src="/topBar/setting_gray.png" alt="setting" width={32} height={32}/>
                 </Link>
             }
             {modalVisible && <WorkspaceModal onClose={onClose} visible={modalVisible}/>}

@@ -1,13 +1,27 @@
 .component {
     display: flex;
-    height: 76px;
+    height: 70px;
     flex-direction: row;
     box-sizing: border-box;
-    border: 1px solid black;
+    background: #ffffff;
     justify-content: space-around;
     align-items: center;
 }
 
 .button:hover {
-    opacity: 0.8;
+    opacity: 0.5;
+}
+
+.button{
+    display: flex;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    font-size: 10px;
+}
+
+.component a{
+    text-decoration: none;
+    color: inherit;
 }
