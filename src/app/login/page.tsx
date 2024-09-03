@@ -39,12 +39,6 @@ export default function Page() {
             }
         }
         if (authCode) {
-            // login()
-            //     .then(() => workspaceApi.recent())
-            //     .then((res) => {
-            //         const workspaceId = res.data.data.workspaceId;
-            //         router.push(`/home/${workspaceId}`);
-            //     });
             login().then(() => router.push('/'));
         }
     }, [authCode]);
@@ -56,9 +50,12 @@ export default function Page() {
 
     return (
         <div className={styles.page}>
+            <Image src={"/login/pattern.png"} alt={"pattern"}
+                   className={styles.pattern}
+                   width={390} height={844}/>
             <div className={styles.logo}>A-MAKER</div>
             <div className={styles.button} onClick={onClickLogin}>
-                <Image src="/button/google.png" alt="google" width={58} height={54}/>
+                <Image src="/login/google.png" alt="google" width={24} height={24}/>
                 <div>Google 로그인</div>
             </div>
         </div>

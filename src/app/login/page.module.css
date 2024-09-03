@@ -1,15 +1,21 @@
 .page {
     display: flex;
-    gap: 203px;
     flex-direction: column;
     flex: 1;
     justify-content: center;
+    background-color: #61cd98;
+    position: relative;
 }
 
 .logo {
-    letter-spacing: 0.3em;
-    font-size: 40px;
+    letter-spacing: 0.2em;
+    font-size: 52px;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex: 1;
 }
 
 .button {
@@ -17,9 +23,29 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    font-size: 30px;
-    border: 1px solid black;
+    font-size: 16px;
+    color: #666666;
     gap: 10px;
-    padding: 9px 17px;
-    margin: 0 100px;
+    height: 56px;
+    margin-left: 16px;
+    margin-right: 16px;
+    margin-bottom: 70px;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+    z-index: 1;
+}
+
+.button:hover {
+    opacity: 0.8;
+}
+
+.pattern {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-size: cover;
+    width: 100%;
+    height: 100%;
 }
