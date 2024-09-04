@@ -5,6 +5,7 @@
     justify-content: center;
     background-color: white;
     position: relative;
+    overflow: clip;
 }
 
 .help {
@@ -42,6 +43,8 @@
     margin-right: 16px;
     margin-bottom: 70px;
     border-radius: 6px;
+    gap: 10px;
+    z-index: 1;
 }
 
 .button:hover {

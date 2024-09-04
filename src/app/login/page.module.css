@@ -5,6 +5,7 @@
     justify-content: center;
     background-color: #61cd98;
     position: relative;
+    overflow: clip;
 }
 
 .logo {

@@ -58,7 +58,7 @@ export default function TopBar({pageType, onCreateChat, onSearchChat, workspaceI
         <div className={styles.component}>
             {isLoaded ?
                 <>
-                    <Image src={workspace!.thumbnail} alt="workspaceImage" width={60} height={60}
+                    <Image src={workspace!.thumbnail} alt="workspaceImage" width={42} height={42}
                            className={styles.workspaceThumbnail} onClick={handleClick}/>
                     <Image src={pageIcon} alt="pageIcon" width={24} height={24}/>
                     {/*<div className={styles.description}>{`${workspace!.name} - ${pageType}`}</div>*/}
