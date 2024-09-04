@@ -1,22 +1,59 @@
-.page{
+.page {
     display: flex;
     flex-direction: column;
-    gap: 26px;
-    height:100vh;
+    flex: 1;
+    justify-content: center;
+    background-color: white;
+    position: relative;
+}
+
+.help {
+    text-align: center;
+    flex: 1;
+    display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    gap: 60px;
+    margin-bottom: 100px;
 }
 
-.help{
-    font-size: 30px;
-    margin: 0 50px;
-    text-align: center;
+.helpText1{
+    font-size: 16px;
+    color: #61cd98;
 }
 
-.button{
-    font-size: 30px;
-    padding: 9px 17px;
+.helpText2{
+    font-size: 21px;
+    color: #333333;
+}
+
+.button {
+    font-size: 16px;
     box-sizing: border-box;
-    border: 1px solid black;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background-color: #61cd98;
+    height: 56px;
+    margin-left: 16px;
+    margin-right: 16px;
+    margin-bottom: 70px;
+    border-radius: 6px;
+}
+
+.button:hover {
+    opacity: 0.8;
+}
+
+.pattern {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-size: cover;
+    width: 100%;
+    height:auto;
 }
