@@ -22,6 +22,7 @@ export default function Page() {
             <Image src={"/login/pattern2.png"} alt={"pattern"}
                    className={styles.pattern}
                    width={390} height={844}/>
+            <div className={styles.logo}>A-MAKER</div>
             <div className={styles.help}>
                 <div className={styles.helpText1}>Let&apos;s start!</div>
                 <div className={styles.helpText2}>워크스페이스를 만들어서<br/>팀원들을 초대해보세요!</div>
