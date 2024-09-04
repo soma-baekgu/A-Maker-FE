@@ -9,24 +9,17 @@ import authApi from "@/app/(api)/auth";
 import {useStore} from "@/app/store";
 import workspaceApi from "@/app/(api)/workspace";
 
-interface AccessTokenStore {
-    setAccessToken: (token: string) => void;
-}
-
-interface EmailStore {
-    setEmail: (email: string) => void;
-}
-
-interface PictureStore {
-    setPicture: (picture: string) => void;
+interface StoreState {
+    setAccessToken: (token: string) => void,
+    setEmail: (email: string) => void,
+    setPicture: (picture: string) => void,
+    setName: (name: string) => void
 }
 
 export default function Page() {
     const router = useRouter();
     const [authCode, setAuthCode] = useState<string | null>(null);
-    const {setAccessToken} = useStore() as AccessTokenStore;
-    const {setEmail} = useStore() as EmailStore;
-    const {setPicture} = useStore() as PictureStore;
+    const {setAccessToken, setEmail, setPicture, setName} = useStore() as StoreState;
 
     useEffect(() => {
         const queryParam = new URLSearchParams(window.location.search).get('code');
@@ -41,6 +34,7 @@ export default function Page() {
                 setAccessToken(res.data.data.token);
                 setEmail(res.data.data.email);
                 setPicture(res.data.data.picture);
+                setName(res.data.data.name);
                 return res;
             }
         }
