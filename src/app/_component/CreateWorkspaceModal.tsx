@@ -21,15 +21,15 @@ export default function CreateWorkspaceModal({setVisible, createWorkspace}: Prop
 
     const handleCreateWorkspace = async () => {
         await createWorkspace(inputValue);
+        setVisible(false);
     }
 
     return (
         <div className={styles.background} onClick={handleClose}>
             <div className={styles.component} onClick={e => e.stopPropagation()}>
                 <div className={styles.logo}>
-                    <Image src="/button/workspace.png" alt="workspace" width={147}
-                           height={104}/>
-                    <div className={styles.title}>새로운 워크스페이스</div>
+                    <Image src="/modal/createWorkspace.png" alt="workspace" width={95}
+                           height={95}/>
                 </div>
                 <div className={styles.inputSection}>
                     <div className={styles.inputGuide}>워크스페이스 이름을 입력해주세요.</div>

@@ -4,9 +4,10 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100%;
+    max-width: 600px;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
     display: flex;
     align-items: flex-start;
 }
@@ -14,11 +15,11 @@
 .component {
     display: flex;
     flex-direction: column;
-    width: 70vw;
+    width: 70%;
     height: 100%;
     box-sizing: border-box;
-    border: 1px solid black;
     background: white;
+    border-radius: 0 12px 12px 0;
 }
 
 .list {
@@ -26,6 +27,8 @@
     flex-direction: column;
     overflow: auto;
     flex: 1;
+    margin: 30px 15px;
+    gap:12px;
 }
 
 .workspace {
@@ -33,24 +36,105 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    gap: 21px;
-    padding: 13px 21px;
-    font-size: 27px;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
+    gap: 10px;
+    font-size: 14px;
+    height: 48px;
+    color:#999999;
+    padding: 14px 12px;
+    border-radius: 6px;
 }
 
-.button{
-    padding: 13px 9px;
-    margin: 25px;
-    font-size: 27px;
+.currentWorkspace {
+    background-color: rgba(73, 177, 126, 0.12);
+}
+
+.workspace .icon{
+    visibility: hidden;
+}
+
+.currentWorkspace .icon{
+    visibility: visible;
+}
+
+.workspace:hover {
+    opacity: 0.8;
+}
+
+.button {
+    font-size: 14px;
     box-sizing: border-box;
-    border: 1px solid black;
-    text-decoration: none;
-
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background-color: #61cd98;
+    height: 48px;
+    border-radius: 6px;
+    gap: 5px;
+    z-index: 1;
+    margin-left: 16px;
+    margin-right: 16px;
+    margin-bottom: 40px;
 }
 
-.component a{
+.button:hover {
+    opacity: 0.8;
+}
+
+.component a {
     text-decoration: none;
     color: inherit;
+}
+
+.profile {
+    padding-top: 22px;
+    display: flex;
+    height: 90px;
+    border-bottom: 1px solid #eeeeee;
+    align-items: center;
+    gap: 10px;
+}
+
+.name {
+    flex: 1;
+}
+
+.picture {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    margin-left: 15px;
+}
+
+.logout {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    margin-right: 15px;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.logout:hover {
+    opacity: 0.8;
+}
+
+.name {
+    display: flex;
+    gap: 5px;
+    align-items: flex-end;
+}
+
+.name1 {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.name2 {
+    font-size: 12px;
+}
+
+.workspaceName{
+    flex: 1;
 }
