@@ -17,11 +17,16 @@ interface EmailStore {
     setEmail: (email: string) => void;
 }
 
+interface PictureStore {
+    setPicture: (picture: string) => void;
+}
+
 export default function Page() {
     const router = useRouter();
     const [authCode, setAuthCode] = useState<string | null>(null);
     const {setAccessToken} = useStore() as AccessTokenStore;
     const {setEmail} = useStore() as EmailStore;
+    const {setPicture} = useStore() as PictureStore;
 
     useEffect(() => {
         const queryParam = new URLSearchParams(window.location.search).get('code');
@@ -35,6 +40,7 @@ export default function Page() {
                 const res = await authApi.login(authCode);
                 setAccessToken(res.data.data.token);
                 setEmail(res.data.data.email);
+                setPicture(res.data.data.picture);
                 return res;
             }
         }

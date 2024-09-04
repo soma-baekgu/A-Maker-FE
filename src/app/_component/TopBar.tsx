@@ -34,10 +34,10 @@ export default function TopBar({pageType, onCreateChat, onSearchChat, workspaceI
     }
 
     useEffect(() => {
-        if(pageType == '채팅') setPageIcon('/topBar/chat.png');
-        else if(pageType == '홈') setPageIcon('/topBar/home.png');
-        else if(pageType =='알림') setPageIcon('/topBar/alarm.png');
-        else if(pageType == '설정') setPageIcon('/topBar/setting.png');
+        if (pageType == '채팅') setPageIcon('/topBar/chat.png');
+        else if (pageType == '홈') setPageIcon('/topBar/home.png');
+        else if (pageType == '알림') setPageIcon('/topBar/alarm.png');
+        else if (pageType == '설정') setPageIcon('/topBar/setting.png');
         fetchWorkspace().then(() => setIsLoaded(true));
     }, []);
 
@@ -81,10 +81,12 @@ export default function TopBar({pageType, onCreateChat, onSearchChat, workspaceI
                        onClick={handleBack}/>
                 :
                 <Link href={`/setting/${workspaceId}`}>
-                    <Image className={styles.button} src="/topBar/setting_gray.png" alt="setting" width={32} height={32}/>
+                    <Image className={styles.button} src="/topBar/setting_gray.png" alt="setting" width={32}
+                           height={32}/>
                 </Link>
             }
-            {modalVisible && <WorkspaceModal onClose={onClose} visible={modalVisible}/>}
+            {modalVisible &&
+                <WorkspaceModal onClose={onClose} visible={modalVisible} currentWorkspaceId={workspaceId}/>}
         </div>
     )
 };
