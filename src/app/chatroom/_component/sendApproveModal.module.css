@@ -1,11 +1,11 @@
 .background {
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    position: fixed;
+    z-index: 1;
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,20 +14,19 @@
 .component {
     display: flex;
     flex-direction: column;
-    padding: 23px 47px;
+    padding: 30px 20px;
     box-sizing: border-box;
-    border: 1px solid black;
-    width: 479px;
-    height: 364px;
+    width: 88%;
     background: white;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
+    gap:20px;
+    border-radius: 12px;
 }
 
 .title {
     font-weight: bold;
-    font-size: 27px;
+    font-size: 16px;
+    text-align: center;
+    color: #333333;
 }
 
 .content {
@@ -36,25 +35,46 @@
     gap: 20px;
     width: 100%;
     text-align: center;
+    color: #666666;
 }
 
 .fileName {
-    font-size: 27px;
     flex: 1;
+    font-size: 14px;
+}
+
+.fileName2{
+    font-weight: bold;
 }
 
 .buttons {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    gap: 10px;
 }
 
-.button{
+.sendButton{
     box-sizing: border-box;
-    border: 1px solid black;
-    font-size: 27px;
+    font-size: 14px;
+    display: flex;
     align-items: center;
     justify-content: center;
-    padding: 5px 10px;
-    cursor: pointer;
+    flex: 1;
+    height: 42px;
+    color: white;
+    background-color: #62cd98;
+    border-radius: 6px;
+}
+
+.closeButton{
+    box-sizing: border-box;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    height: 42px;
+    color: white;
+    background-color: #c5c5c5;
+    border-radius: 6px;
 }
