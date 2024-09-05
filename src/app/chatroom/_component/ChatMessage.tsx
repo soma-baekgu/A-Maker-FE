@@ -32,20 +32,23 @@ const ChatMessage = React.forwardRef<HTMLDivElement, Props>(({
         isMine ? (
             <div ref={ref} className={`${styles.component} ${styles.right}`}>
                 <div className={styles.message}>
+                    <div className={styles.timeRight}>{timeString}</div>
                     <ContentByChatType chatType={chatType} content={content} messageId={messageId}
                                        chatroomId={chatroomId}/>
-                    <div className={styles.time}>{timeString}</div>
                 </div>
             </div>
         ) : (
             <div ref={ref} className={`${styles.component} ${styles.left}`}>
-                <img src={speakerImageUrl} className={styles.speakerImage}/>
-                <div className={styles.description}>
+                <div className={styles.speaker}>
+                    <Image src={speakerImageUrl} className={styles.speakerImage} alt={"speakerImage"} width={40}
+                           height={40}/>
                     <div className={styles.speakerName}>{speakerName}</div>
+                </div>
+                <div className={styles.description}>
                     <div className={styles.message}>
                         <ContentByChatType chatType={chatType} content={content} messageId={messageId}
                                            chatroomId={chatroomId}/>
-                        <div className={styles.time}>{timeString}</div>
+                        <div className={styles.timeLeft}>{timeString}</div>
                     </div>
                 </div>
             </div>

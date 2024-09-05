@@ -51,6 +51,7 @@ export default function Page(props: Props) {
     const [isLoadingChat, setIsLoadingChat] = useState(false);
     const contentRef = useRef<HTMLDivElement | null>(null);
     const [scrollHeight,setScrollHeight] = useState(0);
+    const [isSendMyChat, setIsSendMyChat] = useState(false);
 
     const fetchChatRoom = async () => {
         const res = await chatRoomApi.get(chatroomId);
@@ -101,17 +102,23 @@ export default function Page(props: Props) {
     }, []);
 
     useEffect(() => {
-        if (bottomMessageRef.current)
-            bottomMessageRef.current!.scrollIntoView({behavior: 'smooth'});
-        if(contentRef.current) {
-            const currentScrollHeight = contentRef.current.scrollHeight;
-            if (currentScrollHeight !== undefined) {
-                const scrollDifference = currentScrollHeight - scrollHeight;
-                if (scrollDifference > 0) {
-                    contentRef.current.scrollTop += scrollDifference;
-                }
+        if(isSendMyChat) {
+            if (bottomMessageRef.current) {
+                bottomMessageRef.current!.scrollIntoView({ behavior: 'smooth' });
             }
-            setScrollHeight(contentRef.current.scrollHeight);
+            setIsSendMyChat(false);
+        }
+        else {
+            if (contentRef.current) {
+                const currentScrollHeight = contentRef.current.scrollHeight;
+                if (currentScrollHeight !== undefined) {
+                    const scrollDifference = currentScrollHeight - scrollHeight;
+                    if (scrollDifference > 0) {
+                        contentRef.current.scrollTop += scrollDifference;
+                    }
+                }
+                setScrollHeight(contentRef.current.scrollHeight);
+            }
         }
     }, [messages]);
 
@@ -175,7 +182,8 @@ export default function Page(props: Props) {
 
     const onSend = async (msg: string) => {
         await chatApi.send(chatroomId, msg);
-        fetchAfterChat();
+        setIsSendMyChat(true);
+        await fetchAfterChat();
     };
 
     return (

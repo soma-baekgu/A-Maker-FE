@@ -1,6 +1,7 @@
 import styles from './eventMessage.module.css';
 import ProfileImageGroup from "@/app/_component/ProfileImageGroup";
 import {useRouter} from "next/navigation";
+import Image from "next/image";
 
 type Props = {
     eventTitle: string,
@@ -71,7 +72,10 @@ export default function EventMessage({
             <div className={styles.content}>
                 <ProfileImageGroup imageUrls={users} size={'small'}/>
                 <div className={styles.description}>
-                    <div className={styles.right}>{timeRemaining}</div>
+                    <div className={styles.right}>
+                        <Image src="/chatting/time.png" alt="clock" width={16} height={16}/>
+                        <span>{timeRemaining}</span>
+                    </div>
                     <div className={styles.left}>{eventTitle}</div>
                     <div className={styles.right}>
                         {eventType === 'reply' ?

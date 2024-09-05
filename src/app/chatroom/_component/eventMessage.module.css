@@ -1,40 +1,47 @@
-.component{
+.component {
     display: flex;
     flex-direction: column;
     gap: 10px;
     cursor: pointer;
+    color: #333333;
 }
 
-.notice{
-    font-size: 17px;
+.notice {
+    font-size: 14px;
+    padding: 8px 16px;
 }
 
-.content{
+.content {
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap:23px;
-    border: 1px solid black;
-    padding: 13px 17px;
-    width:350px;
+    gap: 15px;
+    background-color: rgba(97, 205, 152, 0.2);
+    width: 307px;
+    padding: 16px;
 }
 
-.description{
+.description {
     display: flex;
     flex-direction: column;
     flex: 1;
+    gap: 20px;
 }
 
-.right{
-    font-size: 17px;
+.right {
+    font-size: 14px;
     width: 100%;
-    text-align: right;
+    color: #666666;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 5px;
+    align-items: center;
 }
 
-.left{
-    font-size: 17px;
-    font-weight: bold;
+.left {
+    font-size: 16px;
     width: 100%;
     text-align: left;
 }
