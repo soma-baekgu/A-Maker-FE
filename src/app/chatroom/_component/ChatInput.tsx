@@ -38,10 +38,10 @@ export default function ChatInput({onSend, chatroomId}: Props) {
         <div>
             <div className={styles.component}>
                 {bottomBarVisible ?
-                    <Image src="/button/close.png" alt="close" width={47} height={47} className={styles.plusButton}
+                    <Image src="/chatting/close.png" alt="close" width={34} height={34} className={styles.button}
                            onClick={onPlusClick}/>
                     :
-                    <Image src="/button/plus.png" alt="plus" width={47} height={47} className={styles.plusButton}
+                    <Image src="/chatting/plus.png" alt="plus" width={34} height={34} className={styles.button}
                            onClick={onPlusClick}/>
                 }
                 <input className={styles.input} type="text" placeholder="채팅을 입력하세요." onChange={handleChange}

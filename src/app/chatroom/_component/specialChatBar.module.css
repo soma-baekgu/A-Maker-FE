@@ -1,27 +1,39 @@
 .component {
     display: flex;
-    flex-wrap: wrap;
     background: white;
-    flex-direction: row;
-    padding: 10px 60px;
+    flex-direction: column;
     box-sizing: border-box;
-    border: 1px solid black;
     justify-content: space-around;
+    border-top: 1px solid #efefef;
+    height: 200px;
 }
 
 .button {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 99px;
-    height: 99px;
-    background: white;
-    box-sizing: border-box;
-    border: 1px solid black;
-    margin: 10px 0;
+    flex-direction: column;
     cursor: pointer;
+    flex: 1;
+    text-decoration: none;
+    font-size: 12px;
+    gap: 5px;
+    color: #333333;
+}
+
+.button:hover {
+    opacity: 0.8;
+}
+
+.empty {
+    flex: 1;
 }
 
 .none {
     display: none;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
 }

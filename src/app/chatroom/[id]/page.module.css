@@ -14,4 +14,6 @@
     flex-shrink: 1;
     flex-basis: 0;
     overflow: auto;
+    background-color: #f9f9f9;
+    padding: 16px;
 }

@@ -24,10 +24,10 @@ export default function SendApproveModal({title, fileName, setVisible, send}: Pr
             }}>
                 <div className={styles.title}>{title}</div>
                 <div className={styles.content}>
-                    <div className={styles.fileName}>{fileName}</div>
+                    <div className={styles.fileName}><span className={styles.fileName2}>{fileName}</span>를 전송하시겠습니까?</div>
                     <div className={styles.buttons}>
-                        <div className={styles.button} onClick={handleClose}>취소</div>
-                        <div className={styles.button} onClick={handleSend}>전송</div>
+                        <div className={styles.sendButton} onClick={handleSend}>전송</div>
+                        <div className={styles.closeButton} onClick={handleClose}>닫기</div>
                     </div>
                 </div>
             </div>

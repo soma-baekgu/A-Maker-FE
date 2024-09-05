@@ -105,23 +105,34 @@ export default function SpecialChatBar({chatroomId}: Props) {
 
     return (
         <div className={styles.component}>
-            <div className={styles.button}>
-                <Image src="/button/special/reaction.png" alt="reaction" width={60} height={53}/>
+            <div className={styles.buttons}>
+                <div className={styles.button}>
+                    <Image src="/specialChatBar/reaction.png" alt="reaction" width={32} height={32}/>
+                    <div>응답 요청하기</div>
+                </div>
+                <Link className={styles.button} href={`/chatroom/${chatroomId}/reply`}>
+                    <Image src="/specialChatBar/reply.png" alt="reply" width={32} height={32}/>
+                    <div>답변 요청하기</div>
+                </Link>
+                <div className={styles.button}>
+                    <Image src="/specialChatBar/task.png" alt="task" width={32} height={32}/>
+                    <div>업무 요청하기</div>
+                </div>
             </div>
-            <Link className={styles.button} href={`/chatroom/${chatroomId}/reply`}>
-                <Image src="/button/special/reply.png" alt="reply" width={60} height={60}/>
-            </Link>
-            <div className={styles.button}>
-                <Image src="/button/special/task.png" alt="task" width={60} height={61}/>
-            </div>
-            <div className={styles.button}>
-                <Image src="/button/special/image.png" alt="image" width={55} height={54} onClick={handleImageInput}/>
-                <input type="file" ref={imageInputRef} accept="image/*" className={styles.none}
-                       onChange={handleChangeImage}/>
-            </div>
-            <div className={styles.button}>
-                <Image src="/button/special/file.png" alt="file" width={45} height={52} onClick={handleFileInput}/>
-                <input type="file" ref={fileInputRef} className={styles.none} onChange={handleChangeFile}/>
+            <div className={styles.buttons}>
+                <div className={styles.button}>
+                    <Image src="/specialChatBar/image.png" alt="image" width={32} height={32}
+                           onClick={handleImageInput}/>
+                    <input type="file" ref={imageInputRef} accept="image/*" className={styles.none}
+                           onChange={handleChangeImage}/>
+                    <div>이미지 전송</div>
+                </div>
+                <div className={styles.button}>
+                    <Image src="/specialChatBar/file.png" alt="file" width={32} height={32} onClick={handleFileInput}/>
+                    <input type="file" ref={fileInputRef} className={styles.none} onChange={handleChangeFile}/>
+                    <div>파일 전송</div>
+                </div>
+                <div className={styles.empty}></div>
             </div>
             {fileInputVisible &&
                 <SendApproveModal title="파일 전송" fileName={fileName} setVisible={setFileInputVisible} send={sendFile}/>}

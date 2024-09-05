@@ -15,7 +15,7 @@ export default function TopBar2({title}: Props) {
 
     return (
         <div className={styles.component}>
-            <Image className={styles.backButton} src="/button/back.png" alt="back" width={82} height={82}
+            <Image className={styles.backButton} src="/topbar/back.png" alt="back" width={24} height={24}
                    onClick={onBack}/>
             <div className={styles.title}>{title}</div>
         </div>

@@ -1,19 +1,21 @@
 .component {
-    padding: 11px 15px;
+    height: 70px;
     display: flex;
     width: 100%;
     flex-direction: row;
     box-sizing: border-box;
-    border: 1px solid black;
     align-items: center;
+    background-color: white;
+    padding: 0 16px;
+    box-shadow: 0 -21px 40px rgba(0, 0, 0, 0.03);
 }
 
-.plusButton:hover {
+.button:hover {
     opacity: 0.8;
 }
 
 .input {
-    font-size: 23px;
+    font-size: 16px;
     display: flex;
     align-content: center;
     justify-content: center;
@@ -21,11 +23,23 @@
     flex: 1;
     outline: none;
     border: none;
+    color: #333333;
+}
+
+.input::placeholder {
+    color: #999999;
 }
 
 .sendButton {
-    font-size: 27px;
-    padding: 10px;
+    font-size: 16px;
+    padding: 15px 25px;
     box-sizing: border-box;
-    border: 1px solid black;
+    background-color: #61cd98;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.sendButton:hover {
+    opacity: 0.8;
 }

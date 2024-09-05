@@ -20,14 +20,14 @@ export default function ContentByChatType({chatType, content, messageId, chatroo
                 chatType === 'IMAGE' && isFileContent(content) ?
                     <a href={content.path}>
                         <Image className={styles.content} src={content.path}
-                               alt="img" width={300} height={300}/>
+                               alt="img" width={250} height={250}/>
                     </a>
                     :
                     chatType === 'FILE' && isFileContent(content) ?
                         <a href={content.path}>
                             <div className={`${styles.file} ${styles.content}`}>
-                                <div className={styles.fileIcon}>
-                                    <Image src="/button/file.png" alt="file" width={20} height={20}/>
+                                <div>
+                                    <Image src="/chatting/file.png" alt="file" width={16} height={16}/>
                                 </div>
                                 <div>
                                     {content.fileName}
@@ -36,7 +36,7 @@ export default function ContentByChatType({chatType, content, messageId, chatroo
                         </a>
                         :
                         chatType === 'REPLY' && isReplyEventContent(content) ?
-                            <div className={styles.content}>
+                            <div className={styles.content2}>
                                 <EventMessage
                                     eventTitle={content.eventTitle}
                                     users={content.users}
