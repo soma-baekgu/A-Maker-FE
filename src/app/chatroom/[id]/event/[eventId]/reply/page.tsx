@@ -107,7 +107,7 @@ export default function Page(props: Props) {
                                 <div className={styles.description}>답변 대기중</div>
                                 <div className={styles.row}>
                                     {event.waitingUser?.map((user, index) => (
-                                        <Profile key={index} name={user.name} img={user.picture}/>
+                                        <Profile key={index} name={user.name} img={user.picture} isComment={false}/>
                                     ))}
                                 </div>
                             </div>
@@ -115,7 +115,7 @@ export default function Page(props: Props) {
                                 <div className={styles.description}>답변 완료</div>
                                 <div className={styles.row}>
                                     {event.finishUser?.map((user, index) => (
-                                        <Profile key={index} name={user.name} img={user.picture}/>
+                                        <Profile key={index} name={user.name} img={user.picture} isComment={false}/>
                                     ))}
                                 </div>
                             </div>
@@ -130,7 +130,7 @@ export default function Page(props: Props) {
                                 <div className={styles.description}>이벤트 생성자</div>
                                 <div className={styles.row}>
                                     {event.eventCreator &&
-                                        <Profile name={event.eventCreator.name} img={event.eventCreator.picture}/>
+                                        <Profile name={event.eventCreator.name} img={event.eventCreator.picture} isComment={false}/>
                                     }
                                 </div>
                             </div>

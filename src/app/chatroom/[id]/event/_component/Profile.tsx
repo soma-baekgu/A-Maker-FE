@@ -7,7 +7,7 @@ type Props = {
     isComment: boolean
 }
 
-export default function Profile({name, img, isComment = false}: Props) {
+export default function Profile({name, img, isComment}: Props) {
     return (
         <div className={styles.component}>
             <Image className={styles.profileImg} width={24} height={24} src={img} alt='profile'></Image>
