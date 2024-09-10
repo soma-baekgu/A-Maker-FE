@@ -4,25 +4,36 @@
     width: 100%;
     flex-direction: row;
     box-sizing: border-box;
-    border: 1px solid black;
     align-items: center;
+    background-color: white;
+    box-shadow: 0 -21px 40px rgba(0, 0, 0, 0.03)
 }
 
 .input {
-    font-size: 23px;
+    font-size: 14px;
     display: flex;
     align-content: center;
     justify-content: center;
-    margin: 11px;
     flex: 1;
     outline: none;
     border: none;
+    color: #333333;
+}
+
+.input::placeholder {
+    color: #999999
 }
 
 .sendButton {
-    font-size: 27px;
-    padding: 10px;
+    font-size: 14px;
+    padding: 16px 25px;
     box-sizing: border-box;
-    border: 1px solid black;
     cursor: pointer;
+    background-color: #61cd98;
+    color: white;
+    border-radius: 6px;
+}
+
+.sendButton:hover {
+    opacity: 0.8
 }

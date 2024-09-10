@@ -98,51 +98,54 @@ export default function Page(props: Props) {
             <TopBar2 title="이벤트 상세"/>
             {isLoaded && event ? (
                 <div className={styles.main}>
-                    <div className={styles.title}>
-                        <Image src="/icon/reply.png" alt="reply" width={32} height={32}/>
-                        <div className={styles.titleText}>{event.eventTitle}</div>
+                    <div className={styles.body}>
+                        <div className={styles.title}>
+                            <div className={styles.titleText}>{event.eventTitle}</div>
+                        </div>
+                        <div className={styles.info}>
+                            <div className={styles.value}>
+                                <div className={styles.description}>답변 대기중</div>
+                                <div className={styles.row}>
+                                    {event.waitingUser?.map((user, index) => (
+                                        <Profile key={index} name={user.name} img={user.picture} isComment={false}/>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className={styles.value}>
+                                <div className={styles.description}>답변 완료</div>
+                                <div className={styles.row}>
+                                    {event.finishUser?.map((user, index) => (
+                                        <Profile key={index} name={user.name} img={user.picture} isComment={false}/>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className={styles.value}>
+                                <div className={styles.description}>마감 기한</div>
+                                <div
+                                    className={styles.row}>{new Date(event.deadLine).toLocaleTimeString('ko-KR', options)}</div>
+                            </div>
+
+                            <div className={styles.value}>
+                                <div className={styles.description}>이벤트 생성자</div>
+                                <div className={styles.row}>
+                                    {event.eventCreator &&
+                                        <Profile name={event.eventCreator.name} img={event.eventCreator.picture} isComment={false}/>
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+                        <div className={styles.detailText}>{event.eventDetails}</div>
                     </div>
-                    <div className={`${styles.section} ${styles.info}`}>
-                        <div className={styles.value}>
-                            <div className={styles.description}>답변 대기중</div>
-                            <div className={styles.row}>
-                                {event.waitingUser?.map((user, index) => (
-                                    <Profile key={index} name={user.name} img={user.picture}/>
-                                ))}
-                            </div>
-                        </div>
-                        <div className={styles.value}>
-                            <div className={styles.description}>답변 완료</div>
-                            <div className={styles.row}>
-                                {event.finishUser?.map((user, index) => (
-                                    <Profile key={index} name={user.name} img={user.picture}/>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className={styles.value}>
-                            <div className={styles.description}>마감 기한</div>
-                            <div
-                                className={styles.row}>{new Date(event.deadLine).toLocaleTimeString('ko-KR', options)}</div>
-                        </div>
-
-                        <div className={styles.value}>
-                            <div className={styles.description}>이벤트 생성자</div>
-                            <div className={styles.row}>
-                                {event.eventCreator &&
-                                    <Profile name={event.eventCreator.name} img={event.eventCreator.picture}/>
-                                }
-                            </div>
-                        </div>
-
-                    </div>
-                    <div className={`${styles.detailText} ${styles.section}`}>{event.eventDetails}</div>
                     <div className={styles.comments}>
                         {
                             comments.map((comment, index) => (
-                                <div key={index} className={`${styles.section} ${styles.comment}`}>
+                                <div key={index} className={styles.comment}>
                                     <div className={styles.commentTitle}>
-                                        <Profile name={comment.userResponse.name} img={comment.userResponse.picture}/>
+                                        <Profile name={comment.userResponse.name}
+                                                 img={comment.userResponse.picture}
+                                        isComment={true}/>
                                         <div className={styles.time}>{timeAgo(new Date(comment.createdAt))}</div>
                                     </div>
                                     <div className={styles.content}>{comment.content}</div>
