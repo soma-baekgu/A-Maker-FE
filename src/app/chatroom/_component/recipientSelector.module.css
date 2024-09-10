@@ -4,39 +4,39 @@
 }
 
 .description {
-    font-size: 27px;
+    font-size: 14px;
+    color:#666666;
+    margin-bottom: 10px;
 }
 
 .element {
     display: flex;
     flex-direction: row;
-    gap: 10px;
-    padding: 10px 18px;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
+    gap: 12px;
+    padding: 12px 2px;
+    border-top: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
     align-items: center;
 }
 
 .image {
-    width: 75px;
-    aspect-ratio: 1;
     border-radius: 50%;
-    border: 1px solid black;
 }
 
 .name {
-    font-size: 25px;
     flex: 1;
+    font-size: 14px;
+    color:#666666;
 }
 
 .checkbox {
     appearance: none;
     -webkit-appearance: none;
     position: relative;
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     background: white;
-    border: 1px solid black;
+    border: 1px solid #dddddd;
     border-radius: 50%;
     cursor: pointer;
     outline: none;
@@ -45,10 +45,10 @@
 .checkbox:checked::before {
     content: '';
     position: absolute;
-    top: 4px;
-    left: 4px;
+    top: 2px;
+    left: 2px;
     width: 10px;
     height: 10px;
-    background: black;
+    background: #61cd98;
     border-radius: 50%;
 }

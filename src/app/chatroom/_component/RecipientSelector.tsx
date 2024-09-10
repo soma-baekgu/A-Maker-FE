@@ -2,6 +2,7 @@
 import styles from './recipientSelector.module.css';
 import {ChangeEvent, useEffect, useState} from "react";
 import chatRoomApi from "@/app/(api)/chatRoom";
+import Image from "next/image";
 
 type Props = {
     assignees: string[],
@@ -49,7 +50,8 @@ export default function RecipientSelector({assignees, setAssignees, chatroomId}:
             <div className={styles.description}>답변을 요청할 인원</div>
             {recipients.map((recipient, index) => (
                 <div className={styles.element} key={index}>
-                    <img className={styles.image} src={recipient.picture} alt="picture"></img>
+                    <Image className={styles.image} src={recipient.picture} alt="picture"
+                           width={46} height={46}/>
                     <div className={styles.name}>{recipient.name}</div>
                     <input
                         className={styles.checkbox}

@@ -1,22 +1,43 @@
 .component {
     display: flex;
     flex-direction: column;
-    gap: 62px;
+    gap: 30px;
 }
 
 .description {
-    font-size: 27px;
+    font-size: 14px;
+    color:#666666;
+    margin-bottom: 10px;
 }
 
 .titleInput {
-    font-size: 22px;
-    height: 53px;
+    font-size: 12px;
     width: 100%;
+    color: #333333;
+    outline: none;
+    border: none;
+    background-color: #f8f8f8;
+    padding: 16px;
+    box-sizing: border-box;
 }
 
 .detailInput {
-    font-size: 22px;
-    height: 302px;
+    font-size: 12px;
+    min-height: 90px;
     width: 100%;
+    color: #333333;
+    outline: none;
+    border: none;
+    background-color: #f8f8f8;
+    padding: 16px;
+    box-sizing: border-box;
     resize: none;
+}
+
+.titleInput::placeholder {
+    color: #999999;
+}
+
+.detailInput::placeholder {
+    color: #999999;
 }

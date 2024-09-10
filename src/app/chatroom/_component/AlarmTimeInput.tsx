@@ -30,19 +30,25 @@ export default function AlarmTimeInput({
 
     return (
         <div className={styles.component}>
-            <div className={styles.description}>알림 시작 시간</div>
-            <div className={styles.startTimeInput}>
-                <div className={styles.text}>마감</div>
-                <NumberPicker values={hourNumbers} setValue={setNotificationHour} initialValue={'1'}/>
-                <div className={styles.text}>시간</div>
-                <NumberPicker values={minuteNumbers} setValue={setNotificationMinute} initialValue={'05'}/>
-                <div className={styles.text}>분 전</div>
+            <div>
+                <div className={styles.description}>알림 시작 시간</div>
+                <div className={styles.startTimeInput}>
+                    <div className={styles.text}>마감</div>
+                    <NumberPicker values={hourNumbers} setValue={setNotificationHour} initialValue={'1'}/>
+                    <div className={styles.text}>시간</div>
+                    <NumberPicker values={minuteNumbers} setValue={setNotificationMinute} initialValue={'05'}/>
+                    <div className={styles.text}>분 전</div>
+                </div>
             </div>
-            <div className={styles.description}>알림 주기</div>
-            <div className={styles.periodTimeInput}>
-                <NumberPicker values={intervalNumbers} setValue={setInterval} initialValue={'30'}/>
-                <div className={styles.text}>분 마다</div>
+            <div>
+                <div className={styles.description}>알림 주기</div>
+                <div className={styles.periodTimeInput}>
+                    <NumberPicker values={intervalNumbers} setValue={setInterval} initialValue={'30'}/>
+                    <div className={styles.text}>분 마다</div>
+                </div>
             </div>
         </div>
-    );
+
+    )
+        ;
 }

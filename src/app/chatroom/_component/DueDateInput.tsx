@@ -6,11 +6,20 @@ import {DateCalendar, DigitalClock, LocalizationProvider, MultiSectionDigitalClo
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import NumberPicker from "@/app/chatroom/_component/NumberPicker";
 import dayjs from "dayjs";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 type Props = {
     deadline: Date,
     setDeadline: (date: Date) => void
 }
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: 'rgba(97, 205, 152, 0.23)',
+        },
+    },
+});
 
 export default function DueDateInput({deadline, setDeadline}: Props) {
 
@@ -63,14 +72,18 @@ export default function DueDateInput({deadline, setDeadline}: Props) {
                 마감 기한
             </div>
             <div className={styles.dateInput}>
+                <ThemeProvider theme={theme}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DateCalendar value={dayjs(deadline)} onChange={(newDate) => setDeadline(newDate)}/>
                 </LocalizationProvider>
+                </ThemeProvider>
             </div>
             <div className={styles.timeInput}>
                 <NumberPicker values={dayPeriods} setValue={setDayPeriod} initialValue={dayPeriod}/>
                 <NumberPicker values={hourNumbers} setValue={setHour} initialValue={hour}/>
+                <div className={styles.timeSuffix}>시</div>
                 <NumberPicker values={minuteNumbers} setValue={setMinute} initialValue={minute}/>
+                <div className={styles.timeSuffix}>분</div>
             </div>
         </div>)
 };
