@@ -1,9 +1,6 @@
 .numberPicker {
     overflow: hidden;
-    width: 100px;
-    height: 150px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    width: 80px;
     text-align: center;
     position: relative;
 }
@@ -13,16 +10,16 @@
 }
 
 .number {
-    height: 50px;
-    line-height: 50px;
-    font-size: 2em;
+    font-size:20px;
+    padding: 10px 0;
 }
 
 .selected {
-    font-weight: bold;
-    color: #000;
+    color: #49b17e;
+    border-top: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
 }
 
 .number:not(.selected) {
-    color: #aaa;
+    color: rgba(51, 51, 51, 0.4);
 }

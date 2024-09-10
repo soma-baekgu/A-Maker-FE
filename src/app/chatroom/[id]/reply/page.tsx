@@ -17,8 +17,8 @@ type Props = {
 }
 
 export default function Page(props: Props) {
-    const chatRoomId:number = Number(props.params.id);
-    const title = "응답요청 이벤트 생성";
+    const chatRoomId: number = Number(props.params.id);
+    const title = "답변요청 이벤트 생성";
     const [eventTitle, setEventTitle] = useState('');
     const [eventDetails, setEventDetails] = useState('');
     const [assignees, setAssignees] = useState<string[]>([]);
@@ -57,19 +57,23 @@ export default function Page(props: Props) {
     return (
         <div className={styles.page}>
             <TopBar2 title={title}/>
-            <div className={styles.section}>
-                <ReplyEventInput detail={eventDetails} setDetail={setEventDetails} setTitle={setEventTitle}
-                                 title={eventTitle}/>
-                <RecipientSelector assignees={assignees} setAssignees={setAssignees} chatroomId={chatRoomId}/>
-                <DueDateInput deadline={deadline} setDeadline={setDeadline}/>
+            <div className={styles.content}>
+                <div className={styles.section}>
+                    <ReplyEventInput detail={eventDetails} setDetail={setEventDetails} setTitle={setEventTitle}
+                                     title={eventTitle}/>
+                    <RecipientSelector assignees={assignees} setAssignees={setAssignees} chatroomId={chatRoomId}/>
+                    <DueDateInput deadline={deadline} setDeadline={setDeadline}/>
+                </div>
+                <div className={styles.section}>
+                    <AlarmTimeInput setIntervalValue={setInterval} setNotificationHourValue={setNotificationStartHour}
+                                    setNotificationMinuteValue={setNotificationStartMinute}/>
+                    <div className={styles.button} onClick={createEvent}>
+                        생성
+                    </div>
+                </div>
+
             </div>
-            <div className={styles.section}>
-                <AlarmTimeInput setIntervalValue={setInterval} setNotificationHourValue={setNotificationStartHour}
-                                setNotificationMinuteValue={setNotificationStartMinute}/>
-            </div>
-            <div className={styles.button} onClick={createEvent}>
-                생성
-            </div>
+
         </div>
     );
 }

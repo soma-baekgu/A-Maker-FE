@@ -22,13 +22,15 @@ export default function ReplyEventInput({title, setTitle, detail, setDetail}: Pr
                 <div className={styles.description}>
                     이벤트 제목
                 </div>
-                <input className={styles.titleInput} type="text" onChange={handleTitleChange} value={title}/>
+                <input className={styles.titleInput} type="text" onChange={handleTitleChange} value={title}
+                placeholder={"이벤트 제목을 입력해주세요."}/>
             </div>
             <div>
                 <div className={styles.description}>
                     이벤트 상세 내용
                 </div>
-                <textarea className={styles.detailInput} onChange={handleDetailChange} value={detail}/>
+                <textarea className={styles.detailInput} onChange={handleDetailChange} value={detail}
+                          placeholder={"이벤트 상세 내용을 입력해주세요."}/>
             </div>
         </div>
     );
