@@ -8,6 +8,7 @@ import ReplyInput from "@/app/chatroom/[id]/event/_component/ReplyInput";
 import {useEffect, useState} from "react";
 import eventApi from "@/app/(api)/event";
 import eventCommentApi from "@/app/(api)/eventComment";
+import {timeAgo} from "@/app/(utils)/DateUtils";
 
 type User = {
     name: string,
@@ -78,14 +79,6 @@ export default function Page(props: Props) {
         fetchComments();
     }, []);
 
-    const timeAgo = (date: Date) => {
-        const now = new Date();
-        const diffInMilliseconds = now.getTime() - date.getTime();
-        const diffInMinutes = Math.floor(diffInMilliseconds / (1000 * 60));
-
-        return `${diffInMinutes}분 전`;
-    }
-
     const onSend = async (msg: string) => {
         if (msg.length === 0)
             return;
@@ -130,7 +123,8 @@ export default function Page(props: Props) {
                                 <div className={styles.description}>이벤트 생성자</div>
                                 <div className={styles.row}>
                                     {event.eventCreator &&
-                                        <Profile name={event.eventCreator.name} img={event.eventCreator.picture} isComment={false}/>
+                                        <Profile name={event.eventCreator.name} img={event.eventCreator.picture}
+                                                 isComment={false}/>
                                     }
                                 </div>
                             </div>
@@ -145,7 +139,7 @@ export default function Page(props: Props) {
                                     <div className={styles.commentTitle}>
                                         <Profile name={comment.userResponse.name}
                                                  img={comment.userResponse.picture}
-                                        isComment={true}/>
+                                                 isComment={true}/>
                                         <div className={styles.time}>{timeAgo(new Date(comment.createdAt))}</div>
                                     </div>
                                     <div className={styles.content}>{comment.content}</div>
