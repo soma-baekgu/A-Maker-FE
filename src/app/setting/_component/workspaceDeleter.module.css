@@ -11,14 +11,25 @@
 }
 
 .help {
-    font-size: 20px;
+    font-size: 14px;
+    color: #666666;
+}
+
+.green{
+    color: #61cd98;
 }
 
 .deleteButton {
     box-sizing: border-box;
-    border: 1px solid black;
-    padding: 5px 10px;
-    font-size: 27px;
+    padding: 16px;
     text-align: center;
     cursor: pointer;
+    height: 50px;
+    background-color: #61cd98;
+    color: white;
+    border-radius: 6px;
+}
+
+.deleteButton:hover {
+    opacity: 0.8;
 }
