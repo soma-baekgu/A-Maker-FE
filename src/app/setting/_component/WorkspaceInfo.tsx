@@ -62,24 +62,28 @@ export default function WorkspaceInfo({workspaceId}: Props) {
             </div>
             <div className={styles.section}>
                 <div className={styles.subtitle}>대표 이미지</div>
-                <Image src={"/images/default_thumbnail.png"} alt="workspaceImage" width={170} height={170}/>
-                <div className={styles.uploadButton}>업로드</div>
+                <div className={styles.center}>
+                    <Image src={"/images/default_thumbnail.png"} alt="workspaceImage" width={140} height={140}
+                    className={styles.image}/>
+                    <div className={styles.uploadButton}>업로드</div>
+                </div>
             </div>
             <div className={styles.section}>
                 <div className={styles.subtitle}>팀원 목록</div>
                 <div className={styles.userList}>
                     {joinedUsers.map((user, index) => (
                         <div key={index} className={styles.user}>
-                            <img src={user.picture} className={styles.profileImage} alt="profileImage"/>
+                            <Image src={user.picture} className={styles.profileImage} alt="profileImage"
+                            width={46} height={46}/>
                             <div className={styles.userInfo}>
-                                <div>{user.name}</div>
-                                <div>{user.email}</div>
+                                <div className={styles.userName}>{user.name}</div>
+                                <div className={styles.userEmail}>{user.email}</div>
                             </div>
                             <div className={styles.dropdown}>
                                 <div className={styles.role}>
                                     <div
                                         className={styles.roleText}>{user.workspaceRole == 'LEADER' ? '관리자' : '일반'}</div>
-                                    <Image src="/button/dropdown.png" alt="dropdown" width={30} height={31}
+                                    <Image src="/setting/down.png" alt="dropdown" width={24} height={24}
                                            onClick={() => handleDropdownClick(user.email)}
                                            className={styles.dropDownButton}/>
                                 </div>
@@ -91,8 +95,8 @@ export default function WorkspaceInfo({workspaceId}: Props) {
                                 )}
                             </div>
 
-                            <Image className={styles.deleteButton} src="/button/delete.png" alt="delete" width={38}
-                                   height={39}/>
+                            <Image className={styles.deleteButton} src="/setting/delete.png" alt="delete" width={16}
+                                   height={16}/>
                         </div>
                     ))}
                 </div>

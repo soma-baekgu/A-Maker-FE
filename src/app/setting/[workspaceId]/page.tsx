@@ -15,10 +15,18 @@ export default function Page(props: Props) {
 
     return (
         <div className={styles.page}>
-            <TopBar pageType={'설정'} workspaceId={workspaceId}/>
-            <WorkspaceInfo workspaceId={workspaceId}/>
-            <MemberInvitor workspaceId={workspaceId}/>
-            <WorkspaceDeleter/>
+            <TopBar pageType={'워크스페이스 설정'} workspaceId={workspaceId}/>
+            <div className={styles.content}>
+                <div className={styles.section}>
+                    <WorkspaceInfo workspaceId={workspaceId}/>
+                </div>
+                <div className={styles.section}>
+                    <MemberInvitor workspaceId={workspaceId}/>
+                </div>
+                <div className={styles.section}>
+                    <WorkspaceDeleter/>
+                </div>
+            </div>
         </div>
     );
 }
