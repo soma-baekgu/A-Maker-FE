@@ -2,6 +2,7 @@ import styles from './eventMessage.module.css';
 import ProfileImageGroup from "@/app/_component/ProfileImageGroup";
 import {useRouter} from "next/navigation";
 import Image from "next/image";
+import {timeAfter} from "@/app/(utils)/DateUtils";
 
 type Props = {
     eventTitle: string,
@@ -14,31 +15,6 @@ type Props = {
     chatroomId: number,
 }
 
-function getTimeRemaining(deadLine: Date): string {
-    const now = new Date();
-    const deadLineDate = typeof deadLine === 'string' ? new Date(deadLine) : deadLine;
-    const diff = deadLineDate.getTime() - now.getTime();
-
-    if (diff <= 0) {
-        return '마감';
-    }
-
-    const diffInSeconds = Math.floor(diff / 1000);
-    const diffInMinutes = Math.floor(diffInSeconds / 60);
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    const diffInDays = Math.floor(diffInHours / 24);
-
-    if (diffInDays > 0) {
-        return `${diffInDays}일 후 마감`;
-    } else if (diffInHours > 0) {
-        return `${diffInHours}시간 후 마감`;
-    } else if (diffInMinutes > 0) {
-        return `${diffInMinutes}분 후 마감`;
-    } else {
-        return `${diffInSeconds}초 후 마감`;
-    }
-}
-
 export default function EventMessage({
                                          eventTitle,
                                          users,
@@ -49,7 +25,7 @@ export default function EventMessage({
                                          messageId,
                                          chatroomId
                                      }: Props) {
-    const timeRemaining = getTimeRemaining(deadLine);
+    const timeRemaining = timeAfter(deadLine);
     const router = useRouter();
 
     const moveDetail = () => {

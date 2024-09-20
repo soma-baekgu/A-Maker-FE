@@ -19,3 +19,26 @@ export const timeAgo = (date: Date) => {
     else
         return `${diffInMinutes}분 전`;
 }
+
+export const timeAfter = (date: Date): string => {
+    const diff = date.getTime() - new Date().getTime();
+
+    if (diff <= 0) {
+        return '마감';
+    }
+
+    const diffInSeconds = Math.floor(diff / 1000);
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
+
+    if (diffInDays > 0) {
+        return `${diffInDays}일 후 마감`;
+    } else if (diffInHours > 0) {
+        return `${diffInHours}시간 후 마감`;
+    } else if (diffInMinutes > 0) {
+        return `${diffInMinutes}분 후 마감`;
+    } else {
+        return `${diffInSeconds}초 후 마감`;
+    }
+}
