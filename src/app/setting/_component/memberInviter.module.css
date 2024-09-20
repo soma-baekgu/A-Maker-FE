@@ -1,16 +1,13 @@
 .component {
     display: flex;
     flex-direction: column;
-    box-sizing: border-box;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    padding: 23px 17px;
     gap: 26px;
 }
 
 .title {
-    font-size: 27px;
+    font-size: 16px;
     font-weight: bold;
+    color: #333333;
 }
 
 .section {
@@ -20,31 +17,56 @@
 }
 
 .help {
-    font-size: 20px;
+    font-size: 14px;
+    color: #666666;
+}
+
+.green{
+    color: #61cd98;
 }
 
 .error {
-    font-size: 20px;
-    color: red;
+    font-size: 12px;
+    color: #f44f44;
 }
 
 .inputContainer {
     display: flex;
     flex-direction: row;
-    gap: 20px;
+    gap: 8px;
 }
 
 .input {
-    font-size: 27px;
+    font-size: 12px;
+    background-color: #f8f8f8;
+    border-radius: 6px;
+    padding: 16px;
+    color: #333333;
+    border: none;
     flex: 1;
+}
+
+.input::placeholder {
+    font-size: 12px;
+    color: #999999;
 }
 
 .inviteButton {
     box-sizing: border-box;
-    border: 1px solid black;
-    padding: 8px 8px;
-    font-size: 27px;
+    padding: 16px;
+    font-size: 14px;
     cursor: pointer;
+    color: white;
+    background-color: #61cd98;
+    border-radius: 6px;
+    height: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.inviteButton:hover {
+    opacity: 0.8;
 }
 
 .list {
@@ -63,11 +85,8 @@
 }
 
 .profileImage {
-    width: 75px;
-    aspect-ratio: 1;
-    box-sizing: border-box;
-    border: 1px solid black;
     border-radius: 50%;
+    border: none;
 }
 
 .userInfo {

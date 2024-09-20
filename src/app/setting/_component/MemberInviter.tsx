@@ -3,6 +3,7 @@
 import styles from './memberInviter.module.css';
 import workspaceApi from "@/app/(api)/workspace";
 import {useState} from "react";
+import Image from "next/image";
 
 type Props = {
     workspaceId: number;
@@ -61,9 +62,10 @@ export default function MemberInviter({workspaceId}: Props) {
         <div className={styles.component}>
             <div className={styles.title}>팀원 초대</div>
             <div className={styles.section}>
-                <div className={styles.help}>초대할 팀원의 이메일을 입력해주세요. 팀원은 A-Maker에 가입되있어야 합니다.</div>
+                <div className={styles.help}>초대할 팀원의 이메일을 입력해주세요.<br/>팀원은 <span className={styles.green}>A-Maker에 가입</span>되있어야 합니다.</div>
                 <div className={styles.inputContainer}>
-                    <input type="text" className={styles.input} value={invitedUserEmail} onChange={handleChange}/>
+                    <input type="text" className={styles.input} value={invitedUserEmail} onChange={handleChange}
+                    placeholder={"초대할 팀원의 이메일을 입력해주세요."}/>
                     <div className={styles.inviteButton} onClick={handleInvite}>초대</div>
                 </div>
                 {errorMsg && <div className={styles.error}>{errorMsg}</div>}
@@ -71,7 +73,8 @@ export default function MemberInviter({workspaceId}: Props) {
             <div className={styles.list}>
                 {invitedUsers.map((user, index) => (
                     <div key={index} className={styles.user}>
-                        <img src={user.picture} className={styles.profileImage} alt="profileImage"/>
+                        <Image src={user.picture} className={styles.profileImage} alt="profileImage"
+                        width={46} height={46}/>
                         <div className={styles.userInfo}>
                             <div>{user.name}</div>
                             <div>{user.email}</div>

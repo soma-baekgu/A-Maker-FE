@@ -2,26 +2,34 @@
     display: flex;
     flex-direction: column;
     gap: 33px;
-    box-sizing: border-box;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    padding: 23px 17px;
 }
 
 .title {
-    font-size: 27px;
+    font-size: 16px;
     font-weight: bold;
+    color: #333333;
 }
 
 .help {
-    font-size: 20px;
+    font-size: 14px;
+    color: #666666;
+}
+
+.green{
+    color: #61cd98;
 }
 
 .deleteButton {
     box-sizing: border-box;
-    border: 1px solid black;
-    padding: 5px 10px;
-    font-size: 27px;
+    padding: 16px;
     text-align: center;
     cursor: pointer;
+    height: 50px;
+    background-color: #61cd98;
+    color: white;
+    border-radius: 6px;
+}
+
+.deleteButton:hover {
+    opacity: 0.8;
 }

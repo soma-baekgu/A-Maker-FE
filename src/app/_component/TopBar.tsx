@@ -37,7 +37,7 @@ export default function TopBar({pageType, onCreateChat, onSearchChat, workspaceI
         if (pageType == '채팅') setPageIcon('/topBar/chat.png');
         else if (pageType == '홈') setPageIcon('/topBar/home.png');
         else if (pageType == '알림') setPageIcon('/topBar/alarm.png');
-        else if (pageType == '설정') setPageIcon('/topBar/setting.png');
+        else if (pageType == '워크스페이스 설정') setPageIcon('/topBar/setting.png');
         fetchWorkspace().then(() => setIsLoaded(true));
     }, []);
 
@@ -76,7 +76,7 @@ export default function TopBar({pageType, onCreateChat, onSearchChat, workspaceI
             {onSearchChat &&
                 <Image className={styles.button} src="/topBar/searchChat.png" alt="searchChat" width={32} height={32}
                        onClick={onSearchChat}/>}
-            {pageType == '설정' ?
+            {pageType == '워크스페이스 설정' ?
                 <Image className={styles.button} src="/topBar/close.png" alt="close" width={24} height={24}
                        onClick={handleBack}/>
                 :
