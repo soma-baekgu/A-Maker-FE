@@ -15,7 +15,7 @@
 }
 
 .input {
-    font-size: 16px;
+    font-size: 14px;
     display: flex;
     align-content: center;
     justify-content: center;
@@ -31,8 +31,8 @@
 }
 
 .sendButton {
-    font-size: 16px;
-    padding: 15px 25px;
+    font-size: 14px;
+    padding: 15px;
     box-sizing: border-box;
     background-color: #61cd98;
     color: white;

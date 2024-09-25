@@ -7,7 +7,7 @@ import {timeAfter} from "@/app/(utils)/DateUtils";
 type Props = {
     eventTitle: string,
     users: string[],
-    deadLine: Date,
+    deadLine: string,
     finishedCount: number,
     totalAssignedCount: number,
     eventType: 'reply' | 'reaction' | 'task',
@@ -25,7 +25,7 @@ export default function EventMessage({
                                          messageId,
                                          chatroomId
                                      }: Props) {
-    const timeRemaining = timeAfter(deadLine);
+    const timeRemaining = timeAfter(new Date(deadLine));
     const router = useRouter();
 
     const moveDetail = () => {
@@ -50,10 +50,10 @@ export default function EventMessage({
                 <div className={styles.description}>
                     <div className={styles.right}>
                         <Image src="/chatting/time.png" alt="clock" width={16} height={16}/>
-                        <span>{timeRemaining}</span>
+                        <span className={styles.remain}>{timeRemaining}</span>
                     </div>
                     <div className={styles.left}>{eventTitle}</div>
-                    <div className={styles.right}>
+                    <div className={styles.right+" "+styles.count}>
                         {eventType === 'reply' ?
                             `답변 대기중 ${finishedCount}/${totalAssignedCount}`
                             :
