@@ -26,12 +26,12 @@
 
 .sendButton {
     font-size: 14px;
-    padding: 16px 25px;
+    padding: 15px;
     box-sizing: border-box;
-    cursor: pointer;
     background-color: #61cd98;
     color: white;
     border-radius: 6px;
+    cursor: pointer;
 }
 
 .sendButton:hover {

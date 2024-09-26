@@ -9,12 +9,8 @@ import {useEffect, useState} from "react";
 import eventApi from "@/app/(api)/event";
 import eventCommentApi from "@/app/(api)/eventComment";
 import {timeAgo} from "@/app/(utils)/DateUtils";
-
-type User = {
-    name: string,
-    email: string,
-    picture: string
-}
+import {EventData, User} from "@/app/chatroom/[id]/event/[eventId]/types";
+import EventInfo from "@/app/chatroom/[id]/event/[eventId]/_component/EventInfo";
 
 type Comment = {
     id: number,
@@ -25,26 +21,6 @@ type Comment = {
     updatedAt: string,
     userResponse: User
 }
-
-type EventData = {
-    id: number,
-    eventTitle: string,
-    eventDetails: string,
-    deadLine: string,
-    notificationStartTime: string,
-    notificationInterval: number,
-    eventCreator: User,
-    finishUser: User[],
-    waitingUser: User[]
-}
-
-const options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-};
 
 type Props = {
     params: {
@@ -95,41 +71,7 @@ export default function Page(props: Props) {
                         <div className={styles.title}>
                             <div className={styles.titleText}>{event.eventTitle}</div>
                         </div>
-                        <div className={styles.info}>
-                            <div className={styles.value}>
-                                <div className={styles.description}>답변 대기중</div>
-                                <div className={styles.row}>
-                                    {event.waitingUser?.map((user, index) => (
-                                        <Profile key={index} name={user.name} img={user.picture} isComment={false}/>
-                                    ))}
-                                </div>
-                            </div>
-                            <div className={styles.value}>
-                                <div className={styles.description}>답변 완료</div>
-                                <div className={styles.row}>
-                                    {event.finishUser?.map((user, index) => (
-                                        <Profile key={index} name={user.name} img={user.picture} isComment={false}/>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className={styles.value}>
-                                <div className={styles.description}>마감 기한</div>
-                                <div
-                                    className={styles.row}>{new Date(event.deadLine).toLocaleTimeString('ko-KR', options)}</div>
-                            </div>
-
-                            <div className={styles.value}>
-                                <div className={styles.description}>이벤트 생성자</div>
-                                <div className={styles.row}>
-                                    {event.eventCreator &&
-                                        <Profile name={event.eventCreator.name} img={event.eventCreator.picture}
-                                                 isComment={false}/>
-                                    }
-                                </div>
-                            </div>
-
-                        </div>
+                        <EventInfo event={event} type={"reply"}/>
                         <div className={styles.detailText}>{event.eventDetails}</div>
                     </div>
                     <div className={styles.comments}>

@@ -6,8 +6,8 @@ export type FileContent = {
 
 export type ReplyEventContent = {
     eventTitle: string,
-    deadLine: Date,
-    notificationStartTime: Date,
+    deadLine: string,
+    notificationStartTime: string,
     notificationInterval: number,
     users: string[],
     finishedCount: number,

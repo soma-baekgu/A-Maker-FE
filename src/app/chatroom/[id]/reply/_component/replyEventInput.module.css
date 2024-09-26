@@ -19,6 +19,7 @@
     background-color: #f8f8f8;
     padding: 16px;
     box-sizing: border-box;
+    border-radius: 6px;
 }
 
 .detailInput {
@@ -32,6 +33,7 @@
     padding: 16px;
     box-sizing: border-box;
     resize: none;
+    border-radius: 6px;
 }
 
 .titleInput::placeholder {

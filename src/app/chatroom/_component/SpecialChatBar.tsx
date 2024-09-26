@@ -106,10 +106,10 @@ export default function SpecialChatBar({chatroomId}: Props) {
     return (
         <div className={styles.component}>
             <div className={styles.buttons}>
-                <div className={styles.button}>
+                <Link className={styles.button} href={`/chatroom/${chatroomId}/reaction`}>
                     <Image src="/specialChatBar/reaction.png" alt="reaction" width={32} height={32}/>
                     <div>응답 요청하기</div>
-                </div>
+                </Link>
                 <Link className={styles.button} href={`/chatroom/${chatroomId}/reply`}>
                     <Image src="/specialChatBar/reply.png" alt="reply" width={32} height={32}/>
                     <div>답변 요청하기</div>

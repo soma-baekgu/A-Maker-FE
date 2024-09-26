@@ -4,19 +4,16 @@ import {ChangeEvent, useEffect, useState} from "react";
 import chatRoomApi from "@/app/(api)/chatRoom";
 import Image from "next/image";
 
-type Props = {
-    assignees: string[],
-    setAssignees: (assignees: string[]) => void,
-    chatroomId: number
-}
-
 type User = {
     name: string,
     email: string,
     picture: string
 }
 
-export default function RecipientSelector({assignees, setAssignees, chatroomId}: Props) {
+export default function RecipientSelector({setAssignees, chatroomId}: {
+    setAssignees: (assignees: string[]) => void,
+    chatroomId: number
+}) {
 
     const [recipients, setRecipients] = useState<User[]>([]);
 
