@@ -15,7 +15,7 @@ export default function Page(props: {
 }) {
     const chatRoomId: number = Number(props.params.id);
     const [title, setTitle] = useState('');
-    const [items, setItems] = useState<string[]>([]);
+    const [items, setItems] = useState<string[]>(["",""]);
     const [assignees, setAssignees] = useState<string[]>([]);
     const [deadline, setDeadline] = useState(new Date());
     const [notificationStartHour, setNotificationStartHour] = useState(1);

@@ -2,6 +2,7 @@
 
 import styles from './reactionEventInput.module.css';
 import Image from "next/image";
+import {useState} from "react";
 
 export default function ReactionEventInput(
     {title, setTitle, items, setItems}: {
@@ -11,6 +12,16 @@ export default function ReactionEventInput(
         setItems: (items: string[]) => void
     }
 ) {
+    const handleAddItem = () => {
+        setItems([...items, '']);
+    };
+
+    const handleItemChange = (index: number, value: string) => {
+        const newItems = [...items]
+        newItems[index] = value;
+        setItems(newItems);
+    };
+
     return (
         <div className={styles.component}>
             <div>
@@ -20,11 +31,17 @@ export default function ReactionEventInput(
             </div>
             <div className={styles.items}>
                 <div className={styles.description}>항목 입력</div>
-                <input type="text" placeholder={"항목을 입력해주세요."}
-                       className={styles.input}/>
-                <input type="text" placeholder={"항목을 입력해주세요."}
-                       className={styles.input}/>
-                <div className={styles.button}>
+                {items.map((item, index) => (
+                    <input
+                        key={index}
+                        type="text"
+                        placeholder={"항목을 입력해주세요."}
+                        className={styles.input}
+                        value={item}
+                        onChange={(e) => handleItemChange(index, e.target.value)}
+                    />
+                ))}
+                <div className={styles.button} onClick={handleAddItem}>
                     <Image src={"/reaction/plus.png"} alt={"plus"} width={24} height={24}/>
                     항목 추가
                 </div>
