@@ -25,3 +25,7 @@
     text-decoration: none;
     color: inherit;
 }
+
+.selected {
+    color: #61cd98;
+}

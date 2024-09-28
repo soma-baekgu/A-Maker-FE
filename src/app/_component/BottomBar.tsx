@@ -13,32 +13,38 @@ export default function BottomBar({workspaceId, pageType}: Props) {
             <div className={styles.component}>
                 <Link href={`/home/${workspaceId}`}>
                     <div className={styles.button}>
-                        {pageType == "홈" ?
+                        {pageType === "홈" ?
                             <Image src="/bottomBar/home_selected.png" alt="home" width={24}
                                    height={24}/> :
                             <Image src="/bottomBar/home.png" alt="home" width={24}
                                    height={24}/>}
-                        <div>홈</div>
+                        <div className={pageType === "홈" ? styles.selected : ""}>
+                            홈
+                        </div>
                     </div>
                 </Link>
                 <Link href={`/chat/${workspaceId}`}>
                     <div className={styles.button}>
-                        {pageType == "채팅" ?
+                        {pageType === "채팅" ?
                             <Image src="/bottomBar/chat_selected.png" alt="chat" width={24}
                                    height={24}/> :
                             <Image src="/bottomBar/chat.png" alt="chat" width={24} height={24}/>}
-                        <div>채팅</div>
+                        <div className={pageType === "채팅" ? styles.selected : ""}>
+                            채팅
+                        </div>
                     </div>
 
                 </Link>
                 <Link href={`/alarm/${workspaceId}`}>
                     <div className={styles.button}>
-                    {pageType == "알림" ?
-                        <Image src="/bottomBar/alarm_selected.png" alt="alarm" width={24}
-                               height={24}/> :
-                        <Image src="/bottomBar/alarm.png" alt="alarm" width={24}
-                               height={24}/>}
-                    <div>알림</div>
+                        {pageType === "알림" ?
+                            <Image src="/bottomBar/alarm_selected.png" alt="alarm" width={24}
+                                   height={24}/> :
+                            <Image src="/bottomBar/alarm.png" alt="alarm" width={24}
+                                   height={24}/>}
+                        <div className={pageType === "알림" ? styles.selected : ""}>
+                            알림
+                        </div>
                     </div>
                 </Link>
             </div>
