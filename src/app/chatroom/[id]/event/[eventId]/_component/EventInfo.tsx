@@ -20,7 +20,13 @@ export default function EventInfo(
         <div className={styles.component}>
             <div className={styles.value}>
                 <div className={styles.description}>
-                    {type === "reply" ? "답변 대기중" : "응답 대기중"}
+                    {type === "reply" ?
+                        "답변 대기중"
+                        :
+                        type === "reaction" ?
+                            "응답 대기중"
+                            :
+                            "업무 담당자"}
                 </div>
                 <div className={styles.row}>
                     {event.waitingUser?.map((user, index) => (
@@ -28,16 +34,18 @@ export default function EventInfo(
                     ))}
                 </div>
             </div>
-            <div className={styles.value}>
-                <div className={styles.description}>
-                    {type === "reply" ? "답변 완료" : "응답 완료"}
+            {type !== "task" &&
+                <div className={styles.value}>
+                    <div className={styles.description}>
+                        {type === "reply" ? "답변 완료" : "응답 완료"}
+                    </div>
+                    <div className={styles.row}>
+                        {event.finishUser?.map((user, index) => (
+                            <Profile key={index} name={user.name} img={user.picture} isComment={false}/>
+                        ))}
+                    </div>
                 </div>
-                <div className={styles.row}>
-                    {event.finishUser?.map((user, index) => (
-                        <Profile key={index} name={user.name} img={user.picture} isComment={false}/>
-                    ))}
-                </div>
-            </div>
+            }
             <div className={styles.value}>
                 <div className={styles.description}>마감 기한</div>
                 <div
