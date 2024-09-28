@@ -10,9 +10,10 @@ type User = {
     picture: string
 }
 
-export default function RecipientSelector({setAssignees, chatroomId}: {
+export default function RecipientSelector({setAssignees, chatroomId, type}: {
     setAssignees: (assignees: string[]) => void,
-    chatroomId: number
+    chatroomId: number,
+    type: string
 }) {
 
     const [recipients, setRecipients] = useState<User[]>([]);
@@ -44,7 +45,15 @@ export default function RecipientSelector({setAssignees, chatroomId}: {
 
     return (
         <div className={styles.component}>
-            <div className={styles.description}>답변을 요청할 인원</div>
+            <div className={styles.description}>{
+                type === "reply" ?
+                    "답변을 요청할 인원"
+                    :
+                    type === "reaction" ?
+                        "응답을 요청할 인원"
+                        :
+                        "업무를 요청할 인원"
+            }</div>
             {recipients.map((recipient, index) => (
                 <div className={styles.element} key={index}>
                     <Image className={styles.image} src={recipient.picture} alt="picture"

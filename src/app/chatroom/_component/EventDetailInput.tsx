@@ -1,6 +1,6 @@
 "use client";
 
-import styles from './replyEventInput.module.css';
+import styles from './eventDetailInput.module.css';
 import {ChangeEvent} from "react";
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
     setDetail: (detail: string) => void
 }
 
-export default function ReplyEventInput({title, setTitle, detail, setDetail}: Props) {
+export default function EventDetailInput({title, setTitle, detail, setDetail}: Props) {
 
     const handleTitleChange = (event:ChangeEvent<HTMLInputElement>) => setTitle(event.target.value);
 

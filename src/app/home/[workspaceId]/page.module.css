@@ -73,3 +73,15 @@
 .hide{
     display: none;
 }
+
+.content::-webkit-scrollbar{
+    display: none;
+}
+
+.section a{
+    text-decoration: none;
+}
+
+.button:hover {
+    opacity: 0.8;
+}

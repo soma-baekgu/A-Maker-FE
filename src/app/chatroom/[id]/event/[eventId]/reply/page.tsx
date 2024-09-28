@@ -4,7 +4,7 @@ import Image from "next/image";
 import styles from './page.module.css'
 import TopBar2 from "@/app/_component/TopBar2";
 import Profile from "@/app/chatroom/[id]/event/_component/Profile";
-import ReplyInput from "@/app/chatroom/[id]/event/_component/ReplyInput";
+import ReplyInput from "@/app/chatroom/[id]/event/[eventId]/reply/_component/ReplyInput";
 import {useEffect, useState} from "react";
 import eventApi from "@/app/(api)/event";
 import eventCommentApi from "@/app/(api)/eventComment";
