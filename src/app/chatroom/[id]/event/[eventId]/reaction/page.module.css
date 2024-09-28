@@ -3,7 +3,7 @@
     flex-direction: column;
     overflow: auto;
     height: 100vh;
-    background-color: #f9f9f9;
+    background-color: #ffffff;
 }
 
 .body {
@@ -88,4 +88,10 @@
     height: 10px;
     background: #61cd98;
     border-radius: 50%;
+}
+
+.empty{
+flex: 1;
+    background-color: #f9f9f9;
+    margin: 0 -20px;
 }

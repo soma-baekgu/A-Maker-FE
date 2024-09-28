@@ -60,6 +60,7 @@ export default function Page(props: {
                         </div>
                     </div>
                     <div className={styles.button}>응답</div>
+                    <div className={styles.empty}></div>
                 </div>
             ) : (
                 <div className={styles.main}>Loading...</div>
