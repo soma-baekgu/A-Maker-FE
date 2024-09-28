@@ -1,0 +1,41 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    padding: 30px 13px;
+    gap: 30px;
+    background-color: white;
+}
+
+.button {
+    padding: 16px;
+    text-align: center;
+    font-size: 14px;
+    color: white;
+    background-color: #61cd98;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.button:hover {
+    opacity: 0.8;
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    background-color: #f9f9f9;
+    flex: 1;
+    flex-basis: 0;
+    overflow: auto;
+}
+
+.content::-webkit-scrollbar{
+    display: none;
+}

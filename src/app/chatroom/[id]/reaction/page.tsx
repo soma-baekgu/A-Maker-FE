@@ -34,7 +34,8 @@ export default function Page(props: {
                         setItems={setItems}/>
                     <RecipientSelector
                         setAssignees={setAssignees}
-                        chatroomId={chatRoomId}/>
+                        chatroomId={chatRoomId}
+                    type={"reaction"}/>
                     <DueDateInput
                         deadline={deadline}
                         setDeadline={setDeadline}/>
