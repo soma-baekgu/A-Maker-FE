@@ -66,8 +66,6 @@ export default function TopBar({pageType, onCreateChat, onSearchChat, workspaceI
                 </>
                 :
                 <>
-                    <div className={styles.workspace} onClick={handleClick}></div>
-                    <div className={styles.description}></div>
                 </>
             }
             {onCreateChat &&
