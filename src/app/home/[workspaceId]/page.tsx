@@ -4,6 +4,7 @@ import TopBar from "@/app/_component/TopBar";
 import BottomBar from "@/app/_component/BottomBar";
 import Event from "./_component/Event";
 import {useState} from "react";
+import Link from "next/link";
 
 interface Props {
     params: {
@@ -18,7 +19,9 @@ interface EventData {
     dueDate: string,
     completedMembers: number,
     totalMembers: number,
-    isMine: boolean
+    isMine: boolean,
+    chatRoomId: number,
+    eventId: number
 }
 
 export default function Home(props: Props) {
@@ -33,7 +36,9 @@ export default function Home(props: Props) {
             dueDate: '2024-09-12T17:00:33.987524',
             completedMembers: 0,
             totalMembers: 1,
-            isMine: false
+            isMine: false,
+            chatRoomId: 22,
+            eventId: 111
         },
         {
             type: 'reaction',
@@ -42,7 +47,9 @@ export default function Home(props: Props) {
             dueDate: '2024-09-12T17:00:33.987524',
             completedMembers: 3,
             totalMembers: 4,
-            isMine: true
+            isMine: true,
+            chatRoomId: 22,
+            eventId: 112
         },
         {
             type: 'reply',
@@ -51,7 +58,9 @@ export default function Home(props: Props) {
             dueDate: '2024-09-12T17:00:33.987524',
             completedMembers: 3,
             totalMembers: 4,
-            isMine: false
+            isMine: false,
+            chatRoomId: 22,
+            eventId: 779
         }
     ]
     const ongoingEvents: EventData[] = [
@@ -62,7 +71,9 @@ export default function Home(props: Props) {
             dueDate: '2024-09-22T17:00:33.987524',
             completedMembers: 0,
             totalMembers: 1,
-            isMine: false
+            isMine: false,
+            chatRoomId: 22,
+            eventId: 111
         },
         {
             type: 'reaction',
@@ -71,7 +82,9 @@ export default function Home(props: Props) {
             dueDate: '2024-10-12T17:00:33.987524',
             completedMembers: 3,
             totalMembers: 4,
-            isMine: true
+            isMine: true,
+            chatRoomId: 22,
+            eventId: 112
         },
         {
             type: 'reply',
@@ -80,7 +93,9 @@ export default function Home(props: Props) {
             dueDate: '2024-11-12T17:00:33.987524',
             completedMembers: 3,
             totalMembers: 4,
-            isMine: false
+            isMine: false,
+            chatRoomId: 22,
+            eventId: 779
         }
     ]
     const completedEvents: EventData[] = [
@@ -91,7 +106,9 @@ export default function Home(props: Props) {
             dueDate: '2024-09-12T17:00:33.987524',
             completedMembers: 1,
             totalMembers: 1,
-            isMine: false
+            isMine: false,
+            chatRoomId: 22,
+            eventId: 111
         },
         {
             type: 'reaction',
@@ -100,7 +117,9 @@ export default function Home(props: Props) {
             dueDate: '2024-09-12T17:00:33.987524',
             completedMembers: 4,
             totalMembers: 4,
-            isMine: true
+            isMine: true,
+            chatRoomId: 22,
+            eventId: 112
         },
         {
             type: 'reply',
@@ -109,7 +128,9 @@ export default function Home(props: Props) {
             dueDate: '2024-09-12T17:00:33.987524',
             completedMembers: 4,
             totalMembers: 4,
-            isMine: false
+            isMine: false,
+            chatRoomId: 22,
+            eventId: 779
         }
     ]
 
@@ -131,7 +152,8 @@ export default function Home(props: Props) {
                     <div className={styles.section}>
                         <div className={styles.subtitle}>마감이 지난 이벤트</div>
                         {expiredEvents.map((event, index) => (
-                            <div key={index} className={mine && !event.isMine ? styles.hide : ""}>
+                            <Link href={`/chatroom/${event.chatRoomId}/event/${event.eventId}/${event.type}`}
+                                  key={index} className={mine && !event.isMine ? styles.button+" "+styles.hide : styles.button}>
                                 <Event
                                     type={event.type}
                                     imageUrls={event.imageUrls}
@@ -139,13 +161,14 @@ export default function Home(props: Props) {
                                     dueDate={event.dueDate}
                                     completedMembers={event.completedMembers}
                                     totalMembers={event.totalMembers}/>
-                            </div>
+                            </Link>
                         ))}
                     </div>
                     <div className={styles.section}>
                         <div className={styles.subtitle}>진행중인 이벤트</div>
                         {ongoingEvents.map((event, index) => (
-                            <div key={index} className={mine && !event.isMine ? styles.hide : ""}>
+                            <Link href={`/chatroom/${event.chatRoomId}/event/${event.eventId}/${event.type}`}
+                                  key={index} className={mine && !event.isMine ? styles.button+" "+styles.hide : styles.button}>
                                 <Event
                                     type={event.type}
                                     imageUrls={event.imageUrls}
@@ -153,13 +176,14 @@ export default function Home(props: Props) {
                                     dueDate={event.dueDate}
                                     completedMembers={event.completedMembers}
                                     totalMembers={event.totalMembers}/>
-                            </div>
+                            </Link>
                         ))}
                     </div>
                     <div className={styles.section}>
                         <div className={styles.subtitle}>완료된 이벤트</div>
                         {completedEvents.map((event, index) => (
-                            <div key={index} className={mine && !event.isMine ? styles.hide : ""}>
+                            <Link href={`/chatroom/${event.chatRoomId}/event/${event.eventId}/${event.type}`}
+                                  key={index} className={mine && !event.isMine ? styles.button+" "+styles.hide : styles.button}>
                                 <Event
                                     key={index}
                                     type={event.type}
@@ -168,7 +192,7 @@ export default function Home(props: Props) {
                                     dueDate={event.dueDate}
                                     completedMembers={event.completedMembers}
                                     totalMembers={event.totalMembers}/>
-                            </div>
+                            </Link>
                         ))}
                     </div>
                 </div>
