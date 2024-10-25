@@ -42,9 +42,15 @@ export default function ChatRoom({imageUrls, chatroomName, time, speaker, messag
                                     className={styles.message}>{`파일 : ${message.fileName}`}</div>
                                 :
                                 chatType === 'REPLY' && isString(message) ?
-                                    <div className={styles.message}>{`이벤트 : ${message}`}</div>
+                                    <div className={styles.message}>{`답변을 요청합니다.`}</div>
                                     :
-                                    <div>잘못된 메세지</div>
+                                    chatType === 'REACTION' && isString(message) ?
+                                        <div className={styles.message}>{`응답을 요청합니다`}</div>
+                                        :
+                                        chatType === 'TASK' && isString(message) ?
+                                            <div className={styles.message}>{`업무를 요청합니다`}</div>
+                                            :
+                                            <div>잘못된 메세지</div>
                 )}
             </div>
         </div>
