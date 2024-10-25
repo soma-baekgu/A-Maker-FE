@@ -23,7 +23,12 @@ const eventApi = {
     readReplyEvent: (
         chatRoomId: number,
         eventId: number,
-    ) => authRequest.get(`/api/v1/chat-rooms/${chatRoomId}/events/${eventId}/reply`)
+    ) => authRequest.get(`/api/v1/chat-rooms/${chatRoomId}/events/${eventId}/reply`),
+
+    readReactionEvent: (
+        chatRoomId: number,
+        eventId: number,
+    ) => authRequest.get(`/api/v1/chat-rooms/${chatRoomId}/events/${eventId}/reaction`),
 }
 
 export default eventApi;
