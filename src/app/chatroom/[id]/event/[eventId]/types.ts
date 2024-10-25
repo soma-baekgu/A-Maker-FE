@@ -1,6 +1,7 @@
 export interface EventData {
     id: number,
     eventTitle: string,
+    eventDetails: string,
     deadLine: string,
     notificationStartTime: string,
     notificationInterval: number,

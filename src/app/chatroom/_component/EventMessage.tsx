@@ -31,8 +31,6 @@ export default function EventMessage({
     const moveDetail = () => {
         if (eventType === 'reply')
             router.push(`/chatroom/${chatroomId}/event/${messageId}/reply`);
-        else if (eventType === 'reaction')
-            router.push(`/chatroom/${chatroomId}/event/${messageId}/reaction`);
     }
 
     return (

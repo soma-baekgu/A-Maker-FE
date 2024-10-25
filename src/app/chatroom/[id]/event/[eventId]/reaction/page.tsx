@@ -2,20 +2,9 @@
 
 import styles from "./page.module.css";
 import TopBar2 from "@/app/_component/TopBar2";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {EventData, User} from "@/app/chatroom/[id]/event/[eventId]/types";
 import EventInfo from "@/app/chatroom/[id]/event/[eventId]/_component/EventInfo";
-import eventApi from "@/app/(api)/event";
-
-interface Option{
-    id:number,
-    eventId:number,
-    content:string
-}
-
-interface ReactionEventData extends EventData {
-    options: Option[]
-}
 
 export default function Page(props: {
     params: {
@@ -30,19 +19,20 @@ export default function Page(props: {
         email: "shane9747@gmail.com",
         picture: "https://lh3.googleusercontent.com/a/ACg8ocKoltqSQEeJytHSjnxp7xMKzStDF9KkwCBFYZgLEUmqXF-Khg=s96-c"
     }
-    const [event, setEvent] = useState<ReactionEventData>();
-    const [isLoaded, setIsLoaded] = useState(false);
-    const loadEventData = async () => {
-        const res = await eventApi.readReactionEvent(chatRoomId, eventId)
-        setEvent(res.data.data)
-    }
-
-    useEffect(() => {
-        loadEventData().then(
-            () => setIsLoaded(true)
-        )
-    }, []);
-
+    const [event, setEvent] = useState<EventData>(
+        {
+            id: 1,
+            eventTitle: "Sample Event",
+            eventDetails: "This is a sample event.",
+            deadLine: "2024-12-31T23:59:59Z",
+            notificationStartTime: "2024-10-12T17:00:33.987524",
+            notificationInterval: 60,
+            eventCreator: dummyUser,
+            finishUser: [dummyUser,dummyUser],
+            waitingUser: [dummyUser,dummyUser]
+        }
+    );
+    const [isLoaded, setIsLoaded] = useState(true);
 
     return (
         <div className={styles.page}>
@@ -56,12 +46,18 @@ export default function Page(props: {
                         <EventInfo event={event} type={"reaction"}/>
                     </div>
                     <div className={styles.choice}>
-                        {event.options.map((option, index) => (
-                            <div className={styles.item} key={index}>
-                                <input className={styles.checkbox} type="radio" name={"vote"}/>
-                                {option.content}
-                            </div>
-                        ))}
+                        <div className={styles.item}>
+                            <input className={styles.checkbox} type="checkbox"/>
+                            서울
+                        </div>
+                        <div className={styles.item}>
+                            <input className={styles.checkbox} type="checkbox"/>
+                            부산
+                        </div>
+                        <div className={styles.item}>
+                            <input className={styles.checkbox} type="checkbox"/>
+                            경기
+                        </div>
                     </div>
                     <div className={styles.button}>응답</div>
                     <div className={styles.empty}></div>

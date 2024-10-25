@@ -19,10 +19,6 @@ interface Comment {
     userResponse: User
 }
 
-interface TaskEventData extends EventData {
-    eventDetails: string
-}
-
 export default function Page(props: {
     params: {
         id: string,
@@ -35,7 +31,7 @@ export default function Page(props: {
         email: "shane9747@gmail.com",
         picture: "https://lh3.googleusercontent.com/a/ACg8ocKoltqSQEeJytHSjnxp7xMKzStDF9KkwCBFYZgLEUmqXF-Khg=s96-c"
     }
-    const [event, setEvent] = useState<TaskEventData>(
+    const [event, setEvent] = useState<EventData>(
         {
             id: 1,
             eventTitle: "Sample Event",

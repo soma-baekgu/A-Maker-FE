@@ -29,14 +29,10 @@ type Props = {
     }
 }
 
-interface ReplyEventData extends EventData {
-    eventDetails: string
-}
-
 export default function Page(props: Props) {
     const chatRoomId: number = Number(props.params.id);
     const eventId: number = Number(props.params.eventId);
-    const [event, setEvent] = useState<ReplyEventData>();
+    const [event, setEvent] = useState<EventData>();
     const [isLoaded, setIsLoaded] = useState(false);
     const [comments, setComments] = useState<Comment[]>([]);
 
