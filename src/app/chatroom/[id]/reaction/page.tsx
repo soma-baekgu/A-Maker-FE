@@ -7,6 +7,8 @@ import ReactionEventInput from "@/app/chatroom/[id]/reaction/_component/Reaction
 import RecipientSelector from "@/app/chatroom/_component/RecipientSelector";
 import DueDateInput from "@/app/chatroom/_component/DueDateInput";
 import AlarmTimeInput from "@/app/chatroom/_component/AlarmTimeInput";
+import eventApi from "@/app/(api)/event";
+import {useRouter} from "next/navigation";
 
 export default function Page(props: {
     params: {
@@ -21,6 +23,22 @@ export default function Page(props: {
     const [notificationStartHour, setNotificationStartHour] = useState(1);
     const [notificationStartMinute, setNotificationStartMinute] = useState(30);
     const [interval, setInterval] = useState(15);
+    const router = useRouter();
+    const createEvent = () => {
+        eventApi.createReactionEvent(
+            chatRoomId,
+            title,
+            items,
+            assignees,
+            deadline,
+            notificationStartHour,
+            notificationStartMinute,
+            interval
+        ).then(() => {
+            console.log('리액션 이벤트 생성완료')
+            router.back();
+        });
+    }
 
     return (
         <div className={styles.page}>
@@ -45,7 +63,7 @@ export default function Page(props: {
                         setNotificationHourValue={setNotificationStartHour}
                         setNotificationMinuteValue={setNotificationStartMinute}
                         setIntervalValue={setInterval}/>
-                    <div className={styles.button}>생성</div>
+                    <div className={styles.button} onClick={createEvent}>생성</div>
                 </div>
             </div>
         </div>
