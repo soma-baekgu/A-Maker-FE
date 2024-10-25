@@ -48,7 +48,20 @@ export default function ContentByChatType({chatType, content, messageId, chatroo
                                     chatroomId={chatroomId}/>
                             </div>
                             :
-                            <div>잘못된 메세지</div>
+                            chatType === 'REACTION' && isReplyEventContent(content) ?
+                                <div className={styles.content2}>
+                                    <EventMessage
+                                        eventTitle={content.eventTitle}
+                                        users={content.users}
+                                        deadLine={content.deadLine}
+                                        finishedCount={content.finishedCount}
+                                        totalAssignedCount={content.totalAssignedCount}
+                                        eventType={'reaction'}
+                                        messageId={messageId}
+                                        chatroomId={chatroomId}/>
+                                </div>
+                                :
+                                <div>잘못된 메세지</div>
 
             }
 

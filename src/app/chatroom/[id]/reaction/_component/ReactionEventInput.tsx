@@ -27,7 +27,8 @@ export default function ReactionEventInput(
             <div>
                 <div className={styles.description}>이벤트 제목</div>
                 <input type="text" placeholder={"이벤트 제목을 입력해주세요."}
-                       className={styles.input}/>
+                       className={styles.input} value={title}
+                       onChange={(e) => setTitle(e.target.value)}/>
             </div>
             <div className={styles.items}>
                 <div className={styles.description}>항목 입력</div>
