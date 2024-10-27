@@ -3,8 +3,9 @@ import styles from './page.module.css';
 import TopBar from "@/app/_component/TopBar";
 import BottomBar from "@/app/_component/BottomBar";
 import Event from "./_component/Event";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Link from "next/link";
+import eventQueryAPi from "@/app/(api)/eventQuery";
 
 interface Props {
     params: {
@@ -13,127 +14,35 @@ interface Props {
 }
 
 interface EventData {
-    type: string,
-    imageUrls: string[],
-    title: string,
-    dueDate: string,
-    completedMembers: number,
-    totalMembers: number,
-    isMine: boolean,
+    eventType: string,
+    eventId: number,
     chatRoomId: number,
-    eventId: number
+    eventTitle: string,
+    deadLine: string,
+    notificationStartTime: string,
+    notificationInterval: number,
+    users: string[],
+    finishedCount: number,
+    totalAssignedCount: number,
+    isMine: boolean,
 }
 
 export default function Home(props: Props) {
     const workspaceId: number = Number(props.params.workspaceId);
     const [mine, setMine] = useState<boolean>(false);
     const dummyImg = "https://lh3.googleusercontent.com/a/ACg8ocKoltqSQEeJytHSjnxp7xMKzStDF9KkwCBFYZgLEUmqXF-Khg=s96-c";
-    const expiredEvents: EventData[] = [
-        {
-            type: 'task',
-            imageUrls: [dummyImg],
-            title: 'ppt 목차 어떻게 할까요?',
-            dueDate: '2024-09-12T17:00:33.987524',
-            completedMembers: 0,
-            totalMembers: 1,
-            isMine: false,
-            chatRoomId: 22,
-            eventId: 111
-        },
-        {
-            type: 'reaction',
-            imageUrls: [dummyImg, dummyImg, dummyImg],
-            title: 'ppt 목차 어떻게 할까요?',
-            dueDate: '2024-09-12T17:00:33.987524',
-            completedMembers: 3,
-            totalMembers: 4,
-            isMine: true,
-            chatRoomId: 22,
-            eventId: 112
-        },
-        {
-            type: 'reply',
-            imageUrls: [dummyImg, dummyImg],
-            title: 'ppt 목차 어떻게 할까요?',
-            dueDate: '2024-09-12T17:00:33.987524',
-            completedMembers: 3,
-            totalMembers: 4,
-            isMine: false,
-            chatRoomId: 22,
-            eventId: 779
-        }
-    ]
-    const ongoingEvents: EventData[] = [
-        {
-            type: 'task',
-            imageUrls: [dummyImg],
-            title: 'ppt 목차 어떻게 할까요?',
-            dueDate: '2024-09-22T17:00:33.987524',
-            completedMembers: 0,
-            totalMembers: 1,
-            isMine: false,
-            chatRoomId: 22,
-            eventId: 111
-        },
-        {
-            type: 'reaction',
-            imageUrls: [dummyImg, dummyImg, dummyImg],
-            title: 'ppt 목차 어떻게 할까요?',
-            dueDate: '2024-10-12T17:00:33.987524',
-            completedMembers: 3,
-            totalMembers: 4,
-            isMine: true,
-            chatRoomId: 22,
-            eventId: 112
-        },
-        {
-            type: 'reply',
-            imageUrls: [dummyImg, dummyImg],
-            title: 'ppt 목차 어떻게 할까요?',
-            dueDate: '2024-11-12T17:00:33.987524',
-            completedMembers: 3,
-            totalMembers: 4,
-            isMine: false,
-            chatRoomId: 22,
-            eventId: 779
-        }
-    ]
-    const completedEvents: EventData[] = [
-        {
-            type: 'task',
-            imageUrls: [dummyImg],
-            title: 'ppt 목차 어떻게 할까요?',
-            dueDate: '2024-09-12T17:00:33.987524',
-            completedMembers: 1,
-            totalMembers: 1,
-            isMine: false,
-            chatRoomId: 22,
-            eventId: 111
-        },
-        {
-            type: 'reaction',
-            imageUrls: [dummyImg, dummyImg, dummyImg, dummyImg],
-            title: 'ppt 목차 어떻게 할까요?',
-            dueDate: '2024-09-12T17:00:33.987524',
-            completedMembers: 4,
-            totalMembers: 4,
-            isMine: true,
-            chatRoomId: 22,
-            eventId: 112
-        },
-        {
-            type: 'reply',
-            imageUrls: [dummyImg, dummyImg],
-            title: 'ppt 목차 어떻게 할까요?',
-            dueDate: '2024-09-12T17:00:33.987524',
-            completedMembers: 4,
-            totalMembers: 4,
-            isMine: false,
-            chatRoomId: 22,
-            eventId: 779
-        }
-    ]
+    const [expiredEvents, setExpiredEvents] = useState<EventData[]>([]);
+    const [ongoingEvents, setOngoingEvents] = useState<EventData[]>([]);
+    const [completedEvents, setCompletedEvents] = useState<EventData[]>([]);
 
+    useEffect(() => {
+        eventQueryAPi.getEvents(workspaceId, 'expired')
+            .then(res => setExpiredEvents(res.data.data));
+        eventQueryAPi.getEvents(workspaceId, 'ongoing')
+            .then(res => setOngoingEvents(res.data.data));
+        eventQueryAPi.getEvents(workspaceId, 'completed')
+            .then(res => setCompletedEvents(res.data.data));
+    }, []);
 
     return (
         <div className={styles.page}>
@@ -152,46 +61,49 @@ export default function Home(props: Props) {
                     <div className={styles.section}>
                         <div className={styles.subtitle}>마감이 지난 이벤트</div>
                         {expiredEvents.map((event, index) => (
-                            <Link href={`/chatroom/${event.chatRoomId}/event/${event.eventId}/${event.type}`}
-                                  key={index} className={mine && !event.isMine ? styles.button+" "+styles.hide : styles.button}>
+                            <Link href={`/chatroom/${event.chatRoomId}/event/${event.eventId}/${event.eventType.toLowerCase()}`}
+                                  key={index}
+                                  className={mine && !event.isMine ? styles.button + " " + styles.hide : styles.button}>
                                 <Event
-                                    type={event.type}
-                                    imageUrls={event.imageUrls}
-                                    title={event.title}
-                                    dueDate={event.dueDate}
-                                    completedMembers={event.completedMembers}
-                                    totalMembers={event.totalMembers}/>
+                                    type={event.eventType}
+                                    imageUrls={event.users}
+                                    title={event.eventTitle}
+                                    dueDate={event.deadLine}
+                                    completedMembers={event.finishedCount}
+                                    totalMembers={event.totalAssignedCount}/>
                             </Link>
                         ))}
                     </div>
                     <div className={styles.section}>
                         <div className={styles.subtitle}>진행중인 이벤트</div>
                         {ongoingEvents.map((event, index) => (
-                            <Link href={`/chatroom/${event.chatRoomId}/event/${event.eventId}/${event.type}`}
-                                  key={index} className={mine && !event.isMine ? styles.button+" "+styles.hide : styles.button}>
+                            <Link href={`/chatroom/${event.chatRoomId}/event/${event.eventId}/${event.eventType.toLowerCase()}`}
+                                  key={index}
+                                  className={mine && !event.isMine ? styles.button + " " + styles.hide : styles.button}>
                                 <Event
-                                    type={event.type}
-                                    imageUrls={event.imageUrls}
-                                    title={event.title}
-                                    dueDate={event.dueDate}
-                                    completedMembers={event.completedMembers}
-                                    totalMembers={event.totalMembers}/>
+                                    type={event.eventType}
+                                    imageUrls={event.users}
+                                    title={event.eventTitle}
+                                    dueDate={event.deadLine}
+                                    completedMembers={event.finishedCount}
+                                    totalMembers={event.totalAssignedCount}/>
                             </Link>
                         ))}
                     </div>
                     <div className={styles.section}>
                         <div className={styles.subtitle}>완료된 이벤트</div>
                         {completedEvents.map((event, index) => (
-                            <Link href={`/chatroom/${event.chatRoomId}/event/${event.eventId}/${event.type}`}
-                                  key={index} className={mine && !event.isMine ? styles.button+" "+styles.hide : styles.button}>
+                            <Link href={`/chatroom/${event.chatRoomId}/event/${event.eventId}/${event.eventType.toLowerCase()}`}
+                                  key={index}
+                                  className={mine && !event.isMine ? styles.button + " " + styles.hide : styles.button}>
                                 <Event
                                     key={index}
-                                    type={event.type}
-                                    imageUrls={event.imageUrls}
-                                    title={event.title}
-                                    dueDate={event.dueDate}
-                                    completedMembers={event.completedMembers}
-                                    totalMembers={event.totalMembers}/>
+                                    type={event.eventType}
+                                    imageUrls={event.users}
+                                    title={event.eventTitle}
+                                    dueDate={event.deadLine}
+                                    completedMembers={event.finishedCount}
+                                    totalMembers={event.totalAssignedCount}/>
                             </Link>
                         ))}
                     </div>
