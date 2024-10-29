@@ -7,6 +7,8 @@ import RecipientSelector from "@/app/chatroom/_component/RecipientSelector";
 import DueDateInput from "@/app/chatroom/_component/DueDateInput";
 import AlarmTimeInput from "@/app/chatroom/_component/AlarmTimeInput";
 import EventDetailInput from "@/app/chatroom/_component/EventDetailInput";
+import eventApi from "@/app/(api)/event";
+import {useRouter} from "next/navigation";
 
 export default function Page(props: {
     params: {
@@ -21,6 +23,22 @@ export default function Page(props: {
     const [notificationStartHour, setNotificationStartHour] = useState(1);
     const [notificationStartMinute, setNotificationStartMinute] = useState(30);
     const [interval, setInterval] = useState(15);
+    const router = useRouter();
+
+    const createEvent = () => {
+        eventApi.createTaskEvent(
+            chatRoomId,
+            eventTitle,
+            eventDetails,
+            assignees,
+            deadline,
+            notificationStartHour,
+            notificationStartMinute,
+            interval
+        ).then(() => {
+            router.back();
+        })
+    }
 
     return (
         <div className={styles.page}>
@@ -30,13 +48,13 @@ export default function Page(props: {
                     <EventDetailInput detail={eventDetails} setDetail={setEventDetails} setTitle={setEventTitle}
                                       title={eventTitle}/>
                     <RecipientSelector setAssignees={setAssignees} chatroomId={chatRoomId}
-                    type={"task"}/>
+                                       type={"task"}/>
                     <DueDateInput deadline={deadline} setDeadline={setDeadline}/>
                 </div>
                 <div className={styles.section}>
                     <AlarmTimeInput setIntervalValue={setInterval} setNotificationHourValue={setNotificationStartHour}
                                     setNotificationMinuteValue={setNotificationStartMinute}/>
-                    <div className={styles.button}>생성</div>
+                    <div className={styles.button} onClick={createEvent}>생성</div>
                 </div>
             </div>
         </div>
