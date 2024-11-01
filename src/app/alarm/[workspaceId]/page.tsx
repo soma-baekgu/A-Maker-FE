@@ -25,7 +25,7 @@ export default function Alarm(props: Props) {
     const workspaceId = props.params.workspaceId;
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const contentRef = useRef<HTMLDivElement | null>(null);
-    const [cursor, setCursor] = useState(0);
+    const cursorRef = useRef(0);
     const [isLoading, setIsLoading] = useState(false);
 
     const fetchNotifications = () => {
@@ -33,10 +33,10 @@ export default function Alarm(props: Props) {
         setIsLoading(true);
         notificationApi.getNotifications(
             workspaceId,
-            cursor + 1
+            cursorRef.current + 1
         ).then((res) => {
             setNotifications(prev => [...prev, ...res.data.data.content]);
-            setCursor(prev=>prev+1 );
+            cursorRef.current += 1;
             setIsLoading(false);
         })
     }
@@ -45,7 +45,7 @@ export default function Alarm(props: Props) {
         if (contentRef.current) {
             const {scrollTop, scrollHeight, clientHeight} = contentRef.current;
             if (scrollTop + clientHeight >= scrollHeight) {
-                console.log(cursor);
+                console.log(cursorRef.current);
                 fetchNotifications();
             }
         }
@@ -55,13 +55,18 @@ export default function Alarm(props: Props) {
         fetchNotifications();
     }, []);
 
-
     useEffect(() => {
         const contentElement = contentRef.current;
         if (contentElement) {
             contentElement.addEventListener('scroll', handleScroll);
         }
-    }, [cursor]);
+
+        return () => {
+            if (contentElement) {
+                contentElement.removeEventListener('scroll', handleScroll);
+            }
+        };
+    }, []);
 
 
     return (
