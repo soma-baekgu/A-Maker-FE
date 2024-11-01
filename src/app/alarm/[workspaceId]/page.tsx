@@ -2,9 +2,10 @@
 import styles from './page.module.css';
 import TopBar from "@/app/_component/TopBar";
 import BottomBar from "@/app/_component/BottomBar";
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {timeAgo} from "@/app/(utils)/DateUtils";
 import Image from "next/image";
+import notificationApi from "@/app/(api)/notification";
 
 interface Props {
     params: {
@@ -13,69 +14,60 @@ interface Props {
 }
 
 interface Notification {
-    eventId: number,
+    id: number,
     title: string,
-    body: string,
-    createdAt: string
+    content: string,
+    userId: string,
+    eventId: number,
 }
 
 export default function Alarm(props: Props) {
     const workspaceId = props.params.workspaceId;
-    const [notifications, setNotifications] = useState<Notification[]>([
-        {
-            eventId: 1,
-            title: '미완료된 이벤트',
-            body: '[ppt 목차 어떻게 할까요?]가 마감 10분 전입니다. 맡은 업무를 완료해주세요.',
-            createdAt: '2024-09-12T17:00:33.987524'
-        },
-        {
-            eventId: 2,
-            title: '마감이 지난 이벤트',
-            body: '[ppt 목차 어떻게 할까요?]의 마감 기한이 지났습니다. 맡은 업무를 완료해주세요.',
-            createdAt: '2024-09-12T17:00:33.987524'
-        },
-        {
-            eventId: 3,
-            title: '이벤트 마감',
-            body: '[ppt 목차 어떻게 할까요?]가 마감되었습니다. 팀원들의 이벤트 완료 여부를 확인해주세요.',
-            createdAt: '2024-09-12T17:00:33.987524'
-        },
-        {
-            eventId: 4,
-            title: '이벤트',
-            body: '노영진님이 [ppt 목차 어떻게 할까요?]에 답변을 남겼습니다.',
-            createdAt: '2024-09-12T17:00:33.987524'
-        },
-        {
-            eventId: 5,
-            title: '이벤트',
-            body: '허석문님이 [회의 장소]에 답변을 남겼습니다.',
-            createdAt: '2024-09-12T17:00:33.987524'
-        },
-        {
-            eventId: 6,
-            title: '이벤트',
-            body: '이승환님이 [자료조사하기]에 파일을 올렸습니다.',
-            createdAt: '2024-09-12T17:00:33.987524'
-        },
-        {
-            eventId: 6,
-            title: '이벤트',
-            body: '이승환님이 [자료조사하기]에 파일을 올렸습니다.',
-            createdAt: '2024-09-12T17:00:33.987524'
-        },
-        {
-            eventId: 6,
-            title: '이벤트',
-            body: '이승환님이 [자료조사하기]에 파일을 올렸습니다.',
-            createdAt: '2024-09-12T17:00:33.987524'
+    const [notifications, setNotifications] = useState<Notification[]>([]);
+    const contentRef = useRef<HTMLDivElement | null>(null);
+    const [cursor, setCursor] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const fetchNotifications = () => {
+        if (isLoading) return;
+        setIsLoading(true);
+        notificationApi.getNotifications(
+            workspaceId,
+            cursor + 1
+        ).then((res) => {
+            setNotifications(prev => [...prev, ...res.data.data.content]);
+            setCursor(prev=>prev+1 );
+            setIsLoading(false);
+        })
+    }
+
+    const handleScroll = () => {
+        if (contentRef.current) {
+            const {scrollTop, scrollHeight, clientHeight} = contentRef.current;
+            if (scrollTop + clientHeight >= scrollHeight) {
+                console.log(cursor);
+                fetchNotifications();
+            }
         }
-    ]);
+    };
+
+    useEffect(() => {
+        fetchNotifications();
+    }, []);
+
+
+    useEffect(() => {
+        const contentElement = contentRef.current;
+        if (contentElement) {
+            contentElement.addEventListener('scroll', handleScroll);
+        }
+    }, [cursor]);
+
 
     return (
         <div className={styles.page}>
             <TopBar pageType='알림' workspaceId={workspaceId}/>
-            <div className={styles.content}>
+            <div className={styles.content} ref={contentRef}>
                 {notifications.map((notification, index) => (
                     <>
                         <div className={styles.notification} key={index}>
@@ -84,9 +76,8 @@ export default function Alarm(props: Props) {
                                     <Image src={"/alarm/icon.png"} alt={"icon"} width={16} height={16}/>
                                     {notification.title}
                                 </div>
-                                <div className={styles.date}>{timeAgo(new Date(notification.createdAt))}</div>
                             </div>
-                            <div className={styles.body}>{notification.body}</div>
+                            <div className={styles.body}>{notification.content}</div>
                         </div>
                     </>
                 ))}
@@ -95,3 +86,6 @@ export default function Alarm(props: Props) {
         </div>
     );
 }
+
+//title div 아래에 두기
+//<div className={styles.date}>{timeAgo(new Date(notification.createdAt))}</div>
