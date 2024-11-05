@@ -9,6 +9,7 @@ type Props = {
 
 export default function CreateChatModal({setVisible, createChatRoom}: Props) {
     const [inputValue, setInputValue] = useState("");
+    const [isError, setIsError] = useState(false);
 
     const handleClose = () => {
         setVisible(false);
@@ -19,9 +20,15 @@ export default function CreateChatModal({setVisible, createChatRoom}: Props) {
     }
 
     const handleCreateChat = async () => {
-        await createChatRoom(inputValue);
-        setInputValue("");
-        setVisible(false);
+        try {
+            await createChatRoom(inputValue);
+            setIsError(false);
+            setVisible(false);
+        } catch (e) {
+            setIsError(true);
+        }finally {
+            setInputValue("");
+        }
     }
 
     return (
@@ -35,6 +42,7 @@ export default function CreateChatModal({setVisible, createChatRoom}: Props) {
                 <div className={styles.inputSection}>
                     <div className={styles.inputGuide}>채팅방 이름을 입력해주세요.</div>
                     <input className={styles.input} value={inputValue} onChange={handleInputChange}></input>
+                    {isError && <div className={styles.error}>채팅방 생성에 실패했습니다. 워크스페이스 관리자 권한이 필요합니다.</div>}
                 </div>
                 <div className={styles.buttons}>
                     <div className={styles.createButton} onClick={handleCreateChat}>생성</div>
