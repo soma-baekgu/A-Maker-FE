@@ -1,13 +1,14 @@
 "use client";
 
 import {EventData, User} from "@/app/chatroom/[id]/event/[eventId]/types";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import TopBar2 from "@/app/_component/TopBar2";
 import EventInfo from "@/app/chatroom/[id]/event/[eventId]/_component/EventInfo";
 import Profile from "@/app/chatroom/[id]/event/_component/Profile";
 import {timeAgo} from "@/app/(utils)/DateUtils";
 import styles from "./page.module.css";
 import Image from "next/image";
+import eventApi from "@/app/(api)/event";
 
 interface Comment {
     id: number,
@@ -29,26 +30,15 @@ export default function Page(props: {
         eventId: string
     }
 }) {
+    const chatRoomId: number = Number(props.params.id);
     const eventId: number = Number(props.params.eventId);
     const dummyUser: User = {
         name: "노영진",
         email: "shane9747@gmail.com",
         picture: "https://lh3.googleusercontent.com/a/ACg8ocKoltqSQEeJytHSjnxp7xMKzStDF9KkwCBFYZgLEUmqXF-Khg=s96-c"
     }
-    const [event, setEvent] = useState<TaskEventData>(
-        {
-            id: 1,
-            eventTitle: "Sample Event",
-            eventDetails: "This is a sample event.",
-            deadLine: "2024-12-31T23:59:59Z",
-            notificationStartTime: "2024-10-12T17:00:33.987524",
-            notificationInterval: 60,
-            eventCreator: dummyUser,
-            finishUser: [dummyUser, dummyUser],
-            waitingUser: [dummyUser, dummyUser]
-        }
-    );
-    const [isLoaded, setIsLoaded] = useState(true);
+    const [event, setEvent] = useState<TaskEventData>();
+    const [isLoaded, setIsLoaded] = useState(false);
     const dummyComments: Comment[] = [
         {
             id: 1,
@@ -69,6 +59,15 @@ export default function Page(props: {
             userResponse: dummyUser
         },
     ]
+
+    const fetchEventData = async () => {
+        const res = await eventApi.readTaskEvent(chatRoomId, eventId);
+        setEvent(res.data.data);
+    }
+
+    useEffect(() => {
+        fetchEventData().then(() => setIsLoaded(true));
+    }, []);
 
     return (
         <div className={styles.page}>

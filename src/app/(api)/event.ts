@@ -67,6 +67,10 @@ const eventApi = {
         notificationStartMinute,
         interval
     }),
+    readTaskEvent: (
+        chatRoomId: number,
+        eventId: number,
+    ) => authRequest.get(`/api/v1/chat-rooms/${chatRoomId}/events/${eventId}/task`),
 }
 
 export default eventApi;
