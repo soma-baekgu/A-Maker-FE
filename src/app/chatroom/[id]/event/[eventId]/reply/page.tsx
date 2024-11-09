@@ -11,6 +11,7 @@ import eventCommentApi from "@/app/(api)/eventComment";
 import {timeAgo} from "@/app/(utils)/DateUtils";
 import {EventData, User} from "@/app/chatroom/[id]/event/[eventId]/types";
 import EventInfo from "@/app/chatroom/[id]/event/[eventId]/_component/EventInfo";
+import {useStore} from "@/app/store";
 
 type Comment = {
     id: number,
@@ -33,12 +34,18 @@ interface ReplyEventData extends EventData {
     eventDetails: string
 }
 
+interface StoreState {
+    email: string;
+}
+
 export default function Page(props: Props) {
     const chatRoomId: number = Number(props.params.id);
     const eventId: number = Number(props.params.eventId);
     const [event, setEvent] = useState<ReplyEventData>();
     const [isLoaded, setIsLoaded] = useState(false);
     const [comments, setComments] = useState<Comment[]>([]);
+    const [isAvailable, setIsAvailable] = useState(false);
+    const {email} = useStore() as StoreState;
 
     const fetchComments = async () => {
         //todo 페이징 적용
@@ -65,6 +72,12 @@ export default function Page(props: Props) {
         await eventCommentApi.createReplyComment(eventId, msg);
         fetchComments();
     }
+
+    useEffect(() => {
+        if (event?.waitingUser.some((user: User) => user.email == email) ||
+            event?.finishUser.some((user: User) => user.email == email))
+            setIsAvailable(true);
+    }, [event]);
 
     return (
         <div className={styles.page}>
@@ -97,7 +110,9 @@ export default function Page(props: Props) {
             ) : (
                 <div className={styles.main}>Loading...</div>
             )}
-            <ReplyInput onSend={onSend}/>
+            {isAvailable &&
+                <ReplyInput onSend={onSend}/>
+            }
         </div>
     )
         ;

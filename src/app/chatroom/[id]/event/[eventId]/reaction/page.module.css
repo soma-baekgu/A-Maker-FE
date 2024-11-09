@@ -66,6 +66,17 @@
     opacity: 0.8;
 }
 
+.disableButton {
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    color: white;
+    background-color: #bbbbbb;
+    border-radius: 6px;
+}
+
 .checkbox {
     appearance: none;
     -webkit-appearance: none;
@@ -90,8 +101,43 @@
     border-radius: 50%;
 }
 
-.empty{
-flex: 1;
+.empty {
+    flex: 1;
     background-color: #f9f9f9;
     margin: 0 -20px;
+}
+
+.optionBackground {
+    background-color: #eeeeee;
+    padding: 12px;
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    flex: 1;
+    border-radius: 4px;
+    justify-content: space-between;
+}
+
+.optionBar {
+    display: flex;
+    position: absolute;
+    background-color: rgba(97, 205, 102, 0.4);
+    height: 100%;
+    width: 50%;
+    border-radius: 4px;
+    margin: -12px;
+}
+
+.frontText {
+    z-index: 2;
+}
+
+.optionDefaultBackground {
+    padding: 12px;
+    flex: 1;
+}
+
+.votedText {
+    color: #49b17e;
+    font-weight: bold;
 }

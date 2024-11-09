@@ -5,6 +5,8 @@ const eventCommentApi = {
     readReplyComment: (eventId: number, page: number, size: number) => authRequest.get(`/api/v1/events/${eventId}/reply/comments`, {
         params: {page, size}
     }),
+    createReactionComment: (eventId: number, optionId: number) => authRequest.post(`/api/v1/events/${eventId}/reaction/comments`, {optionId}),
+    readReactionEventComment: (eventId: number) => authRequest.get(`/api/v1/events/${eventId}/reaction/comments`),
 }
 
 export default eventCommentApi;

@@ -6,15 +6,33 @@ import {useEffect, useState} from "react";
 import {EventData, User} from "@/app/chatroom/[id]/event/[eventId]/types";
 import EventInfo from "@/app/chatroom/[id]/event/[eventId]/_component/EventInfo";
 import eventApi from "@/app/(api)/event";
+import eventCommentApi from "@/app/(api)/eventComment";
+import {useStore} from "@/app/store";
 
-interface Option{
-    id:number,
-    eventId:number,
-    content:string
+interface Option {
+    id: number,
+    eventId: number,
+    content: string
 }
 
 interface ReactionEventData extends EventData {
     options: Option[]
+}
+
+interface StoreState {
+    email: string;
+}
+
+interface VotedOption {
+    id: number,
+    eventId: number,
+    content: string,
+    comments: {
+        id: number,
+        createAt: string,
+        updatedAt: string,
+        userDto: User,
+    }[]
 }
 
 export default function Page(props: {
@@ -25,16 +43,47 @@ export default function Page(props: {
 }) {
     const chatRoomId: number = Number(props.params.id);
     const eventId: number = Number(props.params.eventId);
-    const dummyUser: User = {
-        name: "노영진",
-        email: "shane9747@gmail.com",
-        picture: "https://lh3.googleusercontent.com/a/ACg8ocKoltqSQEeJytHSjnxp7xMKzStDF9KkwCBFYZgLEUmqXF-Khg=s96-c"
-    }
     const [event, setEvent] = useState<ReactionEventData>();
     const [isLoaded, setIsLoaded] = useState(false);
+    const [selectedOption, setSelectedOption] = useState<number>();
+    const {email} = useStore() as StoreState;
+    const [isVoted, setIsVoted] = useState(false);
+    const [totalVoterCount, setTotalVoterCount] = useState(10);
+    const [voterCount, setVoterCount] = useState<Map<number, number>>(new Map());
+    const [votedOption, setVotedOption] = useState<number>();
+    const [isAvailable, setIsAvailable] = useState(false);
+
     const loadEventData = async () => {
-        const res = await eventApi.readReactionEvent(chatRoomId, eventId)
-        setEvent(res.data.data)
+        const res = await eventApi.readReactionEvent(chatRoomId, eventId);
+        setEvent(res.data.data);
+        setIsVoted(getIsVoted(res.data.data.finishUser));
+
+        const res2 = await eventCommentApi.readReactionEventComment(eventId);
+        const tempMap = new Map<number, number>();
+        let tempCnt = 0;
+        res2.data.data.forEach((option: VotedOption) => {
+            tempMap.set(option.id, option.comments.length);
+            tempCnt += option.comments.length;
+            if (option.comments.some((comment) => comment.userDto.email == email)) {
+                setVotedOption(option.id);
+            }
+        })
+        setVoterCount(tempMap);
+        setTotalVoterCount(tempCnt);
+    }
+
+    const createEventComment = async (optionId: number | undefined) => {
+        if (!optionId) return;
+        await eventCommentApi.createReactionComment(eventId, optionId);
+        loadEventData();
+    }
+
+    const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSelectedOption(Number(e.target.value));
+    }
+
+    const getIsVoted = (finishUsers: User[]): boolean => {
+        return finishUsers.some((user: User) => user.email == email);
     }
 
     useEffect(() => {
@@ -42,6 +91,12 @@ export default function Page(props: {
             () => setIsLoaded(true)
         )
     }, []);
+
+    useEffect(() => {
+        if (event?.waitingUser.some((user: User) => user.email == email) ||
+            event?.finishUser.some((user: User) => user.email == email))
+            setIsAvailable(true);
+    }, [event]);
 
 
     return (
@@ -58,12 +113,43 @@ export default function Page(props: {
                     <div className={styles.choice}>
                         {event.options.map((option, index) => (
                             <div className={styles.item} key={index}>
-                                <input className={styles.checkbox} type="radio" name={"vote"}/>
-                                {option.content}
+                                {isAvailable &&
+                                    <input
+                                        className={styles.checkbox}
+                                        type="radio"
+                                        name={"vote"}
+                                        value={option.id}
+                                        onChange={handleOptionChange}
+                                    />}
+                                {isVoted ?
+                                    <div className={styles.optionBackground}>
+                                        <div
+                                            className={styles.optionBar}
+                                            style={
+                                                {width: `${(voterCount.get(option.id) ?? 0) * 100 / totalVoterCount}%`}
+                                            }
+                                        ></div>
+                                        <div
+                                            className={styles.frontText + (votedOption == option.id ? ' ' + styles.votedText : '')}>{option.content}</div>
+                                        <div
+                                            className={styles.frontText + (votedOption == option.id ? ' ' + styles.votedText : '')}>
+                                            {`${(voterCount.get(option.id) ?? 0)}명(${(voterCount.get(option.id) ?? 0) * 100 / totalVoterCount}%)`}
+                                        </div>
+                                    </div>
+                                    :
+                                    <div className={styles.optionDefaultBackground}>
+                                        {option.content}
+                                    </div>
+                                }
                             </div>
                         ))}
                     </div>
-                    <div className={styles.button}>응답</div>
+                    {isAvailable &&
+                        <div className={selectedOption ? styles.button : styles.disableButton} onClick={() => {
+                            if (!selectedOption) return;
+                            createEventComment(selectedOption);
+                        }}>응답
+                        </div>}
                     <div className={styles.empty}></div>
                 </div>
             ) : (
