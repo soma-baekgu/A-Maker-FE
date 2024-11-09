@@ -33,6 +33,8 @@ export default function EventMessage({
             router.push(`/chatroom/${chatroomId}/event/${messageId}/reply`);
         else if (eventType === 'reaction')
             router.push(`/chatroom/${chatroomId}/event/${messageId}/reaction`);
+        else if (eventType === 'task')
+            router.push(`/chatroom/${chatroomId}/event/${messageId}/task`);
     }
 
     return (
@@ -55,7 +57,7 @@ export default function EventMessage({
                         <span className={styles.remain}>{timeRemaining}</span>
                     </div>
                     <div className={styles.left}>{eventTitle}</div>
-                    <div className={styles.right+" "+styles.count}>
+                    <div className={styles.right + " " + styles.count}>
                         {eventType === 'reply' ?
                             `답변 대기중 ${finishedCount}/${totalAssignedCount}`
                             :
