@@ -16,6 +16,8 @@ import {getPreSignedUrl} from "@/app/chatroom/preSignedUrl";
 import chatApi from "@/app/(api)/chat";
 import axios from "axios";
 import fileDownload from 'js-file-download';
+import {saveFile} from "@/app/chatroom/fileSaver";
+import FileDownloader from "@/app/chatroom/_component/FileDownloader";
 
 interface Comment {
     id: number,
@@ -43,11 +45,6 @@ export default function Page(props: {
 }) {
     const chatRoomId: number = Number(props.params.id);
     const eventId: number = Number(props.params.eventId);
-    const dummyUser: User = {
-        name: "노영진",
-        email: "shane9747@gmail.com",
-        picture: "https://lh3.googleusercontent.com/a/ACg8ocKoltqSQEeJytHSjnxp7xMKzStDF9KkwCBFYZgLEUmqXF-Khg=s96-c"
-    }
     const [event, setEvent] = useState<TaskEventData>();
     const [isLoaded, setIsLoaded] = useState(false);
     const [comments, setComments] = useState<Comment[]>([]);
@@ -89,18 +86,6 @@ export default function Page(props: {
         const encodedFileName = parts[parts.length - 1];
         return decodeURIComponent(encodedFileName);
     };
-
-    const saveFile = async (path: string) => {
-        try {
-            const response = await axios.get(path, {
-                responseType: 'blob',
-            });
-            const fileName = getFileNameFromUrl(path);
-            fileDownload(response.data, fileName);
-        } catch (error) {
-            console.error('Error downloading the file', error);
-        }
-    }
 
     useEffect(() => {
         fetchEventData().then(() => setIsLoaded(true));
@@ -145,12 +130,7 @@ export default function Page(props: {
                                         <Image src={"/task/clip.png"} alt={"clip"} width={16} height={16}/>
                                         {getFileNameFromUrl(comment.path)}
                                     </div>
-                                    <div className={styles.down} onClick={() => {
-                                        saveFile(comment.path)
-                                    }}>
-                                        <Image src={"/down.png"} alt={"down"} width={16} height={16}/>
-                                        저장하기
-                                    </div>
+                                    <FileDownloader path={comment.path} fileName={getFileNameFromUrl(comment.path)}/>
                                 </div>
                             ))
                         }

@@ -88,3 +88,9 @@
     color: #999999;
     text-align: left;
 }
+
+.downloadContent{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
