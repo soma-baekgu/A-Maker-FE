@@ -44,11 +44,6 @@ export default function Page(props: {
 }) {
     const chatRoomId: number = Number(props.params.id);
     const eventId: number = Number(props.params.eventId);
-    const dummyUser: User = {
-        name: "노영진",
-        email: "shane9747@gmail.com",
-        picture: "https://lh3.googleusercontent.com/a/ACg8ocKoltqSQEeJytHSjnxp7xMKzStDF9KkwCBFYZgLEUmqXF-Khg=s96-c"
-    }
     const [event, setEvent] = useState<TaskEventData>();
     const [isLoaded, setIsLoaded] = useState(false);
     const [comments, setComments] = useState<Comment[]>([]);
@@ -134,8 +129,8 @@ export default function Page(props: {
                                         <Image src={"/task/clip.png"} alt={"clip"} width={16} height={16}/>
                                         {getFileNameFromUrl(comment.path)}
                                     </div>
-                                    <div className={styles.down} onClick={() => {
-                                        saveFile(comment.path, getFileNameFromUrl(comment.path));
+                                    <div className={styles.down} onClick={async () => {
+                                        await saveFile(comment.path, getFileNameFromUrl(comment.path));
                                     }}>
                                         <Image src={"/down.png"} alt={"down"} width={16} height={16}/>
                                         저장하기

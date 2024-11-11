@@ -3,12 +3,20 @@ import styles from "@/app/chatroom/_component/chatMessage.module.css";
 import Image from "next/image";
 import React from "react";
 import EventMessage from "@/app/chatroom/_component/EventMessage";
+import fileDownload from "js-file-download";
+import {saveFile} from "@/app/chatroom/fileSaver";
 
 type Props = {
     chatType: string,
     content: ChatContent,
     messageId: number,
     chatroomId: number
+}
+
+const onSave = async (content: ChatContent) => {
+    if (isFileContent(content)) {
+        await saveFile(content.path, content.fileName);
+    }
 }
 
 export default function ContentByChatType({chatType, content, messageId, chatroomId}: Props) {
@@ -18,13 +26,13 @@ export default function ContentByChatType({chatType, content, messageId, chatroo
                 <div className={styles.content}>{content}</div>
                 :
                 chatType === 'IMAGE' && isFileContent(content) ?
-                    <a href={content.path}>
+                    <div onClick={async () => {await onSave(content);}}>
                         <Image className={styles.content} src={content.path}
                                alt="img" width={250} height={250}/>
-                    </a>
+                    </div>
                     :
                     chatType === 'FILE' && isFileContent(content) ?
-                        <a href={content.path}>
+                        <div onClick={async () => {await onSave(content);}}>
                             <div className={`${styles.file} ${styles.content}`}>
                                 <div>
                                     <Image src="/chatting/file.png" alt="file" width={16} height={16}/>
@@ -33,7 +41,7 @@ export default function ContentByChatType({chatType, content, messageId, chatroo
                                     {content.fileName}
                                 </div>
                             </div>
-                        </a>
+                        </div>
                         :
                         chatType === 'REPLY' && isReplyEventContent(content) ?
                             <div className={styles.content2}>
