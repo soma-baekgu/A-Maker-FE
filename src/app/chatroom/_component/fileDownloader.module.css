@@ -1,0 +1,14 @@
+.component{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 12px;
+    justify-content: flex-end;
+    color: #666666;
+    gap: 2px;
+    cursor:pointer;
+}
+
+.component:hover{
+    opacity: 0.8;
+}

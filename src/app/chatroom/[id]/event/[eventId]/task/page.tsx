@@ -17,6 +17,7 @@ import chatApi from "@/app/(api)/chat";
 import axios from "axios";
 import fileDownload from 'js-file-download';
 import {saveFile} from "@/app/chatroom/fileSaver";
+import FileDownloader from "@/app/chatroom/_component/FileDownloader";
 
 interface Comment {
     id: number,
@@ -129,12 +130,7 @@ export default function Page(props: {
                                         <Image src={"/task/clip.png"} alt={"clip"} width={16} height={16}/>
                                         {getFileNameFromUrl(comment.path)}
                                     </div>
-                                    <div className={styles.down} onClick={async () => {
-                                        await saveFile(comment.path, getFileNameFromUrl(comment.path));
-                                    }}>
-                                        <Image src={"/down.png"} alt={"down"} width={16} height={16}/>
-                                        저장하기
-                                    </div>
+                                    <FileDownloader path={comment.path} fileName={getFileNameFromUrl(comment.path)}/>
                                 </div>
                             ))
                         }
