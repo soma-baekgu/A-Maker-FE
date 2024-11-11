@@ -16,6 +16,7 @@ import {getPreSignedUrl} from "@/app/chatroom/preSignedUrl";
 import chatApi from "@/app/(api)/chat";
 import axios from "axios";
 import fileDownload from 'js-file-download';
+import {saveFile} from "@/app/chatroom/fileSaver";
 
 interface Comment {
     id: number,
@@ -90,18 +91,6 @@ export default function Page(props: {
         return decodeURIComponent(encodedFileName);
     };
 
-    const saveFile = async (path: string) => {
-        try {
-            const response = await axios.get(path, {
-                responseType: 'blob',
-            });
-            const fileName = getFileNameFromUrl(path);
-            fileDownload(response.data, fileName);
-        } catch (error) {
-            console.error('Error downloading the file', error);
-        }
-    }
-
     useEffect(() => {
         fetchEventData().then(() => setIsLoaded(true));
         fetchCommentData();
@@ -146,7 +135,7 @@ export default function Page(props: {
                                         {getFileNameFromUrl(comment.path)}
                                     </div>
                                     <div className={styles.down} onClick={() => {
-                                        saveFile(comment.path)
+                                        saveFile(comment.path, getFileNameFromUrl(comment.path));
                                     }}>
                                         <Image src={"/down.png"} alt={"down"} width={16} height={16}/>
                                         저장하기
