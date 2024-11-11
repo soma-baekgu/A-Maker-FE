@@ -11,7 +11,7 @@ export default function FileDownloader({path, fileName}: {
     }
 
     return (
-        <div className={styles.component}>
+        <div className={styles.component} onClick={onSave}>
             <div>
                 <Image src="/down.png" alt="down" width={16} height={16}/>
             </div>

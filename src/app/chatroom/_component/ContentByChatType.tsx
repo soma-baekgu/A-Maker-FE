@@ -5,18 +5,13 @@ import React from "react";
 import EventMessage from "@/app/chatroom/_component/EventMessage";
 import fileDownload from "js-file-download";
 import {saveFile} from "@/app/chatroom/fileSaver";
+import FileDownloader from "@/app/chatroom/_component/FileDownloader";
 
 type Props = {
     chatType: string,
     content: ChatContent,
     messageId: number,
     chatroomId: number
-}
-
-const onSave = async (content: ChatContent) => {
-    if (isFileContent(content)) {
-        await saveFile(content.path, content.fileName);
-    }
 }
 
 export default function ContentByChatType({chatType, content, messageId, chatroomId}: Props) {
@@ -26,14 +21,15 @@ export default function ContentByChatType({chatType, content, messageId, chatroo
                 <div className={styles.content}>{content}</div>
                 :
                 chatType === 'IMAGE' && isFileContent(content) ?
-                    <div onClick={async () => {await onSave(content);}}>
-                        <Image className={styles.content} src={content.path}
+                    <div className={styles.content+' '+styles.downloadContent}>
+                        <Image src={content.path}
                                alt="img" width={250} height={250}/>
+                        <FileDownloader path={content.path} fileName={content.fileName}/>
                     </div>
                     :
                     chatType === 'FILE' && isFileContent(content) ?
-                        <div onClick={async () => {await onSave(content);}}>
-                            <div className={`${styles.file} ${styles.content}`}>
+                        <div className={styles.content+' '+styles.downloadContent}>
+                            <div className={`${styles.file}`}>
                                 <div>
                                     <Image src="/chatting/file.png" alt="file" width={16} height={16}/>
                                 </div>
@@ -41,6 +37,7 @@ export default function ContentByChatType({chatType, content, messageId, chatroo
                                     {content.fileName}
                                 </div>
                             </div>
+                            <FileDownloader path={content.path} fileName={content.fileName}/>
                         </div>
                         :
                         chatType === 'REPLY' && isReplyEventContent(content) ?
