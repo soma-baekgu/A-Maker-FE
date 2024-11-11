@@ -1,7 +1,7 @@
 "use client";
 
 import {EventData, User} from "@/app/chatroom/[id]/event/[eventId]/types";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import TopBar2 from "@/app/_component/TopBar2";
 import EventInfo from "@/app/chatroom/[id]/event/[eventId]/_component/EventInfo";
 import Profile from "@/app/chatroom/[id]/event/_component/Profile";
@@ -9,12 +9,19 @@ import {timeAgo} from "@/app/(utils)/DateUtils";
 import styles from "./page.module.css";
 import Image from "next/image";
 import eventApi from "@/app/(api)/event";
+import eventCommentApi from "@/app/(api)/eventComment";
+import {useStore} from "@/app/store";
+import SendApproveModal from "@/app/chatroom/_component/SendApproveModal";
+import {getPreSignedUrl} from "@/app/chatroom/preSignedUrl";
+import chatApi from "@/app/(api)/chat";
+import axios from "axios";
+import fileDownload from 'js-file-download';
 
 interface Comment {
     id: number,
     userId: string,
     eventId: number,
-    content: string,
+    path: string,
     createdAt: string,
     updatedAt: string,
     userResponse: User
@@ -22,6 +29,10 @@ interface Comment {
 
 interface TaskEventData extends EventData {
     eventDetails: string
+}
+
+interface StoreState {
+    email: string;
 }
 
 export default function Page(props: {
@@ -39,35 +50,74 @@ export default function Page(props: {
     }
     const [event, setEvent] = useState<TaskEventData>();
     const [isLoaded, setIsLoaded] = useState(false);
-    const dummyComments: Comment[] = [
-        {
-            id: 1,
-            userId: "1",
-            eventId: 1,
-            content: "자료조사A.pdf",
-            createdAt: "2024-09-12T17:00:33.987524",
-            updatedAt: "2024-09-12T17:00:33.987524",
-            userResponse: dummyUser
-        },
-        {
-            id: 2,
-            userId: "2",
-            eventId: 1,
-            content: "자료조사B.pdf",
-            createdAt: "2024-09-12T17:00:33.987524",
-            updatedAt: "2024-09-12T17:00:33.987524",
-            userResponse: dummyUser
-        },
-    ]
+    const [comments, setComments] = useState<Comment[]>([]);
+    const {email} = useStore() as StoreState;
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const [fileInputVisible, setFileInputVisible] = useState(false);
+    const [fileName, setFileName] = useState('');
+    const [isAvailable, setIsAvailable] = useState(false);
 
     const fetchEventData = async () => {
         const res = await eventApi.readTaskEvent(chatRoomId, eventId);
         setEvent(res.data.data);
     }
 
+    const fetchCommentData = async () => {
+        const res = await eventCommentApi.readTaskComment(eventId, 0, 100);
+        setComments(res.data.data.content);
+    }
+
+    const handleFileInput = () => {
+        fileInputRef.current!.click();
+    }
+
+    const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            setFileName(e.target.files![0].name);
+            setFileInputVisible(true);
+        }
+    }
+
+    const uploadFile = async () => {
+        const fileUrl: string = await getPreSignedUrl(fileName, fileInputRef);
+        await eventCommentApi.createTaskComment(eventId, fileUrl);
+        await fetchCommentData();
+    }
+
+    const getFileNameFromUrl = (url: string): string => {
+        const parts = url.split('/');
+        const encodedFileName = parts[parts.length - 1];
+        return decodeURIComponent(encodedFileName);
+    };
+
+    const saveFile = async (path: string) => {
+        try {
+            const response = await axios.get(path, {
+                responseType: 'blob',
+            });
+            const fileName = getFileNameFromUrl(path);
+            fileDownload(response.data, fileName);
+        } catch (error) {
+            console.error('Error downloading the file', error);
+        }
+    }
+
     useEffect(() => {
         fetchEventData().then(() => setIsLoaded(true));
+        fetchCommentData();
     }, []);
+
+    useEffect(() => {
+        if (!fileInputVisible && fileInputRef.current) {
+            fileInputRef.current!.value = '';
+        }
+    }, [fileInputVisible]);
+
+    useEffect(() => {
+        if (event?.waitingUser.some((user: User) => user.email == email) ||
+            event?.finishUser.some((user: User) => user.email == email))
+            setIsAvailable(true);
+    }, [event]);
 
     return (
         <div className={styles.page}>
@@ -83,7 +133,7 @@ export default function Page(props: {
                     </div>
                     <div className={styles.comments}>
                         {
-                            dummyComments.map((comment, index) => (
+                            comments.map((comment, index) => (
                                 <div key={index} className={styles.comment}>
                                     <div className={styles.commentTitle}>
                                         <Profile name={comment.userResponse.name}
@@ -93,20 +143,32 @@ export default function Page(props: {
                                     </div>
                                     <div className={styles.content}>
                                         <Image src={"/task/clip.png"} alt={"clip"} width={16} height={16}/>
-                                        {comment.content}
+                                        {getFileNameFromUrl(comment.path)}
+                                    </div>
+                                    <div className={styles.down} onClick={() => {
+                                        saveFile(comment.path)
+                                    }}>
+                                        <Image src={"/down.png"} alt={"down"} width={16} height={16}/>
+                                        저장하기
                                     </div>
                                 </div>
                             ))
                         }
                     </div>
-                    <div className={styles.fixedBtn}>
-                        <Image src={"/task/white_clip.png"} alt={"white_clip"} width={24} height={24}/>
-                        첨부파일 등록
-                    </div>
+                    {isAvailable &&
+                        <div className={styles.fixedBtn} onClick={handleFileInput}>
+                            <Image src={"/task/white_clip.png"} alt={"white_clip"} width={24} height={24}/>
+                            <input type="file" ref={fileInputRef} className={styles.none} onChange={handleChangeFile}/>
+                            첨부파일 등록
+                        </div>
+                    }
                 </div>
             ) : (
                 <div className={styles.main}>Loading...</div>
             )}
+            {fileInputVisible &&
+                <SendApproveModal title="첨부파일 등록" fileName={fileName} setVisible={setFileInputVisible}
+                                  send={uploadFile}/>}
         </div>
     )
 }

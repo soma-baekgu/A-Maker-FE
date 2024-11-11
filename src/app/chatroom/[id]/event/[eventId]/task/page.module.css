@@ -66,6 +66,21 @@
     padding-left: 30px;
 }
 
+.down{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 12px;
+    justify-content: flex-end;
+    color: #666666;
+    gap: 2px;
+    cursor:pointer;
+}
+
+.down:hover{
+    opacity: 0.8;
+}
+
 .comments {
     display: flex;
     flex-direction: column;
@@ -99,8 +114,13 @@
     left: 15px;
     right: 15px;
     z-index: 100;
+    cursor: pointer;
 }
 
 .fixedBtn:hover {
     opacity: 0.8;
+}
+
+.none {
+    display: none;
 }

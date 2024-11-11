@@ -17,6 +17,7 @@
     "@mui/x-date-pickers": "^7.11.1",
     "axios": "^1.7.2",
     "dayjs": "^1.11.12",
+    "js-file-download": "^0.4.12",
     "next": "14.2.4",
     "react": "^18",
     "react-dom": "^18",
