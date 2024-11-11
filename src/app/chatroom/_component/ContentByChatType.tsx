@@ -1,7 +1,7 @@
 import {ChatContent, FileContent, isFileContent, isReplyEventContent, isString} from "@/app/chatroom/types";
 import styles from "@/app/chatroom/_component/chatMessage.module.css";
-import Image from "next/image";
-import React from "react";
+import NextImage from "next/image";
+import React, {useEffect, useState} from "react";
 import EventMessage from "@/app/chatroom/_component/EventMessage";
 import fileDownload from "js-file-download";
 import {saveFile} from "@/app/chatroom/fileSaver";
@@ -15,23 +15,36 @@ type Props = {
 }
 
 export default function ContentByChatType({chatType, content, messageId, chatroomId}: Props) {
+    const [imageHeight, setImageHeight] = useState(0);
+
+    useEffect(() => {
+        if (chatType === 'IMAGE' && isFileContent(content)) {
+            const img = new Image();
+            img.src = content.path;
+            img.onload = () => {
+                const aspectRatio = img.height / img.width;
+                setImageHeight(250 * aspectRatio);
+            };
+        }
+    }, [chatType, content]);
+
     return (
         <>
             {chatType === 'GENERAL' && isString(content) ?
                 <div className={styles.content}>{content}</div>
                 :
                 chatType === 'IMAGE' && isFileContent(content) ?
-                    <div className={styles.content+' '+styles.downloadContent}>
-                        <Image src={content.path}
-                               alt="img" width={250} height={250}/>
+                    <div className={styles.content + ' ' + styles.downloadContent}>
+                        <NextImage src={content.path}
+                                   alt="img" width={250} height={imageHeight}/>
                         <FileDownloader path={content.path} fileName={content.fileName}/>
                     </div>
                     :
                     chatType === 'FILE' && isFileContent(content) ?
-                        <div className={styles.content+' '+styles.downloadContent}>
+                        <div className={styles.content + ' ' + styles.downloadContent}>
                             <div className={`${styles.file}`}>
                                 <div>
-                                    <Image src="/chatting/file.png" alt="file" width={16} height={16}/>
+                                    <NextImage src="/chatting/file.png" alt="file" width={16} height={16}/>
                                 </div>
                                 <div>
                                     {content.fileName}
