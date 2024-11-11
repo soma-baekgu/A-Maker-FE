@@ -66,6 +66,21 @@
     padding-left: 30px;
 }
 
+.down{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 12px;
+    justify-content: flex-end;
+    color: #666666;
+    gap: 2px;
+    cursor:pointer;
+}
+
+.down:hover{
+    opacity: 0.8;
+}
+
 .comments {
     display: flex;
     flex-direction: column;

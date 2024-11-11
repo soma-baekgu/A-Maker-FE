@@ -32,6 +32,10 @@ export default function EventInfo(
                     {event.waitingUser?.map((user, index) => (
                         <Profile key={index} name={user.name} img={user.picture} isComment={false}/>
                     ))}
+                    {type == "task" &&
+                        event.finishUser?.map((user, index) => (
+                            <Profile key={index} name={user.name} img={user.picture} isComment={false}/>
+                        ))}
                 </div>
             </div>
             {type !== "task" &&
