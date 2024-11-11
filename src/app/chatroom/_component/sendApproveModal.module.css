@@ -66,6 +66,11 @@
     color: white;
     background-color: #62cd98;
     border-radius: 6px;
+    cursor: pointer;
+}
+
+.sendButton:hover{
+    opacity: 0.8;
 }
 
 .closeButton{
@@ -79,4 +84,9 @@
     color: white;
     background-color: #c5c5c5;
     border-radius: 6px;
+    cursor: pointer;
+}
+
+.closeButton:hover{
+    opacity: 0.8;
 }
