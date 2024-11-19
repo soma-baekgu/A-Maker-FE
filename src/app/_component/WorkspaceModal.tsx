@@ -32,12 +32,12 @@ export default function WorkspaceModal({onClose, visible, currentWorkspaceId}: P
     const {picture, name} = useStore() as StoreState;
     const router = useRouter();
 
-    useEffect(() => {
-        const getWorkspaces = async () => {
-            const res = await workspaceApi.getList();
-            setWorkspaces(res.data.data.workspaces);
-        };
+    const getWorkspaces = async () => {
+        const res = await workspaceApi.getList();
+        setWorkspaces(res.data.data.workspaces);
+    };
 
+    useEffect(() => {
         getWorkspaces();
     }, [visible, createWorkspaceVisible]);
 
@@ -51,6 +51,7 @@ export default function WorkspaceModal({onClose, visible, currentWorkspaceId}: P
 
     const createWorkspace = async (workspaceName: string) => {
         await workspaceApi.create(workspaceName);
+        await getWorkspaces();
     }
 
     const handleLogout = () => {
