@@ -50,7 +50,7 @@ export default function Page(props: Props) {
     const [title, setTitle] = useState('');
     const [isLoadingChat, setIsLoadingChat] = useState(false);
     const contentRef = useRef<HTMLDivElement | null>(null);
-    const [scrollHeight,setScrollHeight] = useState(0);
+    const [scrollHeight, setScrollHeight] = useState(0);
     const [isSendMyChat, setIsSendMyChat] = useState(false);
 
     const fetchChatRoom = async () => {
@@ -77,7 +77,7 @@ export default function Page(props: Props) {
         const response = await chatApi.previousChat(chatroomId, previousCursor, 20);
         const data = response.data;
 
-        if (data.status !== "2000"||data.data.size===0)
+        if (data.status !== "2000" || data.data.size === 0)
             return;
         setPreviousCursor(data.data.nextCursor);
         console.log('이전 채팅을 불러왔습니다.');
@@ -88,9 +88,12 @@ export default function Page(props: Props) {
         const response = await chatApi.afterChat(chatroomId, afterCursor, 20);
         const data = response.data;
 
-        if (data.status !== "2000"||data.data.size===0)
+        if (data.status !== "2000" || data.data.size === 0)
             return;
         const lastMessage = data.data.chatList[data.data.chatList.length - 1];
+        const firstMessage = data.data.chatList[0];
+        if (messages.length > 0 && messages[messages.length - 1].id >= firstMessage.id)
+            return;
         setAfterCursor(lastMessage.id);
         setMessages(prevMessages => [...prevMessages, ...data.data.chatList]);
     }, [afterCursor]);
@@ -102,13 +105,12 @@ export default function Page(props: Props) {
     }, []);
 
     useEffect(() => {
-        if(isSendMyChat) {
+        if (isSendMyChat) {
             if (bottomMessageRef.current) {
-                bottomMessageRef.current!.scrollIntoView({ behavior: 'smooth' });
+                bottomMessageRef.current!.scrollIntoView({behavior: 'smooth'});
             }
             setIsSendMyChat(false);
-        }
-        else {
+        } else {
             if (contentRef.current) {
                 const currentScrollHeight = contentRef.current.scrollHeight;
                 if (currentScrollHeight !== undefined) {
@@ -134,9 +136,9 @@ export default function Page(props: Props) {
                 const response = await chatApi.recentChat(chatroomId);
                 const data = response.data;
 
-                if (data.status !== "2000"||data.data.size===0)
+                if (data.status !== "2000" || data.data.size === 0)
                     return;
-                console.log(data.data.id+' vs ' +afterCursor);
+                console.log(data.data.id + ' vs ' + afterCursor);
                 if (data.data.id > afterCursor) {
                     console.log('새로운 채팅을 불러옵니다.');
                     await fetchAfterChat();
@@ -155,7 +157,7 @@ export default function Page(props: Props) {
     useEffect(() => {
         let observer = null;
 
-        if(contentRef.current) {
+        if (contentRef.current) {
             observer = new IntersectionObserver(
                 entries => {
                     if (entries[0].isIntersecting) {
@@ -164,7 +166,7 @@ export default function Page(props: Props) {
                 },
                 {
                     root: contentRef.current,
-                    rootMargin:'0px 0px -20px 0px'
+                    rootMargin: '0px 0px -20px 0px'
                 }
             );
 
