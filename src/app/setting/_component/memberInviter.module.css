@@ -80,8 +80,10 @@
     align-items: center;
     gap: 16px;
     box-sizing: border-box;
-    border: 1px solid black;
+    border: 1px solid #dddddd;
     padding: 18px 10px;
+    border-radius: 6px;
+    color: #333333;
 }
 
 .profileImage {
@@ -90,12 +92,12 @@
 }
 
 .userInfo {
-    font-size: 23px;
+    font-size: 14px;
     gap: 14px;
     flex: 1;
     align-items: center;
 }
 
 .state {
-    font-size: 23px;
+    font-size: 12px;
 }

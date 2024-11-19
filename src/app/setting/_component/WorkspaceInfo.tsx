@@ -4,6 +4,7 @@ import styles from './workspaceInfo.module.css';
 import Image from "next/image";
 import {useEffect, useState} from "react";
 import workspaceApi from "@/app/(api)/workspace";
+import PreparingModal from "@/app/setting/_component/PreparingModal";
 
 type User = {
     name: string,
@@ -25,6 +26,7 @@ export default function WorkspaceInfo({workspaceId}: Props) {
 
     const [workspaceName, setWorkspaceName] = useState('');
     const [workspaceImage, setWorkspaceImage] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
         fetchWorkspaceInfo();
@@ -64,8 +66,8 @@ export default function WorkspaceInfo({workspaceId}: Props) {
                 <div className={styles.subtitle}>대표 이미지</div>
                 <div className={styles.center}>
                     <Image src={"/images/default_thumbnail.png"} alt="workspaceImage" width={140} height={140}
-                    className={styles.image}/>
-                    <div className={styles.uploadButton}>업로드</div>
+                           className={styles.image}/>
+                    <div className={styles.uploadButton} onClick={() => setModalVisible(true)}>업로드</div>
                 </div>
             </div>
             <div className={styles.section}>
@@ -74,7 +76,7 @@ export default function WorkspaceInfo({workspaceId}: Props) {
                     {joinedUsers.map((user, index) => (
                         <div key={index} className={styles.user}>
                             <Image src={user.picture} className={styles.profileImage} alt="profileImage"
-                            width={46} height={46}/>
+                                   width={46} height={46}/>
                             <div className={styles.userInfo}>
                                 <div className={styles.userName}>{user.name}</div>
                                 <div className={styles.userEmail}>{user.email}</div>
@@ -89,8 +91,12 @@ export default function WorkspaceInfo({workspaceId}: Props) {
                                 </div>
                                 {openDropdown === user.email && (
                                     <ul className={styles.dropBar}>
-                                        <li onClick={() => handleRoleChange(user.email, 'LEADER')}>관리자</li>
-                                        <li onClick={() => handleRoleChange(user.email, 'MEMBER')}>일반</li>
+                                        <li className={styles.dropBarItem}
+                                            onClick={() => handleRoleChange(user.email, 'LEADER')}>관리자
+                                        </li>
+                                        <li className={styles.dropBarItem}
+                                            onClick={() => handleRoleChange(user.email, 'MEMBER')}>일반
+                                        </li>
                                     </ul>
                                 )}
                             </div>
@@ -101,7 +107,8 @@ export default function WorkspaceInfo({workspaceId}: Props) {
                     ))}
                 </div>
             </div>
-            <div className={styles.editButton}>수정</div>
+            <div className={styles.editButton} onClick={() => setModalVisible(true)}>수정</div>
+            {modalVisible && <PreparingModal setVisible={setModalVisible}/>}
         </div>
     );
 }
