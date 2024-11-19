@@ -23,7 +23,7 @@ const theme = createTheme({
 
 export default function DueDateInput({deadline, setDeadline}: Props) {
 
-    const minuteNumbers = Array.from({length: 12}, (_, i) => String(i * 5).padStart(2, '0'));
+    const minuteNumbers = Array.from({length: 60}, (_, i) => String(i).padStart(2, '0'));
     const hourNumbers = Array.from({length: 12}, (_, i) => String(i + 1).padStart(1, '0'));
     const dayPeriods = ['오전', '오후'];
     // deadline의 시간 값을 가져옵니다.
