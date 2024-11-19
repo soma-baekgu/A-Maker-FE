@@ -22,6 +22,13 @@ export default function Page() {
     const {setAccessToken, setEmail, setPicture, setName} = useStore() as StoreState;
 
     useEffect(() => {
+        useStore.setState?.({
+            accessToken: null,
+            email: null,
+            picture: null,
+            name: null,
+        });
+
         const queryParam = new URLSearchParams(window.location.search).get('code');
         if (queryParam)
             setAuthCode(queryParam);
