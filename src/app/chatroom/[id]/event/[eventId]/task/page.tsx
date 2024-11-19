@@ -87,6 +87,11 @@ export default function Page(props: {
         return decodeURIComponent(encodedFileName);
     };
 
+    function areAllWaitingUsersInComments(event: EventData, comments: Comment[]): boolean {
+        const commentEmails = comments.map(comment => comment.userResponse.email);
+        return event.waitingUser.every(user => commentEmails.includes(user.email));
+    }
+
     useEffect(() => {
         fetchEventData().then(() => setIsLoaded(true));
         fetchCommentData();
@@ -112,6 +117,9 @@ export default function Page(props: {
                     <div className={styles.body}>
                         <div className={styles.title}>
                             <div className={styles.titleText}>{event.eventTitle}</div>
+                            {areAllWaitingUsersInComments(event, comments) && <div className={styles.status}>
+                                <div className={styles.statusText}>완료</div>
+                            </div>}
                         </div>
                         <EventInfo event={event} type={"task"}/>
                         <div className={styles.detailText}>{event.eventDetails}</div>
@@ -135,7 +143,7 @@ export default function Page(props: {
                             ))
                         }
                     </div>
-                    {isAvailable &&
+                    {isAvailable && event && !areAllWaitingUsersInComments(event, comments) &&
                         <div className={styles.fixedBtn} onClick={handleFileInput}>
                             <Image src={"/task/white_clip.png"} alt={"white_clip"} width={24} height={24}/>
                             <input type="file" ref={fileInputRef} className={styles.none} onChange={handleChangeFile}/>

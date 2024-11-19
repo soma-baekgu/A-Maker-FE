@@ -52,6 +52,7 @@ export default function Page(props: {
     const [voterCount, setVoterCount] = useState<Map<number, number>>(new Map());
     const [votedOption, setVotedOption] = useState<number>();
     const [isAvailable, setIsAvailable] = useState(false);
+    const [votedOptions, setVotedOptions] = useState<VotedOption[]>([]);
 
     const loadEventData = async () => {
         const res = await eventApi.readReactionEvent(chatRoomId, eventId);
@@ -61,6 +62,7 @@ export default function Page(props: {
         const res2 = await eventCommentApi.readReactionEventComment(eventId);
         const tempMap = new Map<number, number>();
         let tempCnt = 0;
+        setVotedOptions(res2.data.data);
         res2.data.data.forEach((option: VotedOption) => {
             tempMap.set(option.id, option.comments.length);
             tempCnt += option.comments.length;
@@ -86,6 +88,11 @@ export default function Page(props: {
         return finishUsers.some((user: User) => user.email == email);
     }
 
+    function areAllWaitingUsersInComments(event: EventData, options: VotedOption[]): boolean {
+        const optionEmails = options.map(option => option.comments.map(comment => comment.userDto.email)).flat();
+        return event.waitingUser.every(user => optionEmails.includes(user.email));
+    }
+
     useEffect(() => {
         loadEventData().then(
             () => setIsLoaded(true)
@@ -107,13 +114,18 @@ export default function Page(props: {
                     <div className={styles.body}>
                         <div className={styles.title}>
                             <div className={styles.titleText}>{event.eventTitle}</div>
+                            {areAllWaitingUsersInComments(event, votedOptions) &&
+                                <div className={styles.status}>
+                                    <div className={styles.statusText}>완료</div>
+                                </div>
+                            }
                         </div>
                         <EventInfo event={event} type={"reaction"}/>
                     </div>
                     <div className={styles.choice}>
                         {event.options.map((option, index) => (
                             <div className={styles.item} key={index}>
-                                {isAvailable &&
+                                {isAvailable && event && !areAllWaitingUsersInComments(event, votedOptions) &&
                                     <input
                                         className={styles.checkbox}
                                         type="radio"
@@ -144,7 +156,7 @@ export default function Page(props: {
                             </div>
                         ))}
                     </div>
-                    {isAvailable &&
+                    {isAvailable && event && !areAllWaitingUsersInComments(event, votedOptions) &&
                         <div className={selectedOption ? styles.button : styles.disableButton} onClick={() => {
                             if (!selectedOption) return;
                             createEventComment(selectedOption);
