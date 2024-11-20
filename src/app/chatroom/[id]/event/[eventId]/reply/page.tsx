@@ -77,6 +77,7 @@ export default function Page(props: Props) {
             return;
         await eventCommentApi.createReplyComment(eventId, msg);
         fetchComments();
+        fetchEventData();
     }
 
     useEffect(() => {
