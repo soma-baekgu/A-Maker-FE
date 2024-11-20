@@ -142,11 +142,19 @@
     padding: 0;
     width: 100%;
     box-sizing: border-box;
-    border: 1px solid black;
     list-style: none;
     text-align: center;
     font-size: 20px;
     cursor: pointer;
+}
+
+.dropBarItem{
+    font-size: 12px;
+    cursor: pointer;
+    color: #666666;
+    padding:6px;
+    border: 1px solid #dddddd;
+    margin-top: -1px;
 }
 
 .dropdown {

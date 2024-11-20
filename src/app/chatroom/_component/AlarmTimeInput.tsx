@@ -14,12 +14,12 @@ export default function AlarmTimeInput({
                                            setNotificationMinuteValue,
                                            setIntervalValue
                                        }: Props) {
-    const minuteNumbers = Array.from({length: 12}, (_, i) => String(i * 5).padStart(2, '0'));
+    const minuteNumbers = Array.from({length: 60}, (_, i) => String(i).padStart(2, '0'));
     const hourNumbers = Array.from({length: 12}, (_, i) => String(i).padStart(1, '0'));
-    const intervalNumbers = Array.from({length: 12}, (_, i) => String((i + 1) * 5).padStart(2, '0'));
-    const [notificationHour, setNotificationHour] = useState('0');
-    const [notificationMinute, setNotificationMinute] = useState('00');
-    const [interval, setInterval] = useState('05');
+    const intervalNumbers = Array.from({length: 60}, (_, i) => String((i + 1)).padStart(2, '0'));
+    const [notificationHour, setNotificationHour] = useState('1');
+    const [notificationMinute, setNotificationMinute] = useState('05');
+    const [interval, setInterval] = useState('30');
 
     useEffect(() => {
         setNotificationHourValue(parseInt(notificationHour));

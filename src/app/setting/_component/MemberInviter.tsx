@@ -20,20 +20,7 @@ type User = {
 
 
 export default function MemberInviter({workspaceId}: Props) {
-    const invitedUsers:User[] = [
-        // {
-        //     id: 56,
-        //     name: '홍길동',
-        //     email: 'aaa@gmail.com',
-        //     imgUrl: '/defaultImg'
-        // },
-        // {
-        //     id: 51,
-        //     name: '가나다',
-        //     email: 'aaa@gmail.com',
-        //     imgUrl: '/defaultImg'
-        // },
-    ];
+    const [invitedUsers,setInvitedUsers]=useState<String[]>([]);
 
     const [invitedUserEmail, setInvitedUserEmail] = useState('');
     const [errorMsg, setErrorMsg] = useState<string|null>(null);
@@ -44,9 +31,14 @@ export default function MemberInviter({workspaceId}: Props) {
         setInvitedUserEmail('');
         try {
             const res = await workspaceApi.invite(workspaceId, invitedUserEmail);
+            if (res.data.status !== "2000") {
+                setErrorMsg('초대에 실패했습니다. 이미 초대된 유저이거나 가입되지 않은 유저일 수 있습니다.');
+                return;
+            }
             console.log("초대 성공");
+            setInvitedUsers([...invitedUsers, invitedUserEmail]);
             setErrorMsg(null);
-            //todo: 초대된 유저리스트 api 재호출
+
 
         } catch (e) {
             setErrorMsg('초대에 실패했습니다. 이미 초대된 유저이거나 가입되지 않은 유저일 수 있습니다.');
@@ -73,11 +65,8 @@ export default function MemberInviter({workspaceId}: Props) {
             <div className={styles.list}>
                 {invitedUsers.map((user, index) => (
                     <div key={index} className={styles.user}>
-                        <Image src={user.picture} className={styles.profileImage} alt="profileImage"
-                        width={46} height={46}/>
                         <div className={styles.userInfo}>
-                            <div>{user.name}</div>
-                            <div>{user.email}</div>
+                            <div>{user}</div>
                         </div>
                         <div className={styles.state}>초대 수락 대기중</div>
                     </div>

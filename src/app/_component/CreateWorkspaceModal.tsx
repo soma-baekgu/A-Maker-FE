@@ -10,7 +10,7 @@ type Props = {
 export default function CreateWorkspaceModal({setVisible, createWorkspace}: Props) {
     const [inputValue, setInputValue] = useState("");
 
-    const handleClose = (e:React.MouseEvent) => {
+    const handleClose = (e: React.MouseEvent) => {
         e.stopPropagation();
         setVisible(false);
     }
@@ -20,8 +20,9 @@ export default function CreateWorkspaceModal({setVisible, createWorkspace}: Prop
     }
 
     const handleCreateWorkspace = async () => {
-        await createWorkspace(inputValue);
+        if (inputValue.length <= 0) return;
         setVisible(false);
+        await createWorkspace(inputValue);
     }
 
     return (

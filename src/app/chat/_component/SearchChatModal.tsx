@@ -54,8 +54,8 @@ export default function SearchChatModal({setVisible, onJoin, visible, workspaceI
                     <div className={styles.title}>채팅방 참여하기</div>
                 </div>
                 <div className={styles.chatRoomList}>
-                    {notJoinChatRooms.map((chatRoom, index) => {
-                        return (
+                    {notJoinChatRooms.length > 0 ?
+                        notJoinChatRooms.map((chatRoom, index) => (
                             <div key={index} className={styles.chatRoom}>
                                 <MiniProfileImageGroup imageUrls={chatRoom.participants}/>
                                 <div className={styles.chatRoomName}>{chatRoom.chatRoomName}</div>
@@ -65,11 +65,12 @@ export default function SearchChatModal({setVisible, onJoin, visible, workspaceI
                                     checked={checkedChatRooms[chatRoom.chatRoomId] || false}
                                     onChange={handleCheckboxChange(chatRoom.chatRoomId)}/>
                             </div>
-                        )
-                    })}
+                        ))
+                        :
+                        <div>참여할 수 있는 채팅방이 없습니다.</div>}
                 </div>
                 <div className={styles.buttons}>
-                    <div className={styles.joinButton} onClick={handleJoin}>참여</div>
+                    {notJoinChatRooms.length > 0 && <div className={styles.joinButton} onClick={handleJoin}>참여</div>}
                     <div className={styles.closeButton} onClick={handleClose}>닫기</div>
                 </div>
             </div>

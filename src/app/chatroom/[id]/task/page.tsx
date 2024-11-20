@@ -9,6 +9,12 @@ import AlarmTimeInput from "@/app/chatroom/_component/AlarmTimeInput";
 import EventDetailInput from "@/app/chatroom/_component/EventDetailInput";
 import eventApi from "@/app/(api)/event";
 import {useRouter} from "next/navigation";
+import {useStore} from "@/app/store";
+
+interface StoreState {
+    map: Map<string, number>,
+    setMap: (key: string, value: number) => void
+}
 
 export default function Page(props: {
     params: {
@@ -24,6 +30,7 @@ export default function Page(props: {
     const [notificationStartMinute, setNotificationStartMinute] = useState(30);
     const [interval, setInterval] = useState(15);
     const router = useRouter();
+    const {map, setMap} = useStore() as StoreState;
 
     const createEvent = () => {
         eventApi.createTaskEvent(
@@ -36,8 +43,17 @@ export default function Page(props: {
             notificationStartMinute,
             interval
         ).then(() => {
+            assignees.forEach(assignee => {
+                const count = map.get(assignee) || 0;
+                setMap(assignee, count + 1);
+                console.log(assignee);
+            });
             router.back();
         })
+    }
+
+    const isValidInput = (eventTitle: string, eventDetails: string, assignees: string[]) => {
+        return eventTitle.length > 0 && eventDetails.length > 0 && assignees.length > 0;
     }
 
     return (
@@ -54,7 +70,11 @@ export default function Page(props: {
                 <div className={styles.section}>
                     <AlarmTimeInput setIntervalValue={setInterval} setNotificationHourValue={setNotificationStartHour}
                                     setNotificationMinuteValue={setNotificationStartMinute}/>
-                    <div className={styles.button} onClick={createEvent}>생성</div>
+                    {isValidInput(eventTitle, eventDetails, assignees) ?
+                        <div className={styles.button} onClick={createEvent}>생성</div>
+                        :
+                        <div className={styles.disableButton}>생성</div>
+                    }
                 </div>
             </div>
         </div>

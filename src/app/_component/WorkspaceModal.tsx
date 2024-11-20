@@ -7,6 +7,7 @@ import CreateWorkspaceModal from "@/app/_component/CreateWorkspaceModal";
 import workspaceApi from "@/app/(api)/workspace";
 import Link from "next/link";
 import {useStore} from "@/app/store";
+import {useRouter} from "next/navigation";
 
 type Workspace = {
     workspaceId: number,
@@ -29,13 +30,14 @@ export default function WorkspaceModal({onClose, visible, currentWorkspaceId}: P
     const [createWorkspaceVisible, setCreateWorkspaceVisible] = useState(false);
     const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
     const {picture, name} = useStore() as StoreState;
+    const router = useRouter();
+
+    const getWorkspaces = async () => {
+        const res = await workspaceApi.getList();
+        setWorkspaces(res.data.data.workspaces);
+    };
 
     useEffect(() => {
-        const getWorkspaces = async () => {
-            const res = await workspaceApi.getList();
-            setWorkspaces(res.data.data.workspaces);
-        };
-
         getWorkspaces();
     }, [visible, createWorkspaceVisible]);
 
@@ -49,6 +51,11 @@ export default function WorkspaceModal({onClose, visible, currentWorkspaceId}: P
 
     const createWorkspace = async (workspaceName: string) => {
         await workspaceApi.create(workspaceName);
+        await getWorkspaces();
+    }
+
+    const handleLogout = () => {
+        router.push('/login');
     }
 
     return (
@@ -62,7 +69,7 @@ export default function WorkspaceModal({onClose, visible, currentWorkspaceId}: P
                     </div>
                     <div className={styles.logout}>
                         <Image src={"/modal/logout.png"} alt={"logout"} width={16} height={16}/>
-                        <span>로그아웃</span>
+                        <span onClick={handleLogout}>로그아웃</span>
                     </div>
                 </div>
                 <div className={styles.list}>

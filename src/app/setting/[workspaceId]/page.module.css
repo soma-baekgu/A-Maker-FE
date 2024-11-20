@@ -12,6 +12,8 @@
     overflow: auto;
     flex: 1;
     flex-basis: 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 .section {

@@ -58,6 +58,12 @@ export default function Page(props: Props) {
         setEvent(res.data.data);
     }
 
+    function areAllWaitingUsersInComments(event: EventData, comments: Comment[]): boolean {
+        const commentEmails = comments.map(comment => comment.userResponse.email);
+        return event.waitingUser.every(user => commentEmails.includes(user.email));
+    }
+
+
     useEffect(() => {
         fetchEventData().then(() => {
             setIsLoaded(true);
@@ -87,6 +93,9 @@ export default function Page(props: Props) {
                     <div className={styles.body}>
                         <div className={styles.title}>
                             <div className={styles.titleText}>{event.eventTitle}</div>
+                            {areAllWaitingUsersInComments(event, comments) && <div className={styles.status}>
+                                <div className={styles.statusText}>완료</div>
+                            </div>}
                         </div>
                         <EventInfo event={event} type={"reply"}/>
                         <div className={styles.detailText}>{event.eventDetails}</div>
@@ -110,7 +119,7 @@ export default function Page(props: Props) {
             ) : (
                 <div className={styles.main}>Loading...</div>
             )}
-            {isAvailable &&
+            {isAvailable && event && !areAllWaitingUsersInComments(event, comments) &&
                 <ReplyInput onSend={onSend}/>
             }
         </div>

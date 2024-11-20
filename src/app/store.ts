@@ -1,6 +1,19 @@
 import create from 'zustand';
 import {persist} from "zustand/middleware";
 
+interface StoreState {
+    accessToken: string | null;
+    setAccessToken: (accessToken: string) => void;
+    email: string | null;
+    setEmail: (email: string) => void;
+    picture: string | null;
+    setPicture: (picture: string) => void;
+    name: string | null;
+    setName: (name: string) => void;
+    map: Map<string, number>;
+    setMap: (key: string, value: number) => void;
+}
+
 export const useStore = create(persist(
     (set) => ({
         accessToken: null,
@@ -11,6 +24,12 @@ export const useStore = create(persist(
         setPicture: (picture: string) => set({picture}),
         name: null,
         setName: (name: string) => set({name}),
+        map: new Map<string, number>(),
+        setMap: (key: string, value: number) => set((state:StoreState) => {
+            const newMap = new Map(state.map);
+            newMap.set(key, value);
+            return {map: newMap};
+        }),
     }),
     {
         name: process.env.NEXT_PUBLIC_LOCAL_STORAGE || 'default',

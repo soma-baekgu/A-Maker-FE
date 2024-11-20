@@ -85,3 +85,13 @@
 .button:hover {
     opacity: 0.8;
 }
+
+.empty{
+    font-size: 14px;
+    color: #333333;
+    text-align: center;
+    padding: 15px;
+    background-color: white;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.03);
+    border-radius: 12px;
+}

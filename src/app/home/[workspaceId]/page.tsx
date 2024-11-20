@@ -60,52 +60,67 @@ export default function Home(props: Props) {
                 <div className={styles.events}>
                     <div className={styles.section}>
                         <div className={styles.subtitle}>마감이 지난 이벤트</div>
-                        {expiredEvents.map((event, index) => (
-                            <Link href={`/chatroom/${event.chatRoomId}/event/${event.eventId}/${event.eventType.toLowerCase()}`}
-                                  key={index}
-                                  className={mine && !event.isMine ? styles.button + " " + styles.hide : styles.button}>
-                                <Event
-                                    type={event.eventType}
-                                    imageUrls={event.users}
-                                    title={event.eventTitle}
-                                    dueDate={event.deadLine}
-                                    completedMembers={event.finishedCount}
-                                    totalMembers={event.totalAssignedCount}/>
-                            </Link>
-                        ))}
+                        {expiredEvents.length > 0 ?
+                            expiredEvents.map((event, index) => (
+                                <Link
+                                    href={`/chatroom/${event.chatRoomId}/event/${event.eventId}/${event.eventType.toLowerCase()}`}
+                                    key={index}
+                                    className={mine && !event.isMine ? styles.button + " " + styles.hide : styles.button}>
+                                    <Event
+                                        type={event.eventType}
+                                        imageUrls={event.users}
+                                        title={event.eventTitle}
+                                        dueDate={event.deadLine}
+                                        completedMembers={event.finishedCount}
+                                        totalMembers={event.totalAssignedCount}/>
+                                </Link>
+                            ))
+                            :
+                            <div className={styles.empty}>마감이 지난 이벤트가 없습니다</div>
+                        }
                     </div>
                     <div className={styles.section}>
                         <div className={styles.subtitle}>진행중인 이벤트</div>
-                        {ongoingEvents.map((event, index) => (
-                            <Link href={`/chatroom/${event.chatRoomId}/event/${event.eventId}/${event.eventType.toLowerCase()}`}
-                                  key={index}
-                                  className={mine && !event.isMine ? styles.button + " " + styles.hide : styles.button}>
-                                <Event
-                                    type={event.eventType}
-                                    imageUrls={event.users}
-                                    title={event.eventTitle}
-                                    dueDate={event.deadLine}
-                                    completedMembers={event.finishedCount}
-                                    totalMembers={event.totalAssignedCount}/>
-                            </Link>
-                        ))}
+                        {ongoingEvents.length > 0 ?
+                            ongoingEvents.map((event, index) => (
+                                <Link
+                                    href={`/chatroom/${event.chatRoomId}/event/${event.eventId}/${event.eventType.toLowerCase()}`}
+                                    key={index}
+                                    className={mine && !event.isMine ? styles.button + " " + styles.hide : styles.button}>
+                                    <Event
+                                        type={event.eventType}
+                                        imageUrls={event.users}
+                                        title={event.eventTitle}
+                                        dueDate={event.deadLine}
+                                        completedMembers={event.finishedCount}
+                                        totalMembers={event.totalAssignedCount}/>
+                                </Link>
+                            ))
+                            :
+                            <div className={styles.empty}>진행중인 이벤트가 없습니다</div>
+                        }
                     </div>
                     <div className={styles.section}>
                         <div className={styles.subtitle}>완료된 이벤트</div>
-                        {completedEvents.map((event, index) => (
-                            <Link href={`/chatroom/${event.chatRoomId}/event/${event.eventId}/${event.eventType.toLowerCase()}`}
-                                  key={index}
-                                  className={mine && !event.isMine ? styles.button + " " + styles.hide : styles.button}>
-                                <Event
+                        {completedEvents.length > 0 ?
+                            completedEvents.map((event, index) => (
+                                <Link
+                                    href={`/chatroom/${event.chatRoomId}/event/${event.eventId}/${event.eventType.toLowerCase()}`}
                                     key={index}
-                                    type={event.eventType}
-                                    imageUrls={event.users}
-                                    title={event.eventTitle}
-                                    dueDate={event.deadLine}
-                                    completedMembers={event.finishedCount}
-                                    totalMembers={event.totalAssignedCount}/>
-                            </Link>
-                        ))}
+                                    className={mine && !event.isMine ? styles.button + " " + styles.hide : styles.button}>
+                                    <Event
+                                        key={index}
+                                        type={event.eventType}
+                                        imageUrls={event.users}
+                                        title={event.eventTitle}
+                                        dueDate={event.deadLine}
+                                        completedMembers={event.finishedCount}
+                                        totalMembers={event.totalAssignedCount}/>
+                                </Link>
+                            ))
+                            :
+                            <div className={styles.empty}>완료된 이벤트가 없습니다</div>
+                        }
                     </div>
                 </div>
             </div>

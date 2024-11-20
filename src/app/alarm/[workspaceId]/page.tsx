@@ -73,19 +73,23 @@ export default function Alarm(props: Props) {
         <div className={styles.page}>
             <TopBar pageType='알림' workspaceId={workspaceId}/>
             <div className={styles.content} ref={contentRef}>
-                {notifications.map((notification, index) => (
-                    <>
-                        <div className={styles.notification} key={index}>
-                            <div className={styles.top}>
-                                <div className={styles.title}>
-                                    <Image src={"/alarm/icon.png"} alt={"icon"} width={16} height={16}/>
-                                    {notification.title}
+                {notifications.length > 0 ?
+                    notifications.map((notification, index) => (
+                        <>
+                            <div className={styles.notification} key={index}>
+                                <div className={styles.top}>
+                                    <div className={styles.title}>
+                                        <Image src={"/alarm/icon.png"} alt={"icon"} width={16} height={16}/>
+                                        {notification.title}
+                                    </div>
                                 </div>
+                                <div className={styles.body}>마감 기한이 지난 이벤트가 있습니다. 맡은 업무를 완료해주세요.</div>
                             </div>
-                            <div className={styles.body}>{notification.content}</div>
-                        </div>
-                    </>
-                ))}
+                        </>
+                    ))
+                    :
+                    <div className={styles.empty}>수신받은 알림이 없습니다</div>
+                }
             </div>
             <BottomBar workspaceId={workspaceId} pageType='알림'/>
         </div>

@@ -17,7 +17,7 @@ export default function Page(props: {
 }) {
     const chatRoomId: number = Number(props.params.id);
     const [title, setTitle] = useState('');
-    const [items, setItems] = useState<string[]>(["",""]);
+    const [items, setItems] = useState<string[]>(["", ""]);
     const [assignees, setAssignees] = useState<string[]>([]);
     const [deadline, setDeadline] = useState(new Date());
     const [notificationStartHour, setNotificationStartHour] = useState(1);
@@ -40,6 +40,10 @@ export default function Page(props: {
         });
     }
 
+    function isValidInput(title: string, items: string[], assignees: string[]): boolean {
+        return title.length > 0 && items.every(item => item.length > 0) && assignees.length > 0;
+    }
+
     return (
         <div className={styles.page}>
             <TopBar2 title={"응답요청 이벤트 생성"}/>
@@ -53,7 +57,7 @@ export default function Page(props: {
                     <RecipientSelector
                         setAssignees={setAssignees}
                         chatroomId={chatRoomId}
-                    type={"reaction"}/>
+                        type={"reaction"}/>
                     <DueDateInput
                         deadline={deadline}
                         setDeadline={setDeadline}/>
@@ -63,7 +67,11 @@ export default function Page(props: {
                         setNotificationHourValue={setNotificationStartHour}
                         setNotificationMinuteValue={setNotificationStartMinute}
                         setIntervalValue={setInterval}/>
-                    <div className={styles.button} onClick={createEvent}>생성</div>
+                    {isValidInput(title, items, assignees) ?
+                        <div className={styles.button} onClick={createEvent}>생성</div>
+                        :
+                        <div className={styles.disableButton}>생성</div>
+                    }
                 </div>
             </div>
         </div>

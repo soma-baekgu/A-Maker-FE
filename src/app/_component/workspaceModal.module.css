@@ -29,6 +29,8 @@
     flex: 1;
     margin: 30px 15px;
     gap:12px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 .workspace {
