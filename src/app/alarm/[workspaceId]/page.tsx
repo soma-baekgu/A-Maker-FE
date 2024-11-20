@@ -83,7 +83,7 @@ export default function Alarm(props: Props) {
                                         {notification.title}
                                     </div>
                                 </div>
-                                <div className={styles.body}>{notification.content}</div>
+                                <div className={styles.body}>마감 기한이 지난 이벤트가 있습니다. 맡은 업무를 완료해주세요.</div>
                             </div>
                         </>
                     ))

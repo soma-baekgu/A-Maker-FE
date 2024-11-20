@@ -29,6 +29,11 @@
     color:#666666;
 }
 
+.recommendName {
+    font-size: 14px;
+    color:#61cd98;
+}
+
 .checkbox {
     appearance: none;
     -webkit-appearance: none;
