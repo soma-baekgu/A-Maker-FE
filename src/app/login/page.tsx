@@ -27,7 +27,7 @@ export default function Page() {
             email: null,
             picture: null,
             name: null,
-            map: new Map()
+            map: new Map<string, number>()
         });
 
         const queryParam = new URLSearchParams(window.location.search).get('code');
