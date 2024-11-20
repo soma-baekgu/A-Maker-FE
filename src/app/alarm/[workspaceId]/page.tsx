@@ -25,18 +25,15 @@ export default function Alarm(props: Props) {
     const workspaceId = props.params.workspaceId;
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const contentRef = useRef<HTMLDivElement | null>(null);
-    const cursorRef = useRef(0);
     const [isLoading, setIsLoading] = useState(false);
 
     const fetchNotifications = () => {
         if (isLoading) return;
         setIsLoading(true);
         notificationApi.getNotifications(
-            workspaceId,
-            cursorRef.current + 1
+            workspaceId, 0
         ).then((res) => {
-            setNotifications(prev => [...prev, ...res.data.data.content]);
-            cursorRef.current += 1;
+            setNotifications(res.data.data.content);
             setIsLoading(false);
         })
     }
@@ -45,7 +42,6 @@ export default function Alarm(props: Props) {
         if (contentRef.current) {
             const {scrollTop, scrollHeight, clientHeight} = contentRef.current;
             if (scrollTop + clientHeight >= scrollHeight) {
-                console.log(cursorRef.current);
                 fetchNotifications();
             }
         }

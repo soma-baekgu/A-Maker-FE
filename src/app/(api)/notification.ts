@@ -8,7 +8,7 @@ const notificationApi = {
         return authRequest.get(`/api/v1/workspaces/${workspaceId}/notifications`, {
             params: {
                 page: page,
-                size: 10
+                size: 100
             }
         });
     },

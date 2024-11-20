@@ -28,22 +28,12 @@ export default function Page(props: Props) {
     const [interval, setInterval] = useState(15);
     const router = useRouter();
     const createEvent = () => {
-        console.log(
-            chatRoomId,
-            eventTitle,
-            eventDetails,
-            assignees,
-            new Date(deadline.getTime() + 9 * 60 * 60 * 1000),
-            notificationStartHour,
-            notificationStartMinute,
-            interval
-        )
         eventApi.createReplyEvent(
             chatRoomId,
             eventTitle,
             eventDetails,
             assignees,
-            deadline,
+            new Date(new Date(deadline).getTime() + 9 * 60 * 60 * 1000),
             notificationStartHour,
             notificationStartMinute,
             interval
