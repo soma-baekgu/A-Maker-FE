@@ -12,8 +12,8 @@ import {useRouter} from "next/navigation";
 import {useStore} from "@/app/store";
 
 interface StoreState {
-    map: Map<string, number>,
-    setMap: (key: string, value: number) => void
+    map: string,
+    setMap: (val:string) => void
 }
 
 export default function Page(props: {
@@ -30,7 +30,7 @@ export default function Page(props: {
     const [notificationStartMinute, setNotificationStartMinute] = useState(30);
     const [interval, setInterval] = useState(15);
     const router = useRouter();
-    const {map, setMap} = useStore() as StoreState;
+    const {map,setMap} = useStore() as StoreState;
 
     const createEvent = () => {
         eventApi.createTaskEvent(
@@ -43,11 +43,7 @@ export default function Page(props: {
             notificationStartMinute,
             interval
         ).then(() => {
-            assignees.forEach(assignee => {
-                const count = map.get(assignee) || 0;
-                setMap(assignee, count + 1);
-                console.log(assignee);
-            });
+            setMap(String(Number(map) + 1));
             router.back();
         })
     }

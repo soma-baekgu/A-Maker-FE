@@ -24,12 +24,8 @@ export const useStore = create(persist(
         setPicture: (picture: string) => set({picture}),
         name: null,
         setName: (name: string) => set({name}),
-        map: new Map<string, number>(),
-        setMap: (key: string, value: number) => set((state:StoreState) => {
-            const newMap = new Map(state.map);
-            newMap.set(key, value);
-            return {map: newMap};
-        }),
+        map: "0",
+        setMap: (map: string) => set({map}),
     }),
     {
         name: process.env.NEXT_PUBLIC_LOCAL_STORAGE || 'default',

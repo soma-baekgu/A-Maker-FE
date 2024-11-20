@@ -12,7 +12,7 @@ type User = {
 }
 
 interface StoreState {
-    map: Map<string, number>,
+    map: string,
 }
 
 export default function RecipientSelector({setAssignees, chatroomId, type}: {
@@ -31,10 +31,9 @@ export default function RecipientSelector({setAssignees, chatroomId, type}: {
     );
 
     const {map} = useStore() as StoreState;
-    const [minCnt, setMinCnt] = useState(999);
 
     useEffect(() => {
-        fetchRecipients();
+        fetchRecipients().then(()=>console.log(map));
     }, []);
 
     const fetchRecipients = async () => {
@@ -51,17 +50,6 @@ export default function RecipientSelector({setAssignees, chatroomId, type}: {
         setAssignees(newAssignees);
     }
 
-    useEffect(() => {
-        if (recipients.length > 0) {
-            const minCount = recipients.reduce((min, recipient) => {
-                const count = map.get(recipient.email) || 0;
-                return count < min ? count : min;
-            }, 0);
-            console.log("sdf : " + minCount);
-            setMinCnt(minCount);
-        }
-    }, [recipients, map]);
-
     return (
         <div className={styles.component}>
             <div className={styles.description}>{
@@ -77,7 +65,7 @@ export default function RecipientSelector({setAssignees, chatroomId, type}: {
                 <div className={styles.element} key={index}>
                     <Image className={styles.image} src={recipient.picture} alt="picture"
                            width={46} height={46}/>
-                    {map.get(recipient.email) || 0 == minCnt && type === "task" ?
+                    {Number(map) % (recipients.length) == index && type === "task" ?
                         <>
                             <div className={styles.recommendName}>{recipient.name} - 추천</div>
                             <Image style={{marginLeft: "-8px"}} src={"/recommend.png"} alt={"recommend"} width={18}
