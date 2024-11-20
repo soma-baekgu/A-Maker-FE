@@ -40,6 +40,10 @@ export default function Page(props: {
         })
     }
 
+    const isValidInput = (eventTitle: string, eventDetails: string, assignees: string[]) => {
+        return eventTitle.length > 0 && eventDetails.length > 0 && assignees.length > 0;
+    }
+
     return (
         <div className={styles.page}>
             <TopBar2 title={"업무요청 이벤트 생성"}/>
@@ -54,7 +58,11 @@ export default function Page(props: {
                 <div className={styles.section}>
                     <AlarmTimeInput setIntervalValue={setInterval} setNotificationHourValue={setNotificationStartHour}
                                     setNotificationMinuteValue={setNotificationStartMinute}/>
-                    <div className={styles.button} onClick={createEvent}>생성</div>
+                    {isValidInput(eventTitle, eventDetails, assignees) ?
+                        <div className={styles.button} onClick={createEvent}>생성</div>
+                        :
+                        <div className={styles.disableButton}>생성</div>
+                    }
                 </div>
             </div>
         </div>

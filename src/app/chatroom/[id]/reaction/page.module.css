@@ -39,3 +39,13 @@
 .content::-webkit-scrollbar{
     display: none;
 }
+
+.disableButton{
+    padding: 16px;
+    text-align: center;
+    font-size: 14px;
+    color: white;
+    background-color: #999999;
+    cursor: pointer;
+    border-radius: 6px;
+}
