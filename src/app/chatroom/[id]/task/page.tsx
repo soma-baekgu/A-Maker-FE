@@ -38,7 +38,7 @@ export default function Page(props: {
             eventTitle,
             eventDetails,
             assignees,
-            new Date(deadline.getTime() + 9 * 60 * 60 * 1000),
+            new Date(new Date(deadline).getTime() + 9 * 60 * 60 * 1000),
             notificationStartHour,
             notificationStartMinute,
             interval
