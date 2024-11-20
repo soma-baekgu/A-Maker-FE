@@ -97,6 +97,14 @@ export default function Page(props: {
         loadEventData().then(
             () => setIsLoaded(true)
         )
+
+        const intervalId = setInterval(async () => {
+            loadEventData();
+        }, 1000);
+
+        return () => {
+            clearInterval(intervalId);
+        }
     }, []);
 
     useEffect(() => {

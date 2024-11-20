@@ -70,6 +70,15 @@ export default function Page(props: Props) {
         });
 
         fetchComments();
+
+        const intervalId = setInterval(async () => {
+            fetchComments();
+            fetchEventData();
+        }, 1000);
+
+        return () => {
+            clearInterval(intervalId);
+        };
     }, []);
 
     const onSend = async (msg: string) => {
@@ -77,6 +86,7 @@ export default function Page(props: Props) {
             return;
         await eventCommentApi.createReplyComment(eventId, msg);
         fetchComments();
+        fetchEventData();
     }
 
     useEffect(() => {

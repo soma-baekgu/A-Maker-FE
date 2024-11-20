@@ -95,6 +95,15 @@ export default function Page(props: {
     useEffect(() => {
         fetchEventData().then(() => setIsLoaded(true));
         fetchCommentData();
+
+        const intervalId = setInterval(async () => {
+            fetchEventData();
+            fetchCommentData();
+        }, 1000);
+
+        return () => {
+            clearInterval(intervalId);
+        };
     }, []);
 
     useEffect(() => {

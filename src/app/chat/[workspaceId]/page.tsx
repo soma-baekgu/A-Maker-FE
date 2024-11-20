@@ -11,6 +11,7 @@ import chatRoomApi from "@/app/(api)/chatRoom";
 import SearchChatModal from "@/app/chat/_component/SearchChatModal";
 import workspace from "@/app/(api)/workspace";
 import {ChatContent, FileContent} from "@/app/chatroom/types";
+import eventQueryAPi from "@/app/(api)/eventQuery";
 
 type Participant = {
     name: string,
@@ -48,14 +49,24 @@ export default function Chat(props:Props) {
     const [joinChatRooms, setJoinChatRooms] = useState<JoinChatRoom[]>([]);
     const workspaceId = props.params.workspaceId;
 
-    useEffect(() => {
-        const getChatRooms = async () => {
-            const res = await chatRoomApi.getListJoined(workspaceId);
-            setJoinChatRooms(res.data.data.chatRooms);
-        };
+    const getChatRooms = async () => {
+        const res = await chatRoomApi.getListJoined(workspaceId);
+        setJoinChatRooms(res.data.data.chatRooms);
+    };
 
+    useEffect(() => {
         getChatRooms();
     }, [createModalVisible, searchModalVisible]);
+
+    useEffect(() => {
+        const intervalId = setInterval(async () => {
+            getChatRooms();
+        }, 1000);
+
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, []);
 
     const onCreateChat = () => {
         setCreateModalVisible(true);

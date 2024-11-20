@@ -30,7 +30,17 @@ export default function WorkspaceInfo({workspaceId}: Props) {
 
     useEffect(() => {
         fetchWorkspaceInfo();
+
+        const intervalId = setInterval(async () => {
+            fetchWorkspaceInfo();
+        },1000);
+
+        return () => {
+            clearInterval(intervalId);
+        }
     }, []);
+
+
 
     const fetchWorkspaceInfo = async () => {
         const res = await workspaceApi.getUsers(workspaceId);

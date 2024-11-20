@@ -13,7 +13,7 @@ import {useStore} from "@/app/store";
 
 interface StoreState {
     map: string,
-    setMap: (val:string) => void
+    setMap: (val: string) => void
 }
 
 export default function Page(props: {
@@ -30,7 +30,7 @@ export default function Page(props: {
     const [notificationStartMinute, setNotificationStartMinute] = useState(30);
     const [interval, setInterval] = useState(15);
     const router = useRouter();
-    const {map,setMap} = useStore() as StoreState;
+    const {map, setMap} = useStore() as StoreState;
 
     const createEvent = () => {
         eventApi.createTaskEvent(
@@ -38,7 +38,7 @@ export default function Page(props: {
             eventTitle,
             eventDetails,
             assignees,
-            deadline,
+            new Date(deadline.getTime() + 9 * 60 * 60 * 1000),
             notificationStartHour,
             notificationStartMinute,
             interval

@@ -33,7 +33,7 @@ export default function Page(props: Props) {
             eventTitle,
             eventDetails,
             assignees,
-            deadline,
+            new Date(deadline.getTime() + 9 * 60 * 60 * 1000),
             notificationStartHour,
             notificationStartMinute,
             interval
@@ -49,7 +49,7 @@ export default function Page(props: Props) {
             interval
         ).then(() => {
             console.log('리플라이 이벤트 생성완료')
-            router.back();//todo: 이전페이지로 해야될지 replace로 해야될지 모르겠네..
+            router.back();
         });
 
     }

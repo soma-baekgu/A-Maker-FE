@@ -68,7 +68,7 @@ export default function MemberInviter({workspaceId}: Props) {
                         <div className={styles.userInfo}>
                             <div>{user}</div>
                         </div>
-                        <div className={styles.state}>초대 수락 대기중</div>
+                        <div className={styles.state}>초대 이메일 발송</div>
                     </div>
                 ))}
             </div>

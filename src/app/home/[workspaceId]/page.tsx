@@ -6,6 +6,7 @@ import Event from "./_component/Event";
 import {useEffect, useState} from "react";
 import Link from "next/link";
 import eventQueryAPi from "@/app/(api)/eventQuery";
+import chatApi from "@/app/(api)/chat";
 
 interface Props {
     params: {
@@ -42,6 +43,19 @@ export default function Home(props: Props) {
             .then(res => setOngoingEvents(res.data.data));
         eventQueryAPi.getEvents(workspaceId, 'completed')
             .then(res => setCompletedEvents(res.data.data));
+
+        const intervalId = setInterval(async () => {
+            eventQueryAPi.getEvents(workspaceId, 'expired')
+                .then(res => setExpiredEvents(res.data.data));
+            eventQueryAPi.getEvents(workspaceId, 'ongoing')
+                .then(res => setOngoingEvents(res.data.data));
+            eventQueryAPi.getEvents(workspaceId, 'completed')
+                .then(res => setCompletedEvents(res.data.data));
+        }, 1000);
+
+        return () => {
+            clearInterval(intervalId);
+        };
     }, []);
 
     return (

@@ -53,6 +53,14 @@ export default function Alarm(props: Props) {
 
     useEffect(() => {
         fetchNotifications();
+
+        const intervalId = setInterval(async () => {
+            fetchNotifications();
+        }, 1000);
+
+        return () => {
+            clearInterval(intervalId);
+        };
     }, []);
 
     useEffect(() => {
